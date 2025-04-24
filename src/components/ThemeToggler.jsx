@@ -2,14 +2,19 @@
 import React from 'react'
 
 import { useDarkMode } from '../context/ThemeContext'
+import { Button } from 'antd';
 
 const ThemeToggler = () => {
-    const {darkMode, setDarkMode} = useDarkMode()
+  const { darkMode, setDarkMode } = useDarkMode()
 
   return (
-    <button onClick={() => setDarkMode(!darkMode)} className='bg-black dark:bg-white text-white dark:text-black'>
-        { darkMode ? 'Light Mode' : 'Dark Mode'}
-    </button>
+    <>
+      {/* <button className='bg-black dark:bg-white text-white dark:text-black'>
+        
+      </button> */}
+
+      <Button type="primary" onClick={() => setDarkMode(!darkMode)} >{darkMode ? 'Light Mode' : 'Dark Mode'}</Button>
+    </>
   )
 }
 
