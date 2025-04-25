@@ -2,15 +2,24 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  --color-green-grass: #96B3A9;
+  ---color-white-secondary: #ffffff99;
+  ---color-black-primary: #071726;
+  ---color-gray-primary: #677171;
+  ---color-blue-primary: #032435;
+  ---color-blue-secondary: #EAEEF8;
 }
 
 @theme inline {
-  --color-green-grass: #96B3A9;
+  ---color-white-secondary: #ffffff99;
+  ---color-black-secondary: #071726;
+  ---color-gray-primary: #677171;
+  ---color-blue-primary: #032435;
+  ---color-blue-secondary: #EAEEF8;
 }
 
 body {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+  background-color: #F5FAFB;
 }

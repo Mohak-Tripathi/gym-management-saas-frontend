@@ -1,2 +1,2 @@
-import SignIn from "@/pages/sign-in";
+import SignIn from "@/allPages/sign-in";
 export default SignIn;
