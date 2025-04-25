@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import 'antd/dist/reset.css';
 import { ThemeProvider } from "@/context/ThemeContext";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from '../lib/store';
+import ReduxProviders from "@/lib/store/ReduxProvider";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
 });
 
@@ -28,11 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${roboto.variable} antialiased`}
       >
-        <ThemeProvider>
+        <ReduxProviders>
           {children}
-        </ThemeProvider>
+        </ReduxProviders>
       </body>
     </html>
   );
