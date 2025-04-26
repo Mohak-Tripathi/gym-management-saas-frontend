@@ -23,3 +23,25 @@ body {
   box-sizing: border-box !important;
   background-color: #F5FAFB;
 }
+
+/* dropdown custum css  */
+.customSelect .ant-select-selector {
+  background: none !important;
+  border-radius: 66px !important;
+  outline: none !important;
+}
+
+.customSelect .ant-select-selector .ant-select-selection-wrap .ant-select-selection-search input,
+.customSelect .ant-select-selector .ant-select-selection-wrap .ant-select-selection-item {
+  font-size: 12px !important;
+}
+
+/* your css file or inside globals */
+.customSelect.ant-select-focused,
+.customSelect.ant-select-selector:focus,
+.customSelect.ant-select-selector:active {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
