@@ -12,7 +12,7 @@ const managemnet = [
   },
   {
     'title': 'Members',
-    'src': '/management/members',
+    'src': '/management/members/members',
     'activeIcon': '/images/iconly/bold/profile.svg',
     'inactiveIcon': '/images/iconly/light/profile.svg'
   },
@@ -47,10 +47,10 @@ const moreMenu = [
 
 const Header = () => {
 
-  const [pills, setPills] = useState('Dashboard');
+  const [pill, setPill] = useState('Dashboard');
 
   const handlePillClick = (pillName: string) => {
-    setPills(pillName);
+    setPill(pillName);
   }
 
   const handleChange = (value: string) => {
@@ -66,6 +66,7 @@ const Header = () => {
       {/* branhc dropdown */}
       <div className='w-1/3'>
         <Select
+          aria-label="Select Branch"
           defaultValue="lucy"
           style={{ width: 120 }}
           onChange={handleChange}
@@ -78,53 +79,53 @@ const Header = () => {
         />
       </div>
 
-      {/* navigation pills */}
-      <div className='w-1/3'>
+      {/* navigation pill */}
+      <nav className='w-1/3'>
         <ul className='!m-0 flex gap-4'>
           {managemnet.map((record, index) => {
             return (
-              <Link href={record.src} key={index} >
               <li
                 key={index}
-                className={`w-auto h-[32px] px-3 rounded-[66px] border-[1px] border-solid ${pills === record.title ? 'border-[#071726] bg-[#071726] text-white' : 'border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
+                className={`w-auto h-[32px] px-3 rounded-[66px] border-[1px] border-solid ${pill === record.title ? 'border-[#071726] bg-[#071726] text-white' : 'border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
                 onClick={() => handlePillClick(record.title)}
               >
-                <Image
-                  src={pills === record.title ? record.activeIcon : record.inactiveIcon}
-                  height={20}
-                  width={20}
-                  alt={record.title}
-                />
-                <p className='text-[12px] font-[600] !m-0 '>{record.title}</p>
-              </li>
-              </Link>
-            )
-          })}
-        </ul>
-      </div>
-
-      {/* notification, setting, avatar */}
-      <div className='w-1/3 flex justify-end'>
-        <ul className='!m-0 flex gap-4'>
-          {moreMenu.map((record, index) => {
-            return (
-              <Link href={record.src} key={index}>
-                <li
-                  key={index}
-                  className={`w-auto h-[32px] rounded-[66px] border-[1px] border-solid ${pills === record.title ? 'px-3 border-[#071726] bg-[#071726] text-white' : 'px-1 border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
-                  onClick={() => handlePillClick(record.title)}
-                >
+                <Link href={record.src} className='flex gap-2.5 items-center justify-center' >
                   <Image
-                    src={pills === record.title ? record.activeIcon : record.inactiveIcon}
+                    src={pill === record.title ? record.activeIcon : record.inactiveIcon}
                     height={20}
                     width={20}
                     alt={record.title}
                   />
-                  {pills === record.title && (
+                  <p className='text-[12px] font-[600] !m-0 '>{record.title}</p>
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </nav>
+
+      {/* notification, setting, avatar */}
+      <nav className='w-1/3 flex justify-end'>
+        <ul className='!m-0 flex gap-4'>
+          {moreMenu.map((record, index) => {
+            return (
+              <li
+                key={index}
+                className={`w-auto h-[32px] rounded-[66px] border-[1px] border-solid ${pill === record.title ? 'px-3 border-[#071726] bg-[#071726] text-white' : 'px-1 border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
+                onClick={() => handlePillClick(record.title)}
+              >
+                <Link href={record.src} className='flex gap-2.5 items-center justify-center'>
+                  <Image
+                    src={pill === record.title ? record.activeIcon : record.inactiveIcon}
+                    height={20}
+                    width={20}
+                    alt={record.title}
+                  />
+                  {pill === record.title && (
                     <p className='text-[12px] font-[600] !m-0 '>{record.title}</p>
                   )}
-                </li>
-              </Link>
+                </Link>
+              </li>
             )
           })}
           <li>
@@ -133,7 +134,7 @@ const Header = () => {
             </Avatar>
           </li>
         </ul>
-      </div>
+      </nav>
     </header>
   )
 }
