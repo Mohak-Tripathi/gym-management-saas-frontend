@@ -44,7 +44,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
             </Title>
             <Select
                 showSearch
-                style={{ width: 200 }}
+                style={{ width: 200, height: 32 }}
                 placeholder="Search to Select"
                 options={options}
                 optionFilterProp="label"
@@ -59,7 +59,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
                         alt="down Arrow"
                     />
                 }
-                className='!w-[200px] !h-8 !rounded-2xl !border-none !text-[12px] !text-[#677171] f!ont-[400] cursor-pointer'
+                className='!w-[200px] !rounded-2xl !border-none !text-[14px] !text-[#677171] !font-[400] cursor-pointer'
             />
         </div>
     );

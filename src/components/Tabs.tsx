@@ -1,24 +1,11 @@
-import React, { useState } from 'react'
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-const tabs = [
-    {
-        'title': 'Members',
-        'src': '/management/members/members'
-    },
-    {
-        'title': 'Billing History',
-        'src': '/management/members/billing-history'
-    },
-]
+const Tabs = ({ tabs }: { tabs: any[] }) => {
 
-const Tabs = () => {
-    const [tab, settab] = useState('Members');
-
-    const handleTabClick = (tabName: string) => {
-        settab(tabName);
-    }
-
-    const activeIndex = tabs.findIndex(item => item.title === tab)
+    const pathname = usePathname();
+    const currentPath = pathname.split('/')[3];
+    const activeIndex = tabs.findIndex((item: any) => item.title.toLowerCase().replace(/\s+/g, '-') === currentPath)
 
     return (
         <div className="relative w-auto">
@@ -33,14 +20,17 @@ const Tabs = () => {
                 ></div>
 
                 {/* Tabs */}
-                {tabs.map((item, index) => (
+                {tabs.map((item: any, index: number) => (
                     <li
                         key={index}
-                        className={`w-[171px] h-8 rounded-t-xl text-[14px] font-bold flex items-center justify-center cursor-pointer z-10 transition-all duration-200 ${tab === item.title ? 'text-white' : 'text-[#071726]'
-                            }`}
-                        onClick={() => handleTabClick(item.title)}
+                        className={`w-[171px] h-8 rounded-t-xl text-[14px] font-bold flex items-center justify-center cursor-pointer z-10 transition-all duration-200 ${currentPath === item.title.toLowerCase().replace(/\s+/g, '-') ? 'text-white' : 'text-[#071726]'}`}
                     >
-                        {item.title}
+                        <Link
+                            href={item.src}
+                            className='w-full h-full flex items-center justify-center'
+                        >
+                            {item.title}
+                        </Link>
                     </li>
                 ))}
             </ul>
