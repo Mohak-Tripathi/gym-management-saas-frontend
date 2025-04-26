@@ -45,3 +45,8 @@ body {
   outline: none !important;
 }
 
+.customizedFormStyling .ant-form-item{
+  margin-bottom: 0 !important;
+
+
+}
