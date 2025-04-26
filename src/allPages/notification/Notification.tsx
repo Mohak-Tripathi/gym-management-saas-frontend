@@ -69,7 +69,7 @@ const notifications = [
   },
 ]
 
-const Notifications = () => {
+const Notification = () => {
   return (
     <main className='w-full h-[calc(100%-80px)] flex flex-1 flex-col gap-3'>
       <h1 className='!m-0 !font-[600] text-[20px] text-[#071726]'>
@@ -141,4 +141,4 @@ const Notifications = () => {
   )
 }
 
-export default Notifications
+export default Notification

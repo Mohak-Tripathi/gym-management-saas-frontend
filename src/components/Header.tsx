@@ -1,6 +1,7 @@
 import { Avatar, Select } from 'antd'
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import React, { useState } from 'react'
 
 const managemnet = [
@@ -17,8 +18,8 @@ const managemnet = [
     'inactiveIcon': '/images/iconly/light/profile.svg'
   },
   {
-    'title': 'Trainers',
-    'src': '/management/trainers',
+    'title': 'Trainer',
+    'src': '/management/trainer/trainer',
     'activeIcon': '/images/iconly/bold/trainer.svg',
     'inactiveIcon': '/images/iconly/light/trainer.svg'
   },
@@ -33,7 +34,7 @@ const managemnet = [
 const moreMenu = [
   {
     'title': 'Notification',
-    'src': '/management/notifications',
+    'src': '/management/notification',
     'activeIcon': '/images/iconly/bold/bell.svg',
     'inactiveIcon': '/images/iconly/light/bell.svg'
   },
@@ -47,15 +48,12 @@ const moreMenu = [
 
 const Header = () => {
 
-  const [pill, setPill] = useState('Dashboard');
-
-  const handlePillClick = (pillName: string) => {
-    setPill(pillName);
-  }
-
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
+
+  const pathname =  usePathname();
+  const currentPath = pathname.split('/')[2];
 
   return (
     <header className='w-full h-[60px] bg-white rounded-b-xl flex justify-between items-center px-4 '
@@ -86,12 +84,11 @@ const Header = () => {
             return (
               <li
                 key={index}
-                className={`w-auto h-[32px] px-3 rounded-[66px] border-[1px] border-solid ${pill === record.title ? 'border-[#071726] bg-[#071726] text-white' : 'border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
-                onClick={() => handlePillClick(record.title)}
+                className={`w-auto h-[32px] px-3 rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'border-[#071726] bg-[#071726] text-white' : 'border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
               >
                 <Link href={record.src} className='flex gap-2.5 items-center justify-center' >
                   <Image
-                    src={pill === record.title ? record.activeIcon : record.inactiveIcon}
+                    src={currentPath === record.title.toLocaleLowerCase() ? record.activeIcon : record.inactiveIcon}
                     height={20}
                     width={20}
                     alt={record.title}
@@ -111,17 +108,16 @@ const Header = () => {
             return (
               <li
                 key={index}
-                className={`w-auto h-[32px] rounded-[66px] border-[1px] border-solid ${pill === record.title ? 'px-3 border-[#071726] bg-[#071726] text-white' : 'px-1 border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
-                onClick={() => handlePillClick(record.title)}
+                className={`w-auto h-[32px] rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'px-3 border-[#071726] bg-[#071726] text-white' : 'px-1 border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
               >
                 <Link href={record.src} className='flex gap-2.5 items-center justify-center'>
                   <Image
-                    src={pill === record.title ? record.activeIcon : record.inactiveIcon}
+                    src={currentPath === record.title.toLocaleLowerCase() ? record.activeIcon : record.inactiveIcon}
                     height={20}
                     width={20}
                     alt={record.title}
                   />
-                  {pill === record.title && (
+                  {currentPath === record.title.toLocaleLowerCase() && (
                     <p className='text-[12px] font-[600] !m-0 '>{record.title}</p>
                   )}
                 </Link>
