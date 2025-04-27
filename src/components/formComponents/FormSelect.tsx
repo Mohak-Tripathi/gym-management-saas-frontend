@@ -39,28 +39,32 @@ const FormSelect: React.FC<FormSelectProps> = ({
 }) => {
     return (
         <div className='flex flex-col gap-1.5'>
-            <Title className="!text-[#071726] !text-[12px] !font-normal !mb-0">
+            <Title className="!text-[#071726] !text-[14px] !font-normal !mb-0">
                 {label}
             </Title>
-            <Select
-                showSearch
-                style={{ width: 200, height: 32 }}
-                placeholder="Search to Select"
-                options={options}
-                optionFilterProp="label"
-                rootClassName='customSelect'
-                suffixIcon={
-                    <Image
-                        loading="lazy"
-                        src="/images/dropdown.svg"
-                        width={16}
-                        height={16}
-                        className={`w-4`}
-                        alt="down Arrow"
-                    />
-                }
-                className='!w-[200px] !rounded-2xl !border-none !text-[14px] !text-[#677171] !font-[400] cursor-pointer'
-            />
+            <Form.Item
+                name={name}
+                rootClassName='formSelectCustom'>
+                <Select
+                    showSearch
+                    style={{ height: 40 }}
+                    placeholder={placeholder}
+                    options={options}
+                    optionFilterProp="label"
+                    rootClassName='customFormSelect'
+                    suffixIcon={
+                        <Image
+                            loading="lazy"
+                            src="/images/dropdown.svg"
+                            width={16}
+                            height={16}
+                            className={`w-4`}
+                            alt="down Arrow"
+                        />
+                    }
+                    className='!rounded-xl !border-none !text-[14px] !text-[#677171] !font-[400] cursor-pointer'
+                />
+            </Form.Item>
         </div>
     );
 };

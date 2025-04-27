@@ -12,7 +12,7 @@ interface CustomSearchProps {
   setSearchInput?: (value: string) => void;
 }
 
-const FormInputSearch: React.FC<CustomSearchProps> = ({
+const FilterInputSearch: React.FC<CustomSearchProps> = ({
   placeholder = 'Search...',
   onSearch,
   disable = false,
@@ -43,4 +43,4 @@ const FormInputSearch: React.FC<CustomSearchProps> = ({
   );
 };
 
-export default FormInputSearch;
+export default FilterInputSearch;

@@ -49,7 +49,6 @@ const moreMenu = [
 const Header = () => {
 
   const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
   };
 
   const pathname =  usePathname();

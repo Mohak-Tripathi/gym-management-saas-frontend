@@ -1,5 +1,5 @@
 'use client'
-import FormSelect from '@/components/formComponents/FormSelect'
+import FormSelect from '@/components/filterComponents/FilterSelect'
 import { Input, Popover, Table } from 'antd'
 import Image from 'next/image'
 import React, { useState } from 'react'
