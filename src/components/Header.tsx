@@ -39,7 +39,7 @@ const moreMenu = [
   },
   {
     'title': 'Setting',
-    'src': '/management/setting',
+    'src': '/management/settings/account-details/branch',
     'activeIcon': '/images/iconly/bold/setting.svg',
     'inactiveIcon': '/images/iconly/light/setting.svg'
   },
