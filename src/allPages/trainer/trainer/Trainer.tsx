@@ -1,10 +1,11 @@
 'use client'
-import FormInput from '@/components/formComponents/FormInput'
-import FormSelect from '@/components/formComponents/FormSelect'
+import AddTrainer from '@/allPages/add-trainer'
+import FormInput from '@/components/filterComponents/FilterInput'
+import FormSelect from '@/components/filterComponents/FilterSelect'
 import { trainersData } from '@/constant/trainerData'
-import { Popover, Table } from 'antd'
+import { Drawer, Popover, Table } from 'antd'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState } from 'react'
 
 const selectOptions = [
   {
@@ -205,6 +206,16 @@ const Trainer = () => {
     },
   ];
 
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
   return (
     <main className='w-full h-full flex flex-col gap-4'>
       {/* filters */}
@@ -242,7 +253,9 @@ const Trainer = () => {
         </div>
 
         {/* add member btn */}
-        <button className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button 
+        onClick={showDrawer}
+        className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
@@ -278,6 +291,19 @@ const Trainer = () => {
               className="custom-small-table"
             />
           </div>
+
+          <Drawer
+            title="Add New Member"
+            placement='right'
+            width={700}
+            onClose={onClose}
+            open={open}
+          >
+            <AddTrainer
+              onClose={onClose}
+              open={open}
+            />
+          </Drawer>
         </div>
 
       </div>

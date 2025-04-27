@@ -1,10 +1,12 @@
 'use client'
-import FormSelect from '@/components/formComponents/FormSelect'
+import FormSelect from '@/components/filterComponents/FilterSelect'
+import { useRouter } from 'next/navigation';
 import { Drawer, Input, Popover, Table } from 'antd'
 import Image from 'next/image'
 import React, { useState } from 'react'
 import Title from 'antd/es/typography/Title';
 import { membersData } from '@/constant/membersData'
+import AddMember from '@/allPages/add-member'
 
 const selectOptions = [
   {
@@ -18,6 +20,7 @@ const selectOptions = [
 ]
 
 const Memebers = () => {
+  const router = useRouter();
   const threeDotPopover = (recordId: any) => {
     return (
       <>
@@ -170,7 +173,7 @@ const Memebers = () => {
       dataIndex: '',
       key: 'action',
       render: (_: any, record: any, index: number) => (
-        <div className="flex justify-end gap-4 items-center">
+        <div className="flex justify-end gap-4 items-center action-buttons">
 
           <div className="cursor-pointer p-1">
             <Image
@@ -288,16 +291,35 @@ const Memebers = () => {
               pagination={false}
               scroll={{ y: 'calc(100vh - 370px)' }}
               className="custom-small-table"
+              onRow={(record) => {
+                return {
+                  onClick: (e) => {
+                    const target = e.target as HTMLElement;
+
+                    if (target.closest('.action-buttons')) return;
+
+                    // Otherwise, navigate
+                    router.push(`/management/members/123/member-profile`);
+                  },
+                };
+              }}
             />
           </div>
         </div>
 
       </div>
 
-      <Drawer title="Basic Drawer" onClose={onClose} open={open}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+      <Drawer
+        title="Add New Member"
+        placement='right'
+        width={700}
+        onClose={onClose}
+        open={open}
+      >
+        <AddMember
+          onClose={onClose}
+          open={open}
+        />
       </Drawer>
     </main>
   )

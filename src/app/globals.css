@@ -61,3 +61,11 @@ body {
 .custom-small-table .ant-table-thead > tr {
   height: 32px;
 }
+
+/* formComponent */
+/* formSelect */
+.customFormSelect .ant-select-selector {
+  background: none !important;
+  border-radius: 12px !important;
+  outline: none !important;
+}
