@@ -10,7 +10,7 @@ export default function RootLayout({
 }) {
     return (
         <main className="px-4 pb-4 w-full h-full flex flex-col gap-4">
-            <Tabs/>
+            {/* <Tabs/> */}
             {children}
         </main>
     )

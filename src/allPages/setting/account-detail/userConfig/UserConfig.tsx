@@ -1,42 +1,49 @@
 "use client";
 
 import { Table } from "antd";
+
 import React, { useState } from "react";
 import { Radio } from "antd";
 import { gymBranchData } from "@/constant/GymBranchData";
+import { userConfig } from "@/constant/userConfig";
 import Image from "next/image";
 
-const Branch = () => {
+const UserConfig = () => {
   const [value, setValue] = useState(null);
 
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
-      key: "name"
+      key: "name",
     },
     {
-      title: "Owner",
-      dataIndex: "owner",
-      key: "owner",
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Branch",
+      dataIndex: "branch",
+      key: "branch",
     },
     {
       title: "Location",
       dataIndex: "location",
-      key: "location",
+      key: "location"
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (statusType: any) => {
+      title: "Access Type",
+      dataIndex: "accessType",
+      key: "accessType",
+      render: (accessType: any) => {
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${
-              statusType && "bg-[#FFDE8F]"
-            }`}
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center   ${
+              accessType == "super_admin" ? "bg-[#92eef1]" : "bg-[#DEFF8F]"
+            }   `}
           >
-            {statusType}
+            {accessType}
           </p>
         );
       },
@@ -80,7 +87,7 @@ const Branch = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full  gap-6 p-6 bg-white shadow-md rounded-xl">
+    <div className="flex flex-col w-full  gap-6 p-6 shadow-md bg-white rounded-xl">
       <div className="flex items-center justify-between">
         <div className="flex gap-3 items-center justify-between">
           <Image
@@ -88,10 +95,10 @@ const Branch = () => {
             alt="Arrow"
             width={20}
             height={20}
-            
+      
           />
-          <div className="text-[20px] font-bold">
-            Branch Space
+          <div className="font-['Roboto'] text-[20px] font-bold">
+            User Configurations
           </div>
         </div>
 
@@ -101,9 +108,10 @@ const Branch = () => {
             alt="Arrow"
             width={20}
             height={20}
+          
           />
           <div className="font-['Roboto'] text-[12px] font-semibold">
-            Add New Branch
+            Add New User
           </div>
         </div>
       </div>
@@ -111,7 +119,7 @@ const Branch = () => {
       <div className="w-full flex flex-col flex-1">
         <Table
           columns={columns}
-          dataSource={gymBranchData}
+          dataSource={userConfig}
           pagination={false}
           scroll={{ y: "calc(100vh - 370px)" }}
           className="custom-small-table"
@@ -121,4 +129,4 @@ const Branch = () => {
   );
 };
 
-export default Branch;
+export default UserConfig;
