@@ -1,5 +1,5 @@
 'use client'
-import MemberProfileSideBar from '@/components/MemberProfileSideBar';
+import TrainerProfileSideBar from '@/components/TrainerProfileSideBar';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React from 'react'
@@ -19,10 +19,10 @@ export default function RootLayout({
           width={0}
           height={0}
           className='w-5 h-5'
-          onClick={() => router.push(`/management/members/members`)}
+          onClick={() => router.push(`/management/trainer/trainer`)}
         />
         <p className='text-[14px] text-[#071726] font-normal flex items-center gap-1 !m-0'>
-          Member
+          Trainer
           <Image
             src={`/images/Dropdown-2.svg`}
             alt="back"
@@ -31,12 +31,12 @@ export default function RootLayout({
             className='w-5 h-5'
           />
           <span className='text-[14px] text-[#071726] font-bold '>
-            Member Profile Details
+            Trainer Profile Details
           </span>
         </p>
       </div>
       <div className="w-full max-h-[calc(100%-40px)] flex gap-4">
-        <MemberProfileSideBar />
+        <TrainerProfileSideBar />
         {children}
       </div>
     </main>

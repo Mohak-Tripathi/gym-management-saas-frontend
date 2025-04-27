@@ -2,11 +2,6 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import 'antd/dist/reset.css';
-import { ThemeProvider } from "@/context/ThemeContext";
-
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from '../lib/store';
 import ReduxProviders from "@/lib/store/ReduxProvider";
 
 const roboto = Roboto({
@@ -27,8 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${roboto.variable} antialiased`}
+      <body className={`${roboto.variable} antialiased`}
       >
         <ReduxProviders>
           {children}

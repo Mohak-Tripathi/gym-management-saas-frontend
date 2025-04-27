@@ -1,6 +1,6 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
-import { useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { Drawer, Input, Popover, Table } from 'antd'
 import Image from 'next/image'
 import React, { useState } from 'react'
@@ -21,6 +21,7 @@ const selectOptions = [
 
 const Memebers = () => {
   const router = useRouter();
+  
   const threeDotPopover = (recordId: any) => {
     return (
       <>
@@ -299,7 +300,7 @@ const Memebers = () => {
                     if (target.closest('.action-buttons')) return;
 
                     // Otherwise, navigate
-                    router.push(`/management/members/123/member-profile`);
+                    router.push(`/management/members/${record.key}/member-profile`);
                   },
                 };
               }}

@@ -3,13 +3,13 @@ import { Switch } from 'antd'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React from 'react'
-import { membersData } from '@/constant/membersData'
+import { trainersData } from '@/constant/trainerData'
 
-const MemberProfile = () => {
+const TrainerProfile = () => {
 
   const params = useParams();
 
-  const member = membersData.find((member) => member.key === params.memberId);
+  const trainer = trainersData.find((trainer) => trainer.key === params.trainerId);
 
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
@@ -31,28 +31,23 @@ const MemberProfile = () => {
             className='w-20 h-20'
           />
           <div className='flex flex-col gap-1'>
-            <h2 className={`text-[20px] text-[#071726] font-semibold !m-0`}>{member?.name}</h2>
-            <p className={`w-20 h-6 rounded-lg text-[14px] text-[#071726] font-medium flex items-center !m-0`}>{member?.status}</p>
+            <h2 className={`text-[20px] text-[#071726] font-semibold !m-0`}>{trainer?.name}</h2>
+            <p className={`w-20 h-6 rounded-lg text-[14px] text-[#071726] font-medium flex items-center !m-0`}>{trainer?.status}</p>
           </div>
         </div>
 
         <div className='flex gap-6 items-center'>
-          <div className='flex gap-2 items-center'>
-            <h2 className='text-[14px] text-[#071726] font-[500] !m-0 '>Send Payment Remainder</h2>
-            <Switch onChange={onChange} />
-          </div>
 
           <p
-            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${member?.payment === 'Paid' ? 'bg-[#E1F4D5]' : member?.payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
-            // className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center bg-[#F4D5EE]`}
+            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${trainer?.payment === 'Paid' ? 'bg-[#E1F4D5]' : trainer?.payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
           >
             <Image
-              src={member?.payment === 'Paid' ? `/images/Right.svg` : member?.payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
+              src={trainer?.payment === 'Paid' ? `/images/Right.svg` : trainer?.payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
               height={16}
               width={16}
               alt={`calender`}
             />
-            {member?.payment}
+            {trainer?.payment}
           </p>
 
           <div className='flex gap-3 items-center'>
@@ -84,17 +79,17 @@ const MemberProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Gender</h2>
-            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{member?.gender}</p>
+            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{trainer?.gender}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Email Address</h2>
-            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{member?.email}</p>
+            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{trainer?.email}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Mobile No.</h2>
-            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{member?.mobileNumber}</p>
+            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{trainer?.mobileNumber}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
@@ -111,8 +106,8 @@ const MemberProfile = () => {
 
       </div>
 
-       {/* Address */}
-       <div className='w-full flex flex-col gap-2 border-1 border-solid border-[#D9D9D999] p-3 rounded-xl'>
+      {/* Address */}
+      <div className='w-full flex flex-col gap-2 border-1 border-solid border-[#D9D9D999] p-3 rounded-xl'>
         <h2 className='text-[14px] text-[#071726] font-semibold'>Address</h2>
 
         <div className='w-full grid grid-cols-4 gap-4'>
@@ -147,31 +142,24 @@ const MemberProfile = () => {
         <div className='w-full grid grid-cols-4 gap-4'>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Expiry Date</h2>
-            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{member?.expiryDate}</p>
+            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Log in Time</h2>
+            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{trainer?.logInTime}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Joined Date</h2>
-            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{member?.joinedDate}</p>
+            <p className='text-[14px] text-[#071726] font-[400] !m-0'>{trainer?.joinedDate}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Subscription Type</h2>
+            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Work Type</h2>
             <p
-            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${member?.subscriptionType === 'Paid' ? 'bg-[#E1F4D5]' : member?.subscriptionType === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
-          >
-            {member?.subscriptionType}
-          </p>
+              className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${trainer?.workType === 'Paid' ? 'bg-[#E1F4D5]' : trainer?.workType === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
+            >
+              {trainer?.workType}
+            </p>
           </div>
 
-          <div className='flex flex-col gap-1'>
-          <p
-            className={`h-8 w-36 rounded-2xl !m-0 !p-1.5 !text-[12px] !font-[600] !text-[#071726] flex gap-2 justify-center items-center bg-[#EAEEF8] cursor-pointer`}
-          >
-            Upgrade Plan
-          </p>
-          </div>
         </div>
 
       </div>
@@ -180,4 +168,4 @@ const MemberProfile = () => {
   )
 }
 
-export default MemberProfile
+export default TrainerProfile
