@@ -1,16 +1,16 @@
 'use client'
-import { membersData } from '@/constant/membersData'
+import { trainersData } from '@/constant/trainerData'
 import { Divider } from 'antd'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
 import React from 'react'
 
-const MemberProfileSideBar = () => {
+const TrainerProfileSideBar = () => {
   const params = useParams();
   const router = useRouter();
 
   const handleProfileClick = (key: string) => {
-    router.push(`/management/members/${key}/member-profile`);
+    router.push(`/management/trainer/${key}/trainer-profile`);
   }
   return (
     <main className={`w-[330px] h-[100%] flex flex-col gap-3 bg-white rounded-xl p-3 `}
@@ -19,7 +19,7 @@ const MemberProfileSideBar = () => {
       }}
     >
       <div className='flex flex-col gap-4 w-full'>
-        <h2 className='text-[14px] text-[#071726] font-[600] '>All Members</h2>
+        <h2 className='text-[14px] text-[#071726] font-[600] '>All Trainers</h2>
 
         <div className='flex gap-2 border-1 border-solid border-[#0000001A] rounded-2xl px-1.5 py-2'>
           <Image
@@ -39,7 +39,7 @@ const MemberProfileSideBar = () => {
 
       <div className='flex flex-1 flex-col w-full overflow-y-scroll'>
 
-        {membersData.map((member, index) => {
+        {trainersData.map((member, index) => {
           return (
             <div
               key={index}
@@ -85,4 +85,4 @@ const MemberProfileSideBar = () => {
   )
 }
 
-export default MemberProfileSideBar
+export default TrainerProfileSideBar

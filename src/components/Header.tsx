@@ -55,7 +55,7 @@ const Header = () => {
   const currentPath = pathname.split('/')[2];
 
   return (
-    <header className='w-full h-[60px] bg-white rounded-b-xl flex justify-between items-center px-4 '
+    <header className='w-full h-[60px] min-h-[60px] max-h-[60px] bg-white rounded-b-xl flex justify-between items-center px-4 '
       style={{
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
       }}

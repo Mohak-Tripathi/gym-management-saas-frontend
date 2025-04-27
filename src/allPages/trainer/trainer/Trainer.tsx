@@ -5,6 +5,7 @@ import FormSelect from '@/components/filterComponents/FilterSelect'
 import { trainersData } from '@/constant/trainerData'
 import { Drawer, Popover, Table } from 'antd'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 const selectOptions = [
@@ -20,6 +21,8 @@ const selectOptions = [
 
 
 const Trainer = () => {
+  const router = useRouter();
+
   const threeDotPopover = (recordId: any) => {
     return (
       <>
@@ -253,9 +256,9 @@ const Trainer = () => {
         </div>
 
         {/* add member btn */}
-        <button 
-        onClick={showDrawer}
-        className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button
+          onClick={showDrawer}
+          className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
@@ -289,6 +292,18 @@ const Trainer = () => {
               pagination={false}
               scroll={{ y: 'calc(100vh - 370px)' }}
               className="custom-small-table"
+              onRow={(record) => {
+                return {
+                  onClick: (e) => {
+                    const target = e.target as HTMLElement;
+
+                    if (target.closest('.action-buttons')) return;
+
+                    // Otherwise, navigate
+                    router.push(`/management/trainer/${record.key}/trainer-profile`);
+                  },
+                };
+              }}
             />
           </div>
 
