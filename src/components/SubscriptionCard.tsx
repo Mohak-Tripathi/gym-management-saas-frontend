@@ -6,6 +6,8 @@ type SubscriptionCardProps = {
   duration: string;
   actualPrice: number;
   discountedPrice: number;
+  backgroundColor: string;
+  classesCount: string;
 };
 
 const SubscriptionCard = ({
@@ -13,10 +15,17 @@ const SubscriptionCard = ({
   duration,
   actualPrice,
   discountedPrice,
+  backgroundColor = "#F7F7F5",
+  classesCount
 }: SubscriptionCardProps) => {
   return (
-    <div className="w-[430px] px-3.5 py-5 shadow-md flex flex-col gap-4 rounded-xl">
-      <div className="flex items-center justify-between bg-[#F7F7F5] p-2 rounded-xl">
+    <div className="w-[450px] min-h-[180px] px-3.5 py-5 shadow-md flex flex-col gap-4 rounded-xl">
+      {/* <div className="flex items-center justify-between bg-[{backgroundColor}] p-2 rounded-xl"> */}
+
+      <div
+        className="flex items-center justify-between p-2 rounded-xl"
+        style={{ backgroundColor }}
+      >
         <div className="flex gap-3">
           <Image
             src={`/images/Dumbell.svg`}
@@ -40,7 +49,7 @@ const SubscriptionCard = ({
       </div>
       <div className="flex justify-between items-center">
         <div className="text-[#071726] font-['Roboto']  font-semibold text-[14px]">
-          16 class per month
+          {classesCount}
         </div>
 
         <Image
