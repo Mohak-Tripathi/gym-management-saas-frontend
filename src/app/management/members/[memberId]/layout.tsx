@@ -18,7 +18,7 @@ export default function RootLayout({
           alt="back"
           width={0}
           height={0}
-          className='w-5 h-5'
+          className='w-5 h-5 cursor-pointer'
           onClick={() => router.push(`/management/members/members`)}
         />
         <p className='text-[14px] text-[#071726] font-normal flex items-center gap-1 !m-0'>

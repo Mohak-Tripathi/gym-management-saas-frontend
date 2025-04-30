@@ -26,7 +26,7 @@ const Trainer = () => {
   const threeDotPopover = (recordId: any) => {
     return (
       <>
-        <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px]">
+        <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
           {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
           <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
@@ -175,7 +175,7 @@ const Trainer = () => {
       dataIndex: '',
       key: 'action',
       render: (_: any, record: any, index: number) => (
-        <div className="flex justify-end gap-4 items-center">
+        <div className="flex justify-end gap-4 items-center action-buttons">
 
           <div className="cursor-pointer p-1">
             <Image
@@ -184,12 +184,13 @@ const Trainer = () => {
               width={0}
               height={0}
               className='h-5 w-5'
+              onClick={() => handleEdit(record.key)}
             />
           </div>
 
           <Popover
             placement="bottomRight"
-            content={() => threeDotPopover(record.id)}
+            content={() => threeDotPopover(record.key)}
             trigger="click"
             rootClassName="sidebar-popover"
             arrow={false}
@@ -209,15 +210,13 @@ const Trainer = () => {
     },
   ];
 
-  const [open, setOpen] = useState(false);
+  const handleEdit = (trainerId: string) => {
+    router.push(`/management/trainer/trainer/${trainerId}`);
+  }
 
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
+  const handleAddTrainerClick = () => {
+    router.push('/management/trainer/trainer/add');
+  }
 
   return (
     <main className='w-full h-full flex flex-col gap-4'>
@@ -257,7 +256,7 @@ const Trainer = () => {
 
         {/* add member btn */}
         <button
-          onClick={showDrawer}
+          onClick={() => handleAddTrainerClick()}
           className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
@@ -307,8 +306,8 @@ const Trainer = () => {
             />
           </div>
 
-          <Drawer
-            title="Add New Member"
+          {/* <Drawer
+            title={selectedTrainerData?.length > 0 ? "Edit Trainer" : 'Add New Trainer'}
             placement='right'
             width={700}
             onClose={onClose}
@@ -317,8 +316,9 @@ const Trainer = () => {
             <AddTrainer
               onClose={onClose}
               open={open}
+              selectedTrainerData={selectedTrainerData}
             />
-          </Drawer>
+          </Drawer> */}
         </div>
 
       </div>

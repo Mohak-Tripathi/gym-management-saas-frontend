@@ -1,16 +1,20 @@
 'use client'
 import FormInput from '@/components/formComponents/FormInput';
 import FormSelect from '@/components/formComponents/FormSelect';
+import { membersData } from '@/constant/membersData';
 import { Form } from 'antd'
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface AddMemberProps {
     onClose: () => void;
     open: boolean;
-  }
+    selectedMemberData?: any;
+}
 
-const AddMember: React.FC<AddMemberProps> = ({ onClose, open }) => {
+const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData }) => {
     const [form] = Form.useForm();
+    const router = useRouter();
 
     const handleFinish = (values: any) => {
         onClose()
@@ -22,15 +26,19 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open }) => {
 
     useEffect(() => {
         if (!open) {
-          form.resetFields();
+            form.resetFields();
+            router.push('/management/members/members')
         }
-      }, [open]);
+    }, [open, form]);
 
     return (
         <main className='w-full h-full'>
             <Form
                 form={form}
                 onFinish={handleFinish}
+                initialValues={{
+                    memberName: selectedMemberData?.name,
+                }}
                 layout="vertical"
                 className='h-full flex flex-col justify-between gap-4'
             >

@@ -1,5 +1,5 @@
 export const trainersData = [
-  {
+  { 
     key: '1',
     name: 'Mike',
     gender: 'Male',

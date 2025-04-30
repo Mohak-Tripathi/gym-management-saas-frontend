@@ -2,11 +2,13 @@
 import FormInput from '@/components/formComponents/FormInput';
 import FormSelect from '@/components/formComponents/FormSelect';
 import { Form } from 'antd'
+import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface AddTrainerProps {
     onClose: () => void;
     open: boolean;
+    selectedTrainerData?: any;
   }
 
 const expertiseOptions = [
@@ -17,8 +19,9 @@ const expertiseOptions = [
     { value: 'HIIT', label: 'HIIT' },
 ]
 
-const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open }) => {
+const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerData }) => {
     const [form] = Form.useForm();
+    const router = useRouter();
 
     const handleFinish = (values: any) => {
         onClose()
@@ -30,9 +33,24 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open }) => {
 
     useEffect(() => {
         if (!open) {
-          form.resetFields();
+            form.resetFields();
+            router.push('/management/trainer/trainer')
         }
-      }, [open]);
+    }, [open, form]);
+
+    useEffect(() => {
+        if (selectedTrainerData) {
+            form.setFieldsValue({
+                trainerName: selectedTrainerData.name,
+                mobileNumber: selectedTrainerData.mobileNumber,
+                workType: selectedTrainerData.workType,
+                email: selectedTrainerData.email,
+                address: selectedTrainerData.address,
+            });
+        } else {
+            form.resetFields();
+        }
+    }, [selectedTrainerData, form]);
 
     return (
         <main className='w-full h-full'>

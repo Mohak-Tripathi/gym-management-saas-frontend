@@ -1,2 +1,10 @@
-import Trainer from "@/allPages/trainer/trainer";
-export default Trainer;
+import React from 'react'
+
+const page = () => {
+  return (
+    <>
+    </>
+  )
+}
+
+export default page

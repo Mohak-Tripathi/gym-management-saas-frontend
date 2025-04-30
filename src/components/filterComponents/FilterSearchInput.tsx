@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd'
+import { Input } from 'antd'
 import Title from 'antd/es/typography/Title'
 import React from 'react'
 
@@ -17,12 +17,12 @@ interface FormInputProps {
     dropDownMode?: 'multiple' | 'tags' | undefined;
 }
 
-const FormInput: React.FC<FormInputProps> = ({
+const FilterSearchInput: React.FC<FormInputProps> = ({
     label,
     name,
     customClass = '',
     required = false,
-    placeholder = 'Type',
+    placeholder = 'Enter',
     disable = false,
     options,
     initialValue,
@@ -33,21 +33,17 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
     return (
         <div className='flex flex-col gap-1.5'>
-            <Title className="!text-[#071726] !text-[14px] !font-normal !mb-0">
+            <Title className="!text-[#071726] !text-[12px] leading-[100%] !font-semibold !mb-0">
                 {label}
             </Title>
-            <Form.Item
-                name={name}
-            >
-                <Input
-                    placeholder={placeholder}
-                    defaultValue={initialValue}
-                    style={{ height: 40 }}
-                    className=' !rounded-[12px] !bg-transparent !text-[14px] !text-[#071726] !font-[400] cursor-pointer'
-                />
-            </Form.Item>
+            <Input
+                rootClassName='customSearch'
+                placeholder={placeholder}
+                style={{ width: 200, height: 32 }}
+                className='!w-[200px] !rounded-2xl !bg-transparent !text-[14px] !text-[#071726] !font-[400] cursor-pointer'
+            />
         </div>
     )
 }
 
-export default FormInput
+export default FilterSearchInput

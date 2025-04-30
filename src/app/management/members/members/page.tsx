@@ -1,2 +1,10 @@
-import Memebers from "@/allPages/member/members";
-export default Memebers;
+import React from 'react'
+
+const page = () => {
+  return (
+    <>
+    </>
+  )
+}
+
+export default page
