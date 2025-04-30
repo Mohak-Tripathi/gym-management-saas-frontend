@@ -24,6 +24,20 @@ export const trainerTabs = [
     },
 ]
 
+export const revenueTabs = [
+    {
+        'title': 'Members',
+        'src': '/management/revenue/members'
+    },
+    {
+        'title': 'Merchandise',
+        'src': '/management/revenue/merchandise'
+    },
+    {
+        'title': 'Billing History',
+        'src': '/management/revenue/billing-history'
+    }
+ ]
 
 export const settingTabs = [
     {

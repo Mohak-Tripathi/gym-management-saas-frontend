@@ -10,7 +10,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const params = useParams();
-  console.log('params', params);
   
   return (
     <main className={`w-full flex flex-col gap-2 ${params?.trainerId ? 'h-[calc(100%-80px)]' : 'flex-1'} `}>

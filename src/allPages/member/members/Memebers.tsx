@@ -1,12 +1,12 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
-import { useParams, usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Drawer, Input, Popover, Table } from 'antd'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Title from 'antd/es/typography/Title';
 import { membersData } from '@/constant/membersData'
-import AddMember from '@/allPages/add-member'
+import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
 
 const selectOptions = [
   {
@@ -21,11 +21,11 @@ const selectOptions = [
 
 const Memebers = () => {
   const router = useRouter();
-  
+
   const threeDotPopover = (recordId: any) => {
     return (
       <>
-        <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px]">
+        <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
           {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
           <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
@@ -173,38 +173,40 @@ const Memebers = () => {
       title: '',
       dataIndex: '',
       key: 'action',
-      render: (_: any, record: any, index: number) => (
-        <div className="flex justify-end gap-4 items-center action-buttons">
-
-          <div className="cursor-pointer p-1">
-            <Image
-              src="/images/iconly/light/Edit.svg"
-              alt="Edit"
-              width={0}
-              height={0}
-              className='h-5 w-5'
-            />
-          </div>
-
-          <Popover
-            placement="bottomRight"
-            content={() => threeDotPopover(record.id)}
-            trigger="click"
-            rootClassName="sidebar-popover"
-            arrow={false}
-          >
+      render: (_: any, record: any, index: number) => {
+        return (
+          <div className="flex justify-end gap-4 items-center action-buttons">
             <div className="cursor-pointer p-1">
               <Image
-                src="/images/iconly/light/moreCircle.svg"
-                alt="more menu"
+                src="/images/iconly/light/Edit.svg"
+                alt="Edit"
                 width={0}
                 height={0}
                 className='h-5 w-5'
+                onClick={() => handleEdit(record.key)}
               />
             </div>
-          </Popover>
-        </div>
-      ),
+
+            <Popover
+              placement="bottomRight"
+              content={() => threeDotPopover(record.key)}
+              trigger="click"
+              rootClassName="sidebar-popover"
+              arrow={false}
+            >
+              <div className="cursor-pointer p-1">
+                <Image
+                  src="/images/iconly/light/moreCircle.svg"
+                  alt="more menu"
+                  width={0}
+                  height={0}
+                  className='h-5 w-5'
+                />
+              </div>
+            </Popover>
+          </div>
+        )
+      },
     },
   ];
 
@@ -218,23 +220,27 @@ const Memebers = () => {
     setOpen(false);
   };
 
+  const [selectedMemberData, setSelectedMemberData] = useState<any>(null);
+
+  const handleEdit = (memberId: string) => {
+    router.push(`/management/members/members/${memberId}`);
+  }
+
+  const handleAddMemberClick = () => {
+    router.push('/management/members/members/add');
+  }
+
   return (
     <main className='w-full h-full flex flex-col gap-4'>
       {/* filters */}
       <div className='w-full flex justify-between items-end gap-4'>
         {/* inputs */}
         <div className='flex gap-6'>
-          <div className='flex flex-col gap-1.5'>
-            <Title className="!text-[#071726] !text-[12px] !font-normal !mb-0">
-              Search for members
-            </Title>
-            <Input
-              rootClassName='customSearch'
-              placeholder="Search"
-              style={{ width: 200, height: 32 }}
-              className='!w-[200px] !rounded-2xl !bg-transparent !text-[14px] !text-[#071726] !font-[400] cursor-pointer'
-            />
-          </div>
+
+          <FilterSearchInput
+            label='Search for members'
+            name='searchMember'
+          />
 
           <FormSelect
             label='Status'
@@ -257,7 +263,7 @@ const Memebers = () => {
 
         {/* add member btn */}
         <button
-          onClick={showDrawer}
+          onClick={() => handleAddMemberClick()}
           className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
@@ -310,7 +316,7 @@ const Memebers = () => {
 
       </div>
 
-      <Drawer
+      {/* <Drawer
         title="Add New Member"
         placement='right'
         width={700}
@@ -320,8 +326,9 @@ const Memebers = () => {
         <AddMember
           onClose={onClose}
           open={open}
+          selectedMemberData={selectedMemberData}
         />
-      </Drawer>
+      </Drawer> */}
     </main>
   )
 }

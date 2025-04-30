@@ -1,4 +1,4 @@
-import { Avatar, Select } from 'antd'
+import { Avatar, Popover, Select } from 'antd'
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -25,7 +25,7 @@ const managemnet = [
   },
   {
     'title': 'Revenue',
-    'src': '/management/revenue',
+    'src': '/management/revenue/members',
     'activeIcon': '/images/iconly/bold/revenue.svg',
     'inactiveIcon': '/images/iconly/light/revenue.svg'
   },
@@ -39,7 +39,7 @@ const moreMenu = [
     'inactiveIcon': '/images/iconly/light/bell.svg'
   },
   {
-    'title': 'Setting',
+    'title': 'Settings',
     'src': '/management/settings/account-details/branch',
     'activeIcon': '/images/iconly/bold/setting.svg',
     'inactiveIcon': '/images/iconly/light/setting.svg'
@@ -51,8 +51,43 @@ const Header = () => {
   const handleChange = (value: string) => {
   };
 
-  const pathname =  usePathname();
+  const pathname = usePathname();
   const currentPath = pathname.split('/')[2];
+
+  const avatarPopover = () => {
+      return (
+        <>
+          <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border">
+            {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
+              <div className="flex items-center gap-2 text-[14px] leading-[20px]">
+                <Image
+                  src="/images/iconly/light/lock.svg"
+                  alt="Invoice"
+                  width={20}
+                  height={20}
+                />
+                <div>Change Password</div>
+              </div>
+            </div>
+            {/* </Link> */}
+  
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
+              <div className="flex items-center gap-2 text-[14px] leading-[20px]">
+                <Image
+                  src="/images/iconly/light/logout.svg"
+                  alt="Email"
+                  width={20}
+                  height={20}
+                />
+                <div>Logout</div>
+              </div>
+            </div>
+  
+          </div>
+        </>
+      )
+    }
 
   return (
     <header className='w-full h-[60px] min-h-[60px] max-h-[60px] bg-white rounded-b-xl flex justify-between items-center px-4 '
@@ -92,7 +127,7 @@ const Header = () => {
                     width={20}
                     alt={record.title}
                   />
-                  <p className='text-[12px] font-[600] !m-0 '>{record.title}</p>
+                  <p className='text-[12px] leading-[100%] font-[600] !m-0 '>{record.title}</p>
                 </Link>
               </li>
             )
@@ -117,16 +152,24 @@ const Header = () => {
                     alt={record.title}
                   />
                   {currentPath === record.title.toLocaleLowerCase() && (
-                    <p className='text-[12px] font-[600] !m-0 '>{record.title}</p>
+                    <p className='text-[12px] leading-[100%] font-[600] !m-0 '>{record.title}</p>
                   )}
                 </Link>
               </li>
             )
           })}
           <li>
-            <Avatar style={{ backgroundColor: '#071726', verticalAlign: 'middle' }} size="default">
-              U
-            </Avatar>
+            <Popover
+              placement="bottomRight"
+              content={() => avatarPopover()}
+              trigger="click"
+              rootClassName="sidebar-popover"
+              arrow={false}
+            >
+              <Avatar className='cursor-pointer' style={{ backgroundColor: '#071726', verticalAlign: 'middle' }} size="default">
+                U
+              </Avatar>
+            </Popover>
           </li>
         </ul>
       </nav>
