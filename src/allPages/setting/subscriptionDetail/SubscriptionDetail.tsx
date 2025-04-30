@@ -1,14 +1,29 @@
+"use client"
 import SubscriptionCard from "@/components/SubscriptionCard";
+import { Drawer } from "antd";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
+import AddSubscriptionCard from "../add-subscription-card";
 
 const SubscriptionDetail = () => {
+
+  const [open, setOpen] = useState(false);
+
+  const showDrawer = () => {
+    setOpen(true);
+  };
+
+  const onClose = () => {
+    setOpen(false);
+  };
+
+
   return (
     // <div>
     //   <SubscriptionCard planTitle="Basic Plan" duration="Monthly" actualPrice="32500" discountedPrice="2850"/>
     // </div>
 
-    <div className="grid grid-cols-3 gap-6">
+    <div className="grid grid-cols-3 gap-6 mt-4">
       <SubscriptionCard
         planTitle="Basic Plan"
         duration="Monthly" // if "Monthly" means 1 month
@@ -36,6 +51,11 @@ const SubscriptionDetail = () => {
 
       <div className="min-w-[300px] min-h-[180px] w-[450px] px-3.5 py-5 flex-col shadow-md flex gap-3 justify-center items-center rounded-xl">
         {/* <div className="flex items-center justify-between bg-[{backgroundColor}] p-2 rounded-xl"> */}
+        <div 
+         onClick={showDrawer}
+         className='border-none cursor-pointer flex flex-col justify-center items-center gap-2'>
+         
+        
         <Image
             src={`/images/Add Circle.svg`}
             width={0}
@@ -44,7 +64,22 @@ const SubscriptionDetail = () => {
             className="w-6 h-6 rounded-full object-cover"
           />
           <div className="font-['Roboto'] font-semibold text-[14px]">Add New Plan</div>
+          </div>
       </div>
+
+
+      <Drawer
+        title="Add New Subscription Detail"
+        placement='right'
+        width={700}
+        onClose={onClose}
+        open={open}
+      >
+        <AddSubscriptionCard
+          onClose={onClose}
+          open={open}
+        />
+      </Drawer>
     </div>
   );
 };
