@@ -36,5 +36,20 @@ export const revenueTabs = [
     {
         'title': 'Billing History',
         'src': '/management/revenue/billing-history'
+    }
+ ]
+
+export const settingTabs = [
+    {
+        'title': 'Account Details',
+        'src': '/management/trainer/trainer'
+    },
+    {
+        'title': 'Subscription Details',
+        'src': '/management/trainer/class-scheduling'
+    },
+    {
+        'title': 'Payment Details',
+        'src': '/management/trainer/billing-history'
     },
 ]

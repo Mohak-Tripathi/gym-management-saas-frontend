@@ -1,12 +1,23 @@
-
 "use client";
 
 import { Image } from "antd";
 import React, { useState } from "react";
 import { Radio } from "antd";
+import FormInput from "@/components/formComponents/FormInput";
+import { Form } from "antd";
 
 const BranchId = () => {
   const [value, setValue] = useState(null);
+  const [form] = Form.useForm();
+
+  const handleFinish = (values: any) => {
+    console.log("Form Submitted");
+  };
+
+  const handleCancel = () => {
+    console.log("Form Submitted");
+  };
+
   return (
     <div className="flex flex-col gap-6 shadow-md p-6 w-full">
       <div className="flex gap-4 items-center">
@@ -34,10 +45,30 @@ const BranchId = () => {
             You can add multiple branches as your need and assigned the person
           </div>
         </div>
-        <div>{/* //form */}
+        <div className="mt-4">
+          {/* //form */}
 
-          
+          <Form
+            form={form}
+            onFinish={handleFinish}
+            layout="vertical"
+            className="h-full flex flex-col justify-between gap-4"
+          >
+            {/* user data */}
+            <div className="flex flex-col">
+              <div className="w-full grid grid-cols-2 gap-x-4">
+                <FormInput label="User name" name="username" />
+                <FormInput label="Role" name="role" />
+                
+                <FormInput label="Branch" name="branch" />
 
+                <FormInput label="Location" name="location" />
+
+              </div>
+            </div>
+
+            {/* buttons */}
+          </Form>
         </div>
       </div>
       <div className="flex flex-col gap-10">
@@ -67,14 +98,15 @@ const BranchId = () => {
           <button className="px-12 py-3 bg-[#EAEEF8] rounded-2xl">
             Cancel{" "}
           </button>
-          <button className="px-12 py-3 bg-black rounded-xl !text-white">
+          <button
+            type="submit"
+            className="px-12 py-3 bg-black rounded-xl !text-white"
+            onClick={() => form.submit()}
+          >
             Save{" "}
           </button>
         </div>
       </div>
-
-
-
 
       <div></div>
     </div>
@@ -82,4 +114,3 @@ const BranchId = () => {
 };
 
 export default BranchId;
-

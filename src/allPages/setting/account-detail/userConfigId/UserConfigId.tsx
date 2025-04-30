@@ -3,9 +3,22 @@
 import { Image } from "antd";
 import React, { useState } from "react";
 import { Radio } from "antd";
+import FormInput from "@/components/formComponents/FormInput";
+import { Form } from "antd";
 
 const UserConfigId = () => {
   const [value, setValue] = useState(null);
+
+  const [form] = Form.useForm();
+
+  const handleFinish = (values: any) => {
+    console.log("Form Submitted");
+  };
+
+  const handleCancel = () => {
+    console.log("Form Submitted");
+  };
+
   return (
     <div className="flex flex-col gap-6 shadow-md p-6 w-full">
       <div className="flex gap-4 items-center">
@@ -33,7 +46,31 @@ const UserConfigId = () => {
           You can add multiple users as needed and assign each person accordingly.
           </div>
         </div>
-        <div>{/* //form */}</div>
+ 
+
+        <div className="mt-4">
+          {/* //form */}
+
+          <Form
+            form={form}
+            onFinish={handleFinish}
+            layout="vertical"
+            className="h-full flex flex-col justify-between gap-4"
+          >
+            {/* user data */}
+            <div className="flex flex-col">
+              <div className="w-full grid grid-cols-2 gap-x-4">
+                <FormInput label="Branch name" name="branchName" />
+
+                <FormInput label="Location" name="location" />
+
+                <FormInput label="Description" name="description" />
+              </div>
+            </div>
+
+            {/* buttons */}
+          </Form>
+        </div>
       </div>
       <div className="flex flex-col gap-10">
         <div className="flex flex-col gap-6">

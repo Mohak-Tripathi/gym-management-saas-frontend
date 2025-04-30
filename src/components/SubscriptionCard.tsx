@@ -1,9 +1,67 @@
-import React from 'react'
+import Image from "next/image";
+import React from "react";
 
-const SubscriptionCard = () => {
+type SubscriptionCardProps = {
+  planTitle: string;
+  duration: string;
+  actualPrice: number;
+  discountedPrice: number;
+  backgroundColor: string;
+  classesCount: string;
+};
+
+const SubscriptionCard = ({
+  planTitle,
+  duration,
+  actualPrice,
+  discountedPrice,
+  backgroundColor = "#F7F7F5",
+  classesCount
+}: SubscriptionCardProps) => {
   return (
-    <div>SubscriptionCard</div>
-  )
-}
+    <div className="w-[450px] min-h-[180px] px-3.5 py-5 shadow-md flex flex-col gap-4 rounded-xl">
+      {/* <div className="flex items-center justify-between bg-[{backgroundColor}] p-2 rounded-xl"> */}
 
-export default SubscriptionCard
+      <div
+        className="flex items-center justify-between p-2 rounded-xl"
+        style={{ backgroundColor }}
+      >
+        <div className="flex gap-3">
+          <Image
+            src={`/images/Dumbell.svg`}
+            width={0}
+            height={0}
+            alt="Profile"
+            className="w-6 h-6 rounded-full object-cover"
+          />
+
+          <div>{planTitle}</div>
+        </div>
+        <div className="font-['Roboto']  font-semibold text-[14px] text-[#86867D]/60">
+          {duration}
+        </div>
+      </div>
+      <div className="flex items-center justify-start gap-2">
+        <div className="font-['Roboto'] font-bold text-3xl "> ₹{discountedPrice}</div>
+        <div className="font-['Roboto'] font-bold text-2xl text-[#07172699]/60 line-through">
+          ₹{actualPrice}
+        </div>
+      </div>
+      <div className="flex justify-between items-center">
+        <div className="text-[#071726] font-['Roboto']  font-semibold text-[14px]">
+          {classesCount}
+        </div>
+
+        <Image
+          src={`/images/iconly/light/Edit.svg`}
+          width={0}
+          height={0}
+          alt="Profile"
+          className="w-6 h-6 rounded-full object-cover"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default SubscriptionCard;
