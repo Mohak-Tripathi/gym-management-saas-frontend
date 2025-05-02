@@ -44,7 +44,6 @@ const MemberProfile = () => {
 
           <p
             className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${member?.payment === 'Paid' ? 'bg-[#E1F4D5]' : member?.payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
-            // className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center bg-[#F4D5EE]`}
           >
             <Image
               src={member?.payment === 'Paid' ? `/images/Right.svg` : member?.payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
@@ -61,7 +60,7 @@ const MemberProfile = () => {
               alt="Edit"
               width={0}
               height={0}
-              className='h-5 w-5 cursor-pointer'
+              className='h-[20px] w-[20px] cursor-pointer'
             />
 
             <Image
@@ -69,7 +68,7 @@ const MemberProfile = () => {
               alt="more menu"
               width={0}
               height={0}
-              className='h-5 w-5 cursor-pointer'
+              className='h-[20px] w-[20px] cursor-pointer'
             />
           </div>
 

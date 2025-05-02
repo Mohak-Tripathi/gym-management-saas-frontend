@@ -1,13 +1,12 @@
 "use client";
-
-import { Image } from "antd";
 import React, { useState } from "react";
 import { Radio } from "antd";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form } from "antd";
+import Image from "next/image";
+import Link from "next/link";
 
 const BranchId = () => {
-  const [value, setValue] = useState(null);
   const [form] = Form.useForm();
 
   const handleFinish = (values: any) => {
@@ -15,101 +14,88 @@ const BranchId = () => {
   };
 
   const handleCancel = () => {
+
     console.log("Form Submitted");
   };
 
   return (
-    <div className="flex flex-col gap-6 shadow-md p-6 w-full">
-      <div className="flex gap-4 items-center">
-        <div>
-          <Image
-            // src={`/images/iconly/light/SettingLightArrow.png`}
-            src={`/images/ph_buildings.svg`}
-            alt="Arrow"
-            width={20}
-            height={20}
-            preview={false}
-          />
-        </div>
-        <div className="font-['Roboto] text-xl font-bold">
-          {" "}
-          Create New Branch{" "}
-        </div>
-      </div>
-      <div>
-        <div className="flex flex-col gap-2">
-          <div className="font-['Roboto] text-[14px] font-semibold">
-            Branch{" "}
-          </div>
-          <div className="font-['Roboto] text-[14px] font-normal text-[#07172699]/60">
-            You can add multiple branches as your need and assigned the person
-          </div>
-        </div>
-        <div className="mt-4">
-          {/* //form */}
-
-          <Form
-            form={form}
-            onFinish={handleFinish}
-            layout="vertical"
-            className="h-full flex flex-col justify-between gap-4"
-          >
-            {/* user data */}
-            <div className="flex flex-col">
-              <div className="w-full grid grid-cols-2 gap-x-4">
-                <FormInput label="User name" name="username" />
-                <FormInput label="Role" name="role" />
-                
-                <FormInput label="Branch" name="branch" />
-
-                <FormInput label="Location" name="location" />
-
+    <main className="flex flex-col w-full h-full gap-6 p-3 bg-white rounded-xl"
+      style={{
+        boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+      }}
+    >
+      <Form className="w-full h-full flex flex-col gap-6 justify-between" form={form} onFinish={handleFinish}>
+        <div className="w-full flex flex-col gap-4">
+          <div className="bg-[#F4F7FC] rounded-lg px-2 py-1 flex items-center justify-between">
+            <div className="flex gap-2.5 items-center justify-between">
+              <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
+                <Image
+                  src={`/images/iconly/light/buildings.svg`}
+                  alt="Arrow"
+                  width={20}
+                  height={20}
+                />
+              </div>
+              <div className="text-[20px] font-bold text-[#071726]">
+                Create New Branch
               </div>
             </div>
+          </div>
 
-            {/* buttons */}
-          </Form>
-        </div>
-      </div>
-      <div className="flex flex-col gap-10">
-        <div className="flex flex-col gap-6">
-          <div className="flex gap-2">
-            <div className="font-['Roboto] text-[14px] font-semibold">
-              Select Branch
+          <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">Branch</h2>
+              <p className="text-[14px] font-normal text-[#07172699] leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
             </div>
-            <div className="font-['Roboto] text-[14px] font-[400] ">
-              Would you like to create this branch primary branch?
+            <div className="grid grid-cols-2 gap-6">
+              <FormInput
+                label="Branch Name"
+                name="branchName"
+              />
+              <FormInput
+                label="Location"
+                name="location"
+              />
+              <div className="w-full col-span-2">
+                <FormInput
+                  label="Description"
+                  name="description"
+                />
+              </div>
             </div>
           </div>
-          {/* <div>Yes</div>
-          <div>No</div> */}
 
-          <Radio.Group
-            onChange={(e) => setValue(e.target.value)}
-            value={value}
-            style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}
-          >
-            <Radio value="yes">Yes</Radio>
-            <Radio value="no">No</Radio>
-          </Radio.Group>
+          <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">Branch</h2>
+              <p className="text-[14px] font-normal text-[#07172699] leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
+            </div>
+            <Radio.Group className="w-full !flex flex-col gap-4">
+              <Radio value={'yes'} className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">Yes</Radio>
+              <Radio value={'no'} className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">No</Radio>
+            </Radio.Group>
+          </div>
         </div>
 
-        <div className="flex gap-4">
-          <button className="px-12 py-3 bg-[#EAEEF8] rounded-2xl">
-            Cancel{" "}
-          </button>
+        {/* buttons */}
+        <div className='flex gap-4'>
+          <Link href='/management/settings/account-details/branch'>
+            <button
+              type='button'
+              className=' w-[147px] h-10 !bg-[#EAEEF8] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
+            >
+              Cancel
+            </button>
+          </Link>
           <button
-            type="submit"
-            className="px-12 py-3 bg-black rounded-xl !text-white"
-            onClick={() => form.submit()}
+            type='submit'
+            className=' w-[147px] h-10 !bg-[#071726] !text-white rounded-lg px-4 py-2 cursor-pointer'
           >
-            Save{" "}
+            Add Member
           </button>
         </div>
-      </div>
-
-      <div></div>
-    </div>
+      </Form>
+    </main>
   );
 };
 

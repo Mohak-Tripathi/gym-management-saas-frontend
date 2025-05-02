@@ -175,14 +175,14 @@ const Memebers = () => {
       key: 'action',
       render: (_: any, record: any, index: number) => {
         return (
-          <div className="flex justify-end gap-4 items-center action-buttons">
+          <div className="flex justify-end gap-3 items-center action-buttons">
             <div className="cursor-pointer p-1">
               <Image
                 src="/images/iconly/light/Edit.svg"
                 alt="Edit"
                 width={0}
                 height={0}
-                className='h-5 w-5'
+                className="h-[20px] w-[20px]"
                 onClick={() => handleEdit(record.key)}
               />
             </div>
@@ -200,7 +200,7 @@ const Memebers = () => {
                   alt="more menu"
                   width={0}
                   height={0}
-                  className='h-5 w-5'
+                  className="h-[20px] w-[20px]"
                 />
               </div>
             </Popover>
@@ -315,20 +315,6 @@ const Memebers = () => {
         </div>
 
       </div>
-
-      {/* <Drawer
-        title="Add New Member"
-        placement='right'
-        width={700}
-        onClose={onClose}
-        open={open}
-      >
-        <AddMember
-          onClose={onClose}
-          open={open}
-          selectedMemberData={selectedMemberData}
-        />
-      </Drawer> */}
     </main>
   )
 }

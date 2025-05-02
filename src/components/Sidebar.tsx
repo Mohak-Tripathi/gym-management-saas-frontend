@@ -1,146 +1,95 @@
-import { Image } from "antd";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 const Sidebar = () => {
 
-    const ActiveRoute = true
+  const SidebarDetails = [
+    {
+      "imgSrc": "/images/iconly/light/buildings.svg",
+      'title': "Branch Space",
+      'tabName': 'branch',
+      "description": "multiple branches as you need",
+    },
+    {
+      "imgSrc": "/images/iconly/light/3User.svg",
+      'title': "User Configurations",
+      'tabName': 'user-configurations',
+      "description": "User Information",
+    },
+    {
+      "imgSrc": "/images/iconly/light/TimeCircle.svg",
+      'title': "Send Payment Remainders",
+      'tabName': 'payment',
+      "description": "At customisable Intervals",
+    },
+    {
+      "imgSrc": "/images/iconly/light/coins.svg",
+      'title': "Change Late Fees",
+      'tabName': 'fees',
+      "description": "Percentage or Flat Rate Fees",
+    },
+    {
+      "imgSrc": "/images/iconly/light/language.svg",
+      'title': "Currency & Language",
+      'tabName': 'language',
+      "description": "INR. English",
+    },
+    {
+      "imgSrc": "/images/iconly/light/notes.svg",
+      'title': "Invoice Attachments",
+      'tabName': 'invoice',
+      "description": "Attach PDF Copy to Emails",
+    }
 
-const SidebarDetails = [{
-    "titleImageLight": "/images/ph_buildings.svg",
-    "titleImageDark": "/images/ph_buildings.svg",
-    title: "Branch Space",
-    "description": "multiple branches as you need",
-    "action": "Set",
-    "actionImageLight": "/images/iconly/light/SettingLightArrow.png",
-    "actionImageDark": "/images/iconly/light/SettingLightArrow.png"
+  ]
 
-
-}, 
-{
-  
-    "titleImageLight": "/images/iconly/light/3User.svg",
-    "titleImageDark": "/images/ph_buildings.svg",
-    title: "User Configurations",
-    "description": "User Information",
-    "action": "Set",
-    "actionImageLight": "/images/iconly/light/SettingLightArrow.png",
-    "actionImageDark": "/images/iconly/light/SettingLightArrow.png"
-
-
-},
-{
-    "titleImageLight": "/images/iconly/light/Time Circle.svg",
-    "titleImageDark": "/images/ph_buildings.svg",
-    title: "Send Payment Remainders",
-    "description": "At customisable Intervals",
-    "action": "Off",
-    "actionImageLight": "/images/iconly/light/SettingLightArrow.png",
-    "actionImageDark": "/images/iconly/light/SettingLightArrow.png"
-
-
-},
-{
-    
-    "titleImageLight": "/images/iconly/light/Time Circle.svg",
-    "titleImageDark": "/images/ph_buildings.svg",
-    title: "Change Late Fees",
-    "description": "Percentage or Flat Rate Fees",
-    "action": "0.0%",
-    "actionImageLight": "/images/iconly/light/SettingLightArrow.png",
-    "actionImageDark": "/images/iconly/light/SettingLightArrow.png"
-
-
-},
-{
-    "titleImageLight": "/images/iconly/light/Time Circle.svg",
-    "titleImageDark": "/images/ph_buildings.svg",
-    title: "Currency & Language",
-    "description": "INR. English",
-    "action": "0.0%",
-    "actionImageLight": "/images/iconly/light/SettingLightArrow.png",
-    "actionImageDark": "/images/iconly/light/SettingLightArrow.png"
-
-
-},
-{
-    "titleImageLight": "/images/iconly/light/Time Circle.svg",
-    "titleImageDark": "/images/ph_buildings.svg",
-    title: "Invoice Attachments",
-    "description": "Attach PDF Copy to Emails",
-    "action": "Set",
-    "actionImageLight": "/images/iconly/light/SettingLightArrow.png",
-    "actionImageDark": "/images/iconly/light/SettingLightArrow.png"
-
-
-}
-]
+  const pathName = usePathname();
+  const currentTab = pathName.split('/')[4];
 
   return (
     <div className="flex flex-col gap-6">
 
-        {SidebarDetails.map((sidebar, index)=>{
-            return (
-                //text-white bg-black
-                <div key={index}  className="p-4 flex items-center justify-between  rounded-xl shadow-md">
-                <div className="flex gap-3">
-                    <div className="flex items-center justify-center">
+      {SidebarDetails.map((sidebar, index) => {
+        return (
+          <div key={index} className={`bg-white p-2 flex items-center justify-center rounded-xl cursor-pointer`}
+            style={{ boxShadow: '0px 4px 8px 0px rgba(193, 224, 255, 0.25)' }}
+          >
+            <div className={`${currentTab === sidebar.tabName ? 'bg-[#071726] border-[#071726]' : 'bg-white border-[#130F261A]'} w-full border  rounded-lg p-2 flex items-center justify-between`}>
+              <div className="flex gap-3">
+                <div className="h-[36px] w-[36px] rounded-full bg-white border border-[#130F261A] flex items-center justify-center">
                   <Image
-        
-                    // src={`/images/ph_buildings.svg`}
-                    src={sidebar.titleImageLight}
+                    loading="lazy"
+                    src={sidebar.imgSrc}
                     alt={sidebar.title}
-                    className="bg-white rounded-full "
-                    // className="w-[302px] h-24"
-                    width={25}
-                    height={25}
-                    preview={false} 
+                    className="bg-white rounded-full"
+                    width={24}
+                    height={24}
                   />
-                  </div>
-        
-                  <div className="flex flex-col gap-1">
-                    <div className="font-['Roboto'] text-[14px] font-[600px]">
-                      {sidebar.title}
-                    </div>
-                    <div className="font-['Roboto'] text-[12px] font-[400px]">
-                      {" "}
-                  
-                      {sidebar.description}
-                    </div>
-                  </div>
                 </div>
-                <div className="flex gap-2 items-center justify-start">
-                  <div className="font-['Roboto'] text-[14px] font-[600px]">{sidebar.action}</div>
-                  <Image
-                    // src={`/images/iconly/light/SettingLightArrow.png`}
-                    src={sidebar.actionImageLight}
-                    alt="Arrow"
-                    width={10}
-                    height={10}
-                    preview={false} 
-                  />
+
+                <div className="flex flex-col justify-between gap-1">
+                  <div className={`text-[14px] font-semibold ${currentTab === sidebar.tabName ? 'text-white' : 'text-[#071726]' }`}>
+                    {sidebar.title}
+                  </div>
+                  <div className={`text-[12px] font-normal ${currentTab === sidebar.tabName ? 'text-[#FFFFFF99]' : 'text-[#07172699]' }`}>
+                    {sidebar.description}
+                  </div>
                 </div>
               </div>
-            )
-        })}
-    
-{/* 
-      <div className="p-2 flex items-center justify-between border-2">
-        <div className="flex">
-          <Image
-            src="/images/SettingAccountDetailsBuilding.svg"
-            alt="imageBuilding"
-            className="w-[302px] h-24"
-            width={0}
-            height={0}
-          />
-
-          <div className="flex flex-col">
-            <div>Branch Space</div>
-            <div> multiple branches as per your need</div>
+              <div className="flex gap-2 items-center justify-start">
+                <Image
+                  loading="lazy"
+                  src={currentTab === sidebar.tabName ? '/images/iconly/bold/arrowWhite.svg' : '/images/iconly/light/arrowBlack.svg'}
+                  alt="Arrow"
+                  width={12}
+                  height={12}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-        <div> Set </div>
-      </div> */}
+        )
+      })}
 
     </div>
   );

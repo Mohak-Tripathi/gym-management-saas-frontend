@@ -42,14 +42,18 @@ export const revenueTabs = [
 export const settingTabs = [
     {
         'title': 'Account Details',
-        'src': '/management/trainer/trainer'
+        'src': '/management/settings/account-details/branch'
     },
     {
         'title': 'Subscription Details',
-        'src': '/management/trainer/class-scheduling'
+        'src': '/management/settings/subscription-details'
     },
     {
         'title': 'Payment Details',
-        'src': '/management/trainer/billing-history'
+        'src': '/management/settings/payment-details'
+    },
+    {
+        'title': 'Community Feed',
+        'src': '/management/settings/community-feed'
     },
 ]

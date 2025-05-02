@@ -84,7 +84,7 @@ const BillingHistory = () => {
       dataIndex: '',
       key: 'action',
       render: (_: any, record: any, index: number) => (
-        <div className="flex justify-end gap-4 items-center">
+        <div className="flex justify-end gap-3 items-center">
 
           <div className="cursor-pointer p-1">
             <Image
@@ -92,7 +92,7 @@ const BillingHistory = () => {
               alt="Edit"
               width={0}
               height={0}
-              className='h-5 w-5'
+              className="h-[20px] w-[20px]"
             />
           </div>
 
@@ -102,7 +102,7 @@ const BillingHistory = () => {
               alt="more menu"
               width={0}
               height={0}
-              className='h-5 w-5'
+              className="h-[20px] w-[20px]"
             />
           </div>
         </div>

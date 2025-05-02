@@ -1,14 +1,12 @@
 "use client";
 
 import { Table } from "antd";
-import React, { useState } from "react";
-import { Radio } from "antd";
+import React from "react";
 import { gymBranchData } from "@/constant/GymBranchData";
 import Image from "next/image";
+import Link from "next/link";
 
 const Branch = () => {
-  const [value, setValue] = useState(null);
-
   const columns = [
     {
       title: "Name",
@@ -32,9 +30,8 @@ const Branch = () => {
       render: (statusType: any) => {
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${
-              statusType && "bg-[#FFDE8F]"
-            }`}
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${statusType && "bg-[#FFDE8F]"
+              }`}
           >
             {statusType}
           </p>
@@ -53,59 +50,56 @@ const Branch = () => {
               alt="Edit"
               width={0}
               height={0}
-              className="h-5 w-5"
+              className="h-[20px] w-[20px]"
             />
           </div>
-          {/* 
-          <Popover
-            placement="bottomRight"
-            content={() => threeDotPopover(record.id)}
-            trigger="click"
-            rootClassName="sidebar-popover"
-            arrow={false}
-          > */}
           <div className="cursor-pointer p-1">
             <Image
               src="/images/iconly/light/Delete-1.svg"
               alt="delete"
               width={0}
               height={0}
-              className="h-5 w-5"
+              className="h-[20px] w-[20px]"
             />
           </div>
-          {/* </Popover> */}
         </div>
       ),
     },
   ];
 
   return (
-    <div className="flex flex-col w-full  gap-6 p-6 bg-white shadow-md rounded-xl">
-      <div className="flex items-center justify-between">
-        <div className="flex gap-3 items-center justify-between">
-          <Image
-            src={`/images/ph_buildings.svg`}
-            alt="Arrow"
-            width={20}
-            height={20}
-            
-          />
-          <div className="text-[20px] font-bold">
+    <div className="flex flex-col w-full gap-6 p-3 bg-white rounded-xl"
+      style={{
+        boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+      }}
+    >
+      <div className="bg-[#F4F7FC] rounded-lg px-2 py-1 flex items-center justify-between">
+        <div className="flex gap-2.5 items-center justify-between">
+          <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
+            <Image
+              src={`/images/iconly/light/buildings.svg`}
+              alt="Arrow"
+              width={20}
+              height={20}
+            />
+          </div>
+          <div className="text-[20px] font-bold text-[#071726]">
             Branch Space
           </div>
         </div>
-
-        <div className="flex gap-2 items-center justify-between">
-          <Image
-            src={`/images/Add Circle.svg`}
-            alt="Arrow"
-            width={20}
-            height={20}
-          />
-          <div className="font-['Roboto'] text-[12px] font-semibold">
-            Add New Branch
+        <Link href="/management/settings/account-details/branch/new">
+          <div className="w-[168px] h-[28px] rounded-[66px] bg-white py-1.5 pl-3 pr-2 flex gap-2.5 items-center justify-center">
+            <Image
+              src={`/images/Add Circle.svg`}
+              alt="Arrow"
+              width={16}
+              height={16}
+            />
+            <div className="text-[12px] font-semibold text-[#071726] leading-[100%]">
+              Add New Branch
+            </div>
           </div>
-        </div>
+        </Link>
       </div>
 
       <div className="w-full flex flex-col flex-1">
