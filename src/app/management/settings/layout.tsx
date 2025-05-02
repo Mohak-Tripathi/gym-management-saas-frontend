@@ -10,8 +10,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <main className="px-4 pb-4 w-full h-full flex flex-col gap-4">
-            {/* <Tabs/> */}
+        <main className="px-4 w-full h-full flex flex-col gap-4">
             <Tabs tabs={settingTabs} />
             {children}
         </main>

@@ -80,7 +80,7 @@ const BillingHistory = () => {
                 alt="Edit"
                 width={0}
                 height={0}
-                className='h-5 w-5'
+                className='h-[20px] w-[20px] cursor-pointer'
               />
             </div>
   
@@ -90,7 +90,7 @@ const BillingHistory = () => {
                 alt="more menu"
                 width={0}
                 height={0}
-                className='h-5 w-5'
+                className='h-[20px] w-[20px] cursor-pointer'
               />
             </div>
           </div>

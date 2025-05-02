@@ -183,7 +183,7 @@ const Members = () => {
                   alt="Edit"
                   width={0}
                   height={0}
-                  className='h-5 w-5'
+                  className="h-[20px] w-[20px]"
                   // onClick={() => handleEdit(record.key)}
                 />
               </div>
@@ -201,7 +201,7 @@ const Members = () => {
                     alt="more menu"
                     width={0}
                     height={0}
-                    className='h-5 w-5'
+                    className="h-[20px] w-[20px]"
                   />
                 </div>
               </Popover>

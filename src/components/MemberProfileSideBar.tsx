@@ -65,7 +65,7 @@ const MemberProfileSideBar = () => {
                 </div>
                 {params?.memberId == member.key && (
                   <Image
-                    src={`/images/lightArrow.svg`}
+                    src={`/images/iconly/bold/arrowWhite.svg`}
                     height={0}
                     width={0}
                     alt={`lightArrow`}

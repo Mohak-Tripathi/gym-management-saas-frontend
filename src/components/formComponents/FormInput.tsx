@@ -38,6 +38,7 @@ const FormInput: React.FC<FormInputProps> = ({
             </Title>
             <Form.Item
                 name={name}
+                className='!m-0'
             >
                 <Input
                     placeholder={placeholder}

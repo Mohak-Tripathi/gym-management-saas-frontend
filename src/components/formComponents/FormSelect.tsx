@@ -44,7 +44,9 @@ const FormSelect: React.FC<FormSelectProps> = ({
             </Title>
             <Form.Item
                 name={name}
-                rootClassName='formSelectCustom'>
+                rootClassName='formSelectCustom'
+                className='!mb-0'
+            >
                 <Select
                     showSearch
                     style={{ height: 40 }}

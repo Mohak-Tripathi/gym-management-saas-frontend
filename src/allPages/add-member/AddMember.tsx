@@ -48,7 +48,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                         label='Member name'
                         name='memberName'
                     />
-                    <div className='w-full grid grid-cols-2 gap-x-4'>
+                    <div className='w-full grid grid-cols-2 gap-4'>
                         <FormInput
                             label='Email'
                             name='email'
@@ -75,7 +75,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                         name='address'
                     />
 
-                    <div className='w-full grid grid-cols-2 gap-x-4'>
+                    <div className='w-full grid grid-cols-2 gap-4'>
                         <FormInput
                             label='Goal'
                             name='goal'
@@ -104,7 +104,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     <button
                         type='button'
                         onClick={() => handleCancel()}
-                        className=' w-[147px] h-10 !bg-[#F5FAFB] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
+                        className=' w-[147px] h-10 !bg-[#EAEEF8] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
                     >
                         Cancel
                     </button>

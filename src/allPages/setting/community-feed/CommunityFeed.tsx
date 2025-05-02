@@ -2,7 +2,7 @@ import { Avatar, Divider, Tooltip } from 'antd'
 import Image from 'next/image'
 import React from 'react'
 
-const Community = () => {
+const CommunityFeed = () => {
   return (
     <main className='w-full flex gap-6 flex-1'>
 
@@ -13,7 +13,7 @@ const Community = () => {
         }}
       >
         <div className='flex flex-col gap-4 w-full'>
-          <h2 className='text-[16px] text-[#071726] font-semibold leading-[100%] !m-0 '>Community Feed</h2>
+          <h2 className='text-[16px] text-[#071726] font-semibold leading-[100%] !m-0 '>CommunityFeed Feed</h2>
           <div className='flex items-center gap-2.5'>
             <Image
               src='/images/iconly/light/logoLock.svg'
@@ -35,7 +35,7 @@ const Community = () => {
             <p className='text-[14px] text-[#071726] font-semibold leading-[100%] !m-0'>See All</p>
           </div>
 
-          <div className='flex flex-col gap-4 w-full h-[calc(100vh-300px)] overflow-y-scroll'>
+          <div className='flex flex-col gap-4 w-full h-[calc(100vh-360px)] overflow-y-scroll'>
 
             <div>
               <div className='flex gap-1 group transition-all duration-200'>
@@ -168,7 +168,7 @@ const Community = () => {
       </div>
 
       {/* feed */}
-      <div className='flex flex-col flex-1 px-10 overflow-y-scroll'>
+      <div className='flex flex-col flex-1 overflow-y-scroll'>
 
         <div className='flex flex-col gap-6 bg-white rounded-xl h-auto p-4'
           style={{
@@ -181,10 +181,10 @@ const Community = () => {
               <h2 className='text-[20px] font-semibold leading-[100%] text-[#071726] !m-0'>Welcome Back, Alex Mason 👋</h2>
               <p className='text-[14px] font-normal leading-[100%] text-[#07172699] !m-0 '>What you want to share.</p>
             </div>
-            <div className='flex items-center gap-4'>
+            <div className='flex items-center gap-3'>
               <Tooltip title='Attachment' placement='top' color='#071726' mouseEnterDelay={0.5}>
                 <Image
-                  src='/images/plusGray.svg'
+                  src='/images/iconly/light/plusCircleBlack.svg'
                   alt='plus'
                   height={24}
                   width={24}
@@ -194,7 +194,7 @@ const Community = () => {
 
               <Tooltip title='Voice' placement='top' color='#071726' mouseEnterDelay={0.5}>
                 <Image
-                  src='/images/micGray.svg'
+                  src='/images/iconly/light/micBlack.svg'
                   alt='plus'
                   height={24}
                   width={24}
@@ -204,17 +204,7 @@ const Community = () => {
 
               <Tooltip title='Emoji' placement='top' color='#071726' mouseEnterDelay={0.5}>
                 <Image
-                  src='/images/emojiGray.svg'
-                  alt='plus'
-                  height={24}
-                  width={24}
-                  className='cursor-pointer'
-                />
-              </Tooltip>
-
-              <Tooltip title='Images' placement='top' color='#071726' mouseEnterDelay={0.5}>
-                <Image
-                  src='/images/paperGray.svg'
+                  src='/images/iconly/light/emojiBlack.svg'
                   alt='plus'
                   height={24}
                   width={24}
@@ -241,7 +231,7 @@ const Community = () => {
               U
             </Avatar>
             <textarea
-              className='w-full h-full p-1.5 rounded-xl border border-[#0000001A] !resize-none !text-[14px] !font-normal text-[#071726] outline-none'
+              className='w-full h-full p-3 rounded-lg border border-[#0000001A] !resize-none !text-[14px] !font-normal text-[#071726] outline-none'
               placeholder='What’s on your mind?'
               rows={3}
             />
@@ -264,4 +254,4 @@ const Community = () => {
   )
 }
 
-export default Community
+export default CommunityFeed

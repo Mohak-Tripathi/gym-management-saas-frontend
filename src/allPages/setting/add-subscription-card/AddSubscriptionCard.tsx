@@ -40,7 +40,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({
       >
         {/* user data */}
         <div className="flex flex-col">
-          <div className="grid grid-cols-2 gap-x-4">
+          <div className="grid grid-cols-2 gap-4">
             <Image
               src={`/images/Dumbell.svg`}
               width={0}
@@ -53,7 +53,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({
 
           <FormInput label="Description " name="description" />
 
-          <div className="w-full grid grid-cols-2 gap-x-4">
+          <div className="w-full grid grid-cols-2 gap-4">
             <FormInput label="Actual Price" name="actualPrice" />
 
             <FormInput label="Discounted Price" name="discountedPrice" />

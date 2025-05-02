@@ -24,7 +24,7 @@ export default function RootLayout({
         <p className='text-[14px] text-[#071726] font-normal flex items-center gap-1 !m-0'>
           Trainer
           <Image
-            src={`/images/Dropdown-2.svg`}
+            src={`/images/iconly/light/arrowBlack.svg`}
             alt="back"
             width={0}
             height={0}

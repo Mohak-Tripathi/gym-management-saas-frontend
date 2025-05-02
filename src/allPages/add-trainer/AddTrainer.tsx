@@ -66,7 +66,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                         label='Trainer name'
                         name='trainerName'
                     />
-                    <div className='w-full grid grid-cols-2 gap-x-4'>
+                    <div className='w-full grid grid-cols-2 gap-4'>
                         <FormInput
                             label='Experience'
                             name='experience'
@@ -112,10 +112,6 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                         label='Address'
                         name='address'
                     />
-
-                    <div className='w-full grid grid-cols-2 gap-x-4'>
-                        
-                    </div>
 
                 </div>
 
