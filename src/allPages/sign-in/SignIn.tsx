@@ -4,8 +4,45 @@ import Link from "next/link";
 import Image from "next/image";
 import backgroundImage from "@/public/images/Add New Member.svg";
 import { Form, Input, Button, Checkbox } from "antd";
+import axios from "axios";
 
 const SignIn = () => {
+  const handleTraineeSignIn = async (values: {
+    email: string;
+    password: string;
+    remember?: boolean;
+  }) => {
+    try {
+      console.log(values, "values");
+  
+      const response = await axios.post(
+        "http://localhost:4000/api/auth/login",
+        {
+          email: values.email,
+          password: values.password,
+          remember: values.remember,
+        },
+        {
+          withCredentials: true, // 🚀 important for CORS with cookies/sessions
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+
+      );
+  
+      // Handle success (e.g., save token, redirect, etc.)
+      console.log("Login successful:", response.data);
+    } catch (error: any) {
+      if (error.response) {
+        console.error("Login failed:", error.response.data);
+      } else {
+        console.error("An error occurred:", error.message);
+      }
+    }
+  };
+  
+
   return (
     // <div className="min-h-screen flex">
     //   {/* Left side with background image */}
@@ -150,10 +187,11 @@ const SignIn = () => {
             <div>
               <Form
                 layout="vertical"
-                onFinish={(values) => {
-                  // Handle form submission here
-                  console.log("Form values:", values);
-                }}
+                // onFinish={(values) => {
+                //   // Handle form submission here
+                //   console.log("Form values:", values);
+                // }}
+                onFinish={handleTraineeSignIn}
                 className="mt-8 
                 
                 !mb-0"
