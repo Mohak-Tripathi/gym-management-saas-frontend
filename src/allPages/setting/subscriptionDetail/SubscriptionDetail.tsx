@@ -19,54 +19,55 @@ const SubscriptionDetail = () => {
 
 
   return (
-    // <div>
-    //   <SubscriptionCard planTitle="Basic Plan" duration="Monthly" actualPrice="32500" discountedPrice="2850"/>
-    // </div>
+    <div className="w-full grid grid-cols-3 gap-6">
+      <SubscriptionCard
+        planTitle="Basic Plan"
+        duration="Monthly"
+        actualPrice={3499}
+        discountedPrice={2999}
+        classesCount="14"
+        backgroundColor="bg-[#F7F7F5]"
+        textColor='text-[#86867D]'
+      />
+      <SubscriptionCard
+        planTitle="Silver Plan"
+        duration="Half Year"
+        actualPrice={18999}
+        discountedPrice={15999}
+        classesCount="30"
+        backgroundColor="bg-[#F4F7FC]"
+        textColor='text-[#2C7CC8]'
+      />
+      <SubscriptionCard
+        planTitle="Gold Plan"
+        duration="Yearly"
+        actualPrice={35999}
+        discountedPrice={29999}
+        classesCount="Unlimited"
+        backgroundColor="bg-[#FFF5D5]"
+        textColor='text-[#AC8606]'
+      />
 
-    <div className="grid grid-cols-3 gap-6 mt-4">
-      <SubscriptionCard
-        planTitle="Basic Plan"
-        duration="Monthly" // if "Monthly" means 1 month
-        actualPrice={32500}
-        discountedPrice={2850}
-        classesCount="16 classess per month"
-        backgroundColor="#F7F7F5"
-      />
-      <SubscriptionCard
-        planTitle="Basic Plan"
-        duration="Half Year" // if "Monthly" means 1 month
-        actualPrice={32500}
-        discountedPrice={2850}
-        classesCount="32 classess per month"
-        backgroundColor="#F4F7FC"
-      />
-      <SubscriptionCard
-        planTitle="Basic Plan"
-        duration="Yearly" // if "Monthly" means 1 month
-        actualPrice={32500}
-        discountedPrice={2850}
-        classesCount="Unlimited classess per month"
-        backgroundColor="#FFF5D5"
-      />
-
-      <div className="min-w-[300px] min-h-[180px] w-[450px] px-3.5 py-5 flex-col shadow-md flex gap-3 justify-center items-center rounded-xl">
-        {/* <div className="flex items-center justify-between bg-[{backgroundColor}] p-2 rounded-xl"> */}
-        <div 
-         onClick={showDrawer}
-         className='border-none cursor-pointer flex flex-col justify-center items-center gap-2'>
-         
-        
-        <Image
-            src={`/images/Add Circle.svg`}
-            width={0}
-            height={0}
-            alt="Profile"
-            className="w-6 h-6 rounded-full object-cover"
-          />
-          <div className="font-['Roboto'] font-semibold text-[14px]">Add New Plan</div>
+      <div className="min-h-[180px] bg-white border border-dashed border-[#000] px-3.5 py-4 flex justify-center items-center rounded-xl cursor-pointer"
+        style={{
+          boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+        }}
+        onClick={showDrawer}
+      >
+        <div className="bg-[#F5FAFB] w-full h-full rounded-lg px-2 py-1 flex flex-col gap-2.5 justify-center items-center ">
+          <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
+            <Image
+              src='/images/iconly/light/plusCircleBlack.svg'
+              width={0}
+              height={0}
+              alt="Profile"
+              className="w-[24px] h-[24px]"
+            />
           </div>
-      </div>
 
+          <p className="!font-semibold text-[14px] text-[#071726]">Add New Plan</p>
+        </div>
+      </div>
 
       <Drawer
         title="Add New Subscription Detail"

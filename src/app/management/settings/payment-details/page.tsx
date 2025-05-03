@@ -1,11 +1,2 @@
-import React from 'react'
-
-const page = () => {
-  return (
-    <div>
-      Payment Details
-    </div>
-  )
-}
-
-export default page
+import PaymentDetaile from "@/allPages/setting/payment-details";
+export default PaymentDetaile;

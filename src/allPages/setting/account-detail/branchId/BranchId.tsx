@@ -82,14 +82,14 @@ const BranchId = () => {
           <Link href='/management/settings/account-details/branch'>
             <button
               type='button'
-              className=' w-[147px] h-10 !bg-[#EAEEF8] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
+              className=' w-[147px] h-[40px] !bg-[#EAEEF8] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
             >
               Cancel
             </button>
           </Link>
           <button
             type='submit'
-            className=' w-[147px] h-10 !bg-[#071726] !text-white rounded-lg px-4 py-2 cursor-pointer'
+            className=' w-[147px] h-[40px] !bg-[#071726] !text-white rounded-lg px-4 py-2 cursor-pointer'
           >
             Add Member
           </button>
