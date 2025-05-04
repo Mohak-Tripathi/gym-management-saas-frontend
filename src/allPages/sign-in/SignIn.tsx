@@ -9,6 +9,7 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/store/slices/userSlice";
 import { useRouter } from "next/navigation";
+import { setCookie } from 'cookies-next'
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,14 @@ const SignIn = () => {
 
       // Handle success (e.g., save token, redirect, etc.)
       console.log("Login successful:", response.data.data);
+
+      const token = response.data.data.token;
+
+    // ✅ Set the token in a cookie (accessible to middleware)
+    setCookie('token', token, {
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    });
 
       dispatch(setUser(response.data.data));
       router.push("/management/dashboard");
