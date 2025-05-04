@@ -1,7 +1,8 @@
 "use client";
-
-import Image from "next/image";
-import React from "react";
+import BubbleChart from '@/components/chart/BubbleChart'
+import DonutChart from '@/components/chart/DonutChart'
+import Image from 'next/image'
+import React from 'react'
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
@@ -212,7 +213,9 @@ const Dashboard = () => {
           </div>
 
           {/* graph */}
-          <div></div>
+          <div>
+            <BubbleChart />
+          </div>
         </div>
 
         {/* Members Activity */}
@@ -232,7 +235,10 @@ const Dashboard = () => {
           </div>
 
           {/* graph */}
-          <div></div>
+          <div className='h-auto'>
+            <DonutChart />
+          </div>
+
         </div>
       </div>
 
