@@ -2,7 +2,6 @@
 import FormInput from '@/components/formComponents/FormInput';
 import FormSelect from '@/components/formComponents/FormSelect';
 import { Form } from 'antd'
-import { useParams, useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface AddTrainerProps {
@@ -21,7 +20,6 @@ const expertiseOptions = [
 
 const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerData }) => {
     const [form] = Form.useForm();
-    const router = useRouter();
 
     const handleFinish = (values: any) => {
         onClose()
@@ -30,13 +28,6 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
     const handleCancel = () => {
         onClose()
     }
-
-    useEffect(() => {
-        if (!open) {
-            form.resetFields();
-            router.push('/management/trainer/trainer')
-        }
-    }, [open, form]);
 
     useEffect(() => {
         if (selectedTrainerData) {
@@ -61,7 +52,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                 className='h-full flex flex-col justify-between gap-4'
             >
                 {/* user data */}
-                <div className='flex flex-col'>
+                <div className='flex flex-col gap-4'>
                     <FormInput
                         label='Trainer name'
                         name='trainerName'
@@ -75,7 +66,6 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                         <FormSelect
                             label='Expertise'
                             name='expertise'
-                            options={expertiseOptions}
                         />
 
                         <FormInput
@@ -120,7 +110,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                     <button
                         type='button'
                         onClick={() => handleCancel()}
-                        className=' w-[147px] h-10 !bg-[#F5FAFB] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
+                        className=' w-[147px] h-10 !bg-[#EAEEF8] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
                     >
                         Cancel
                     </button>

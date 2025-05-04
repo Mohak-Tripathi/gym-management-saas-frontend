@@ -1,5 +1,5 @@
 'use client'
-import AddTrainer from '@/allPages/add-trainer'
+import AddPaymentDetail from '@/allPages/add-payment-detail'
 import { Drawer } from 'antd'
 import { useParams, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -11,18 +11,18 @@ const page = () => {
 
     const onClose = () => {
         setOpen(false);
-        router.push('/management/trainer/trainer')
+        router.push('/management/settings/payment-details')
     };
 
     return (
         <Drawer
-            title={params?.editTrainerId === 'add' ? 'Add New Trainer' : 'Edit Trainer'}
+            title={params?.subscriptionId === 'add' ? 'Add New Card' : 'Edit Card'}
             placement='right'
             width={700}
             onClose={onClose}
             open={open}
         >
-            <AddTrainer
+            <AddPaymentDetail
                 onClose={onClose}
                 open={open}
             />
