@@ -1,12 +1,19 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import backgroundImage from "@/public/images/Add New Member.svg";
 import { Form, Input, Button, Checkbox } from "antd";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/lib/store/slices/userSlice";
+import { useRouter } from "next/navigation";
 
 const SignIn = () => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const handleTraineeSignIn = async (values: {
     email: string;
     password: string;
@@ -14,9 +21,9 @@ const SignIn = () => {
   }) => {
     try {
       console.log(values, "values");
-  
+
       const response = await axios.post(
-        "http://localhost:4000/api/auth/login",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
         {
           email: values.email,
           password: values.password,
@@ -25,14 +32,16 @@ const SignIn = () => {
         {
           withCredentials: true, // 🚀 important for CORS with cookies/sessions
           headers: {
-            "Content-Type": "application/json"
-          }
+            "Content-Type": "application/json",
+          },
         }
-
       );
-  
+
       // Handle success (e.g., save token, redirect, etc.)
-      console.log("Login successful:", response.data);
+      console.log("Login successful:", response.data.data);
+
+      dispatch(setUser(response.data.data));
+      router.push("/management/dashboard");
     } catch (error: any) {
       if (error.response) {
         console.error("Login failed:", error.response.data);
@@ -41,7 +50,6 @@ const SignIn = () => {
       }
     }
   };
-  
 
   return (
     // <div className="min-h-screen flex">
