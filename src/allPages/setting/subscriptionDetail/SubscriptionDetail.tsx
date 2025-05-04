@@ -1,22 +1,10 @@
 "use client"
 import SubscriptionCard from "@/components/SubscriptionCard";
-import { Drawer } from "antd";
 import Image from "next/image";
-import React, { useState } from "react";
-import AddSubscriptionCard from "../add-subscription-card";
+import React from "react";
+import Link from "next/link";
 
 const SubscriptionDetail = () => {
-
-  const [open, setOpen] = useState(false);
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
 
   return (
     <div className="w-full grid grid-cols-3 gap-6">
@@ -47,12 +35,12 @@ const SubscriptionDetail = () => {
         backgroundColor="bg-[#FFF5D5]"
         textColor='text-[#AC8606]'
       />
-
-      <div className="min-h-[180px] bg-white border border-dashed border-[#000] px-3.5 py-4 flex justify-center items-center rounded-xl cursor-pointer"
+      <Link
+        href={`/management/settings/subscription-details/add`}
+        className="min-h-[180px] bg-white border border-dashed border-[#000] px-3.5 py-4 flex justify-center items-center rounded-xl cursor-pointer"
         style={{
           boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
         }}
-        onClick={showDrawer}
       >
         <div className="bg-[#F5FAFB] w-full h-full rounded-lg px-2 py-1 flex flex-col gap-2.5 justify-center items-center ">
           <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
@@ -67,20 +55,7 @@ const SubscriptionDetail = () => {
 
           <p className="!font-semibold text-[14px] text-[#071726]">Add New Plan</p>
         </div>
-      </div>
-
-      <Drawer
-        title="Add New Subscription Detail"
-        placement='right'
-        width={700}
-        onClose={onClose}
-        open={open}
-      >
-        <AddSubscriptionCard
-          onClose={onClose}
-          open={open}
-        />
-      </Drawer>
+      </Link>
     </div>
   );
 };

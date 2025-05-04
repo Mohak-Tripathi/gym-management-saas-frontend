@@ -1,2 +1,11 @@
-import SubscriptionDetail from "@/allPages/setting/subscriptionDetail";
-export default SubscriptionDetail
+import React from 'react'
+
+const page = () => {
+  return (
+    <>
+      
+    </>
+  )
+}
+
+export default page

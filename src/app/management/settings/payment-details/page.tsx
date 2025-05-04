@@ -1,2 +1,11 @@
-import PaymentDetaile from "@/allPages/setting/payment-details";
-export default PaymentDetaile;
+import React from 'react'
+
+const page = () => {
+  return (
+    <>
+      
+    </>
+  )
+}
+
+export default page
