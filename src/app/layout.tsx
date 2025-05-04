@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import 'antd/dist/reset.css';
 import ReduxProviders from "@/lib/store/ReduxProvider";
+import TokenSyncProvider from "@/lib/store/TokenSyncProvider";
 
 const roboto = Roboto({
   variable: "--font-roboto",
@@ -25,7 +26,9 @@ export default function RootLayout({
       <body className={`${roboto.variable} antialiased`}
       >
         <ReduxProviders>
+        <TokenSyncProvider>
           {children}
+          </TokenSyncProvider>
         </ReduxProviders>
       </body>
     </html>

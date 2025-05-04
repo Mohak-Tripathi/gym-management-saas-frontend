@@ -1,39 +1,62 @@
 "use client";
 
 import { Table } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { gymBranchData } from "@/constant/GymBranchData";
 import Image from "next/image";
 import Link from "next/link";
+import { getRequest } from "@/lib/services/request";
 
 const Branch = () => {
+  const [branches, setBranches] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchBranches = async () => {
+      setLoading(true);
+      try {
+        const data = await getRequest("/api/gym-branch");
+        console.log(data, "gymbranchdata");
+        setBranches(data); // Adjust if your API response is wrapped (e.g., data.items)
+      } catch (error) {
+        // Optionally handle error
+        setBranches([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBranches();
+  }, []);
+
   const columns = [
     {
       title: "Name",
       dataIndex: "name",
-      key: "name"
+      key: "name",
     },
-    {
-      title: "Owner",
-      dataIndex: "owner",
-      key: "owner",
-    },
+    // {
+    //   title: "Owner",
+    //   dataIndex: "owner",
+    //   key: "owner",
+    // },
     {
       title: "Location",
-      dataIndex: "location",
-      key: "location",
+      dataIndex: "address",
+      key: "address",
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (statusType: any) => {
+      dataIndex: "isMainBranch",
+      key: "isMainBranch",
+      render: (isMainBranch: any) => {
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${statusType && "bg-[#FFDE8F]"
-              }`}
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${
+              isMainBranch && "bg-[#FFDE8F]"
+            }`}
           >
-            {statusType}
+            {isMainBranch ? "Primary Branch" : ""}
           </p>
         );
       },
@@ -67,10 +90,13 @@ const Branch = () => {
     },
   ];
 
-  return (
-    <div className="flex flex-col w-full gap-6 p-3 bg-white rounded-xl"
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+    <div
+      className="flex flex-col w-full gap-6 p-3 bg-white rounded-xl"
       style={{
-        boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+        boxShadow: "0px 4px 8px rgba(193, 224, 255, 0.25)",
       }}
     >
       <div className="bg-[#F4F7FC] rounded-lg px-2 py-1 flex items-center justify-between">
@@ -105,8 +131,9 @@ const Branch = () => {
       <div className="w-full flex flex-col flex-1">
         <Table
           columns={columns}
-          dataSource={gymBranchData}
+          dataSource={branches}
           pagination={false}
+          rowKey="id"
           scroll={{ y: "calc(100vh - 370px)" }}
           className="custom-small-table"
         />

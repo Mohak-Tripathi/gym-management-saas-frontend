@@ -7,6 +7,8 @@ import AddSubscriptionCard from "../add-subscription-card";
 
 const SubscriptionDetail = () => {
 
+  
+
   const [open, setOpen] = useState(false);
 
   const showDrawer = () => {
