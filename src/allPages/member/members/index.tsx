@@ -1,2 +1,2 @@
-import Memebers from "./Memebers";
-export default Memebers;
+import Members from "./Members";
+export default Members;

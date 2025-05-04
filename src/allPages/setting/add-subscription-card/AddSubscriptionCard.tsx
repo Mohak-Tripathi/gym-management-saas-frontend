@@ -1,19 +1,14 @@
 "use client";
 import FormInput from "@/components/formComponents/FormInput";
-import FormSelect from "@/components/formComponents/FormSelect";
 import { Form } from "antd";
 import Image from "next/image";
-import { useEffect } from "react";
 
 interface AddSubscriptionCardProps {
   onClose: () => void;
   open: boolean;
 }
 
-const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({
-  onClose,
-  open,
-}) => {
+const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open }) => {
   const [form] = Form.useForm();
 
   const handleFinish = (values: any) => {
@@ -23,12 +18,6 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({
   const handleCancel = () => {
     onClose();
   };
-
-  useEffect(() => {
-    if (!open) {
-      form.resetFields();
-    }
-  }, [open]);
 
   return (
     <main className="w-full h-full">
@@ -68,13 +57,15 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({
 
         {/* buttons */}
         <div className="flex justify-center gap-4">
-          <button
-            type="button"
-            onClick={() => handleCancel()}
-            className=" w-[147px] h-10 !bg-[#F5FAFB] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer"
-          >
-            Cancel
-          </button>
+          {/* <Link href={`/management/settings/subscription-details`}> */}
+            <button
+              type="button"
+              onClick={() => handleCancel()}
+              className=" w-[147px] h-10 !bg-[#F5FAFB] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer"
+            >
+              Cancel
+            </button>
+          {/* </Link> */}
           <button
             type="submit"
             className="min-w-[147px] h-10 !bg-[#071726] !text-white rounded-lg px-4 py-2 cursor-pointer"

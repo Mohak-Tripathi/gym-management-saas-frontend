@@ -1,10 +1,7 @@
 'use client'
 import FormInput from '@/components/formComponents/FormInput';
 import FormSelect from '@/components/formComponents/FormSelect';
-import { membersData } from '@/constant/membersData';
 import { Form } from 'antd'
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 interface AddMemberProps {
     onClose: () => void;
@@ -14,7 +11,6 @@ interface AddMemberProps {
 
 const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData }) => {
     const [form] = Form.useForm();
-    const router = useRouter();
 
     const handleFinish = (values: any) => {
         onClose()
@@ -23,13 +19,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
     const handleCancel = () => {
         onClose()
     }
-
-    useEffect(() => {
-        if (!open) {
-            form.resetFields();
-            router.push('/management/members/members')
-        }
-    }, [open, form]);
 
     return (
         <main className='w-full h-full'>
@@ -43,7 +32,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                 className='h-full flex flex-col justify-between gap-4'
             >
                 {/* user data */}
-                <div className='flex flex-col'>
+                <div className='flex flex-col gap-4'>
                     <FormInput
                         label='Member name'
                         name='memberName'
