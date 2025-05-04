@@ -1,3 +1,5 @@
+import BubbleChart from '@/components/chart/BubbleChart'
+import DonutChart from '@/components/chart/DonutChart'
 import Image from 'next/image'
 import React from 'react'
 
@@ -197,7 +199,7 @@ const Dashboard = () => {
 
           {/* graph */}
           <div>
-
+            <BubbleChart />
           </div>
         </div>
 
@@ -215,8 +217,8 @@ const Dashboard = () => {
           </div>
 
           {/* graph */}
-          <div>
-
+          <div className='h-auto'>
+            <DonutChart />
           </div>
 
         </div>
