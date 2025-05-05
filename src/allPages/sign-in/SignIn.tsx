@@ -42,6 +42,7 @@ const SignIn = () => {
       console.log("Login successful:", response.data.data);
 
       const token = response.data.data.token;
+      localStorage.setItem("token", token);
 
       // ✅ Set the token in a cookie (accessible to middleware)
       setCookie("token", token, {
