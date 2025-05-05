@@ -28,7 +28,7 @@ const Members = () => {
         <>
           <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
             {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
-            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
               <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
                 <div>Invoice</div>
                 <Image
@@ -41,7 +41,7 @@ const Members = () => {
             </div>
             {/* </Link> */}
   
-            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
               <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
                 <div>Email</div>
                 <Image
@@ -53,7 +53,7 @@ const Members = () => {
               </div>
             </div>
   
-            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
               <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
                 <div>Delete</div>
                 <Image
@@ -119,7 +119,7 @@ const Members = () => {
         key: 'subscriptionType',
         render: (subscriptionType: any) => {
           return (
-            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-[#E4E4E4]' : subscriptionType === 'Silver' ? 'bg-[#EFF6F8]' : 'bg-[#FFDE8F]'}`}>
+            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
               {subscriptionType}
             </p>
           );
@@ -141,7 +141,7 @@ const Members = () => {
         key: 'status',
         render: (status: any) => {
           return (
-            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-[#D5F4DF]' : 'bg-[#F4D5D8]'}`}>
+            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
               {status}
             </p>
           );
@@ -153,7 +153,7 @@ const Members = () => {
         key: 'payment',
         render: (payment: any) => {
           return (
-            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-[#E1F4D5]' : payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}>
+            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
               <Image
                 src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
                 height={20}
@@ -309,7 +309,7 @@ const Members = () => {
 
           {/* add member btn */}
           <button
-            className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] leading-[100%] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+            className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] leading-[100%] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
             <Image
               src={`/images/invoice.svg`}
               height={20}
@@ -331,7 +331,7 @@ const Members = () => {
               <p className='!m-0  '>
                 Total Members
               </p>
-              <p className='!m-0 px-2 py-1 rounded-full bg-[#D5DFF4] '>
+              <p className='!m-0 px-2 py-1 rounded-full bg-count '>
                 565 count
               </p>
             </div>

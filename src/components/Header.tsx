@@ -59,7 +59,7 @@ const Header = () => {
         <>
           <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border">
             {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
-            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
               <div className="flex items-center gap-2 text-[14px] leading-[20px]">
                 <Image
                   src="/images/iconly/light/lock.svg"
@@ -72,7 +72,7 @@ const Header = () => {
             </div>
             {/* </Link> */}
   
-            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-[#F5FAFB] cursor-pointer box-border">
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
               <div className="flex items-center gap-2 text-[14px] leading-[20px]">
                 <Image
                   src="/images/iconly/light/logout.svg"

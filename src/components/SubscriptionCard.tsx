@@ -31,7 +31,7 @@ const SubscriptionCard = ({
         // style={{ backgroundColor }}
       >
         <div className="flex gap-3 items-center">
-          <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
+          <div className="h-[36px] w-[36px] bg-white border border-[#0000001A] rounded-full flex items-center justify-center">
             <Image
               src={`/images/Dumbell.svg`}
               width={0}
@@ -49,7 +49,7 @@ const SubscriptionCard = ({
 
       <div className="flex items-start justify-start gap-2">
         <h2 className="!font-bold text-[32px] text-black-primary leading-[100%] "> ₹ {discountedPrice}</h2>
-        <h3 className="!font-bold text-[20px] text-[#07172699] line-through leading-[100%]">
+        <h3 className="!font-bold text-[20px] text-black-60 line-through leading-[100%]">
           ₹ {actualPrice}
         </h3>
       </div>

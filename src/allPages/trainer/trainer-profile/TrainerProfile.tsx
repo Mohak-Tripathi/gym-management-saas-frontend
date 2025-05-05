@@ -39,7 +39,7 @@ const TrainerProfile = () => {
         <div className='flex gap-6 items-center'>
 
           <p
-            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${trainer?.payment === 'Paid' ? 'bg-[#E1F4D5]' : trainer?.payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
+            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${trainer?.payment === 'Paid' ? 'bg-green-pastel' : trainer?.payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}
           >
             <Image
               src={trainer?.payment === 'Paid' ? `/images/Right.svg` : trainer?.payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
@@ -78,27 +78,27 @@ const TrainerProfile = () => {
         <div className='w-full grid grid-cols-4 gap-4'>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Gender</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Gender</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.gender}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Email Address</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Email Address</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.email}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Mobile No.</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Mobile No.</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.mobileNumber}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Date of Birth</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Date of Birth</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>12/04/1990</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Aadhar Number</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Aadhar Number</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>2346 2434 5667</p>
           </div>
 
@@ -113,22 +113,22 @@ const TrainerProfile = () => {
         <div className='w-full grid grid-cols-4 gap-4'>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Country</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Country</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>India</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>State</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>State</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>Karnataka</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>City</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>City</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>Bengaluru</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Pin Code</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Pin Code</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>560021</p>
           </div>
         </div>
@@ -142,19 +142,19 @@ const TrainerProfile = () => {
         <div className='w-full grid grid-cols-4 gap-4'>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Log in Time</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Log in Time</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.logInTime}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Joined Date</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Joined Date</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.joinedDate}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Work Type</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Work Type</h2>
             <p
-              className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${trainer?.workType === 'Paid' ? 'bg-[#E1F4D5]' : trainer?.workType === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
+              className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${trainer?.workType === 'Paid' ? 'bg-green-pastel' : trainer?.workType === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}
             >
               {trainer?.workType}
             </p>

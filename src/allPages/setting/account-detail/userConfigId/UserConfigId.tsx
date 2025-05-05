@@ -98,7 +98,7 @@ const UserConfigId = () => {
         </div>
 
         <div className="flex gap-4">
-          <button className="px-12 py-3 bg-[#EAEEF8] rounded-2xl">
+          <button className="px-12 py-3 bg-blue-secondary rounded-2xl">
             Cancel{" "}
           </button>
           <button className="px-12 py-3 bg-black rounded-xl !text-white">

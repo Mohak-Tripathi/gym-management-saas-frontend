@@ -61,7 +61,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
             <button
               type="button"
               onClick={() => handleCancel()}
-              className=" w-[147px] h-10 !bg-[#F5FAFB] !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
+              className=" w-[147px] h-10 !bg-blue-light !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
             >
               Cancel
             </button>

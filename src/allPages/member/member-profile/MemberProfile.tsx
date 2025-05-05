@@ -43,7 +43,7 @@ const MemberProfile = () => {
           </div>
 
           <p
-            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${member?.payment === 'Paid' ? 'bg-[#E1F4D5]' : member?.payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
+            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${member?.payment === 'Paid' ? 'bg-green-pastel' : member?.payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}
           >
             <Image
               src={member?.payment === 'Paid' ? `/images/Right.svg` : member?.payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
@@ -82,27 +82,27 @@ const MemberProfile = () => {
         <div className='w-full grid grid-cols-4 gap-4'>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Gender</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Gender</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{member?.gender}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Email Address</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Email Address</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{member?.email}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Mobile No.</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Mobile No.</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{member?.mobileNumber}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Date of Birth</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Date of Birth</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>12/04/1990</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Aadhar Number</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Aadhar Number</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>2346 2434 5667</p>
           </div>
 
@@ -117,22 +117,22 @@ const MemberProfile = () => {
         <div className='w-full grid grid-cols-4 gap-4'>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Country</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Country</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>India</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>State</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>State</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>Karnataka</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>City</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>City</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>Bengaluru</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Pin Code</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Pin Code</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>560021</p>
           </div>
         </div>
@@ -146,19 +146,19 @@ const MemberProfile = () => {
         <div className='w-full grid grid-cols-4 gap-4'>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Expiry Date</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Expiry Date</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{member?.expiryDate}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Joined Date</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Joined Date</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{member?.joinedDate}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-[#07172699] font-[600] !m-0'>Subscription Type</h2>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Subscription Type</h2>
             <p
-            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${member?.subscriptionType === 'Paid' ? 'bg-[#E1F4D5]' : member?.subscriptionType === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}
+            className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${member?.subscriptionType === 'Paid' ? 'bg-green-pastel' : member?.subscriptionType === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}
           >
             {member?.subscriptionType}
           </p>
@@ -166,7 +166,7 @@ const MemberProfile = () => {
 
           <div className='flex flex-col gap-1'>
           <p
-            className={`h-8 w-36 rounded-2xl !m-0 !p-1.5 !text-[12px] !font-[600] !text-black-primary flex gap-2 justify-center items-center bg-[#EAEEF8] cursor-pointer`}
+            className={`h-8 w-36 rounded-2xl !m-0 !p-1.5 !text-[12px] !font-[600] !text-black-primary flex gap-2 justify-center items-center bg-blue-secondary cursor-pointer`}
           >
             Upgrade Plan
           </p>

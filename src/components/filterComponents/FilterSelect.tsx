@@ -59,7 +59,7 @@ const FilterSelect: React.FC<FormSelectProps> = ({
                         alt="down Arrow"
                     />
                 }
-                className='!w-[200px] !rounded-2xl !border-none !text-[14px] !text-[#677171] !font-[400] cursor-pointer'
+                className='!w-[200px] !rounded-2xl !border-none !text-[14px] !text-gray-primary !font-[400] cursor-pointer'
             />
         </div>
     );

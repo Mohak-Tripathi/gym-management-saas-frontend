@@ -53,7 +53,7 @@ const Branch = () => {
         return (
           <p
             className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${
-              isMainBranch && "bg-[#FFDE8F]"
+              isMainBranch && "bg-yellow-primary"
             }`}
           >
             {isMainBranch ? "Primary Branch" : ""}
@@ -101,7 +101,7 @@ const Branch = () => {
     >
       <div className="bg-[#F4F7FC] rounded-lg px-2 py-1 flex items-center justify-between">
         <div className="flex gap-2.5 items-center justify-between">
-          <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
+          <div className="h-[36px] w-[36px] bg-white border border-[#000]/10 rounded-full flex items-center justify-center">
             <Image
               src={`/images/iconly/light/buildings.svg`}
               alt="Arrow"

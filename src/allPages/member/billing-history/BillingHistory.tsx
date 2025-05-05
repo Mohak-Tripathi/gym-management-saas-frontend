@@ -63,7 +63,7 @@ const BillingHistory = () => {
       key: 'subscriptionType',
       render: (subscriptionType: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-[#E4E4E4]' : subscriptionType === 'Silver' ? 'bg-[#EFF6F8]' : 'bg-[#FFDE8F]'}`}>
+          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
             {subscriptionType}
           </p>
         );
@@ -158,7 +158,7 @@ const BillingHistory = () => {
         </div>
 
         {/* add member btn */}
-        <button className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/download.svg`}
             height={20}
@@ -180,7 +180,7 @@ const BillingHistory = () => {
             <p className='!m-0  '>
               Billing History
             </p>
-            <p className='!m-0 px-2 py-1 rounded-full bg-[#D5DFF4] '>
+            <p className='!m-0 px-2 py-1 rounded-full bg-count '>
               24 count
             </p>
           </div>

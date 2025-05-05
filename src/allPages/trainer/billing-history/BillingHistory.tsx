@@ -134,7 +134,7 @@ const BillingHistory = () => {
         </div>
 
         {/* add member btn */}
-        <button className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/download.svg`}
             height={20}
@@ -156,7 +156,7 @@ const BillingHistory = () => {
             <p className='!m-0  '>
               Billing History
             </p>
-            <p className='!m-0 px-2 py-1 rounded-full bg-[#D5DFF4] '>
+            <p className='!m-0 px-2 py-1 rounded-full bg-count '>
               24 count
             </p>
           </div>
