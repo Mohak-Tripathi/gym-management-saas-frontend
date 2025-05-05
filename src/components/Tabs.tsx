@@ -12,7 +12,7 @@ const Tabs = ({ tabs }: { tabs: any[] }) => {
             <ul className="!m-0 border-b border-[#D6DDE6] flex relative">
                 {/* Sliding background */}
                 <div
-                    className="absolute top-0 h-8 rounded-t-xl bg-[#071726] transition-all duration-300"
+                    className="absolute top-0 h-8 rounded-t-xl bg-black-primary transition-all duration-300"
                     style={{
                         width: '171px',
                         left: `${activeIndex * 171}px`
@@ -23,7 +23,7 @@ const Tabs = ({ tabs }: { tabs: any[] }) => {
                 {tabs.map((item: any, index: number) => (
                     <li
                         key={index}
-                        className={`w-[171px] h-8 rounded-t-xl text-[14px] font-bold flex items-center justify-center cursor-pointer z-10 transition-all duration-200 ${currentPath === item.title.toLowerCase().replace(/\s+/g, '-') ? 'text-white' : 'text-[#071726]'}`}
+                        className={`w-[171px] h-8 rounded-t-xl text-[14px] font-bold flex items-center justify-center cursor-pointer z-10 transition-all duration-200 ${currentPath === item.title.toLowerCase().replace(/\s+/g, '-') ? 'text-white' : 'text-black-primary'}`}
                     >
                         <Link
                             href={item.src}

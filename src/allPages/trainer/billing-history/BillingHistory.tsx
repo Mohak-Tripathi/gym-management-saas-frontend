@@ -37,7 +37,7 @@ const BillingHistory = () => {
   
             {/* Name and Email */}
             <div className="flex flex-col">
-              <p className="text-[14px] font-semibold text-[#071726] !m-0">
+              <p className="text-[14px] font-semibold text-black-primary !m-0">
                 {record.name}
               </p>
               <p className="text-[12px] text-gray-500 !m-0">
@@ -114,14 +114,14 @@ const BillingHistory = () => {
         {/* inputs */}
         <div className='flex gap-6'>
           <div className='flex flex-col gap-1.5'>
-            <Title className="!text-[#071726] !text-[12px] !font-normal !mb-0">
+            <Title className="!text-black-primary !text-[12px] !font-normal !mb-0">
               Search for members
             </Title>
             <Input
               rootClassName='customSearch'
               placeholder="Search"
               style={{ width: 200, height: 32 }}
-              className='!w-[200px] !rounded-2xl !bg-transparent !text-[14px] !text-[#071726] !font-[400] cursor-pointer'
+              className='!w-[200px] !rounded-2xl !bg-transparent !text-[14px] !text-black-primary !font-[400] cursor-pointer'
             />
           </div>
 
@@ -134,7 +134,7 @@ const BillingHistory = () => {
         </div>
 
         {/* add member btn */}
-        <button className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/download.svg`}
             height={20}
@@ -152,7 +152,7 @@ const BillingHistory = () => {
         }}
       >
         <div className='flex flex-col flex-1 gap-4 w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-[#071726]'>
+          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
             <p className='!m-0  '>
               Billing History
             </p>

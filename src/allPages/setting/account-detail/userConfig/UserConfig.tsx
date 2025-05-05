@@ -7,6 +7,7 @@ import { Radio } from "antd";
 import { gymBranchData } from "@/constant/GymBranchData";
 import { userConfig } from "@/constant/userConfig";
 import Image from "next/image";
+import Link from "next/link";
 
 const UserConfig = () => {
   const [value, setValue] = useState(null);
@@ -39,9 +40,8 @@ const UserConfig = () => {
       render: (accessType: any) => {
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center   ${
-              accessType == "super_admin" ? "bg-[#92eef1]" : "bg-[#DEFF8F]"
-            }   `}
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center   ${accessType == "super_admin" ? "bg-[#92eef1]" : "bg-[#DEFF8F]"
+              }   `}
           >
             {accessType}
           </p>
@@ -95,7 +95,7 @@ const UserConfig = () => {
             alt="Arrow"
             width={20}
             height={20}
-      
+
           />
           <div className="font-['Roboto'] text-[20px] font-bold">
             User Configurations
@@ -108,11 +108,15 @@ const UserConfig = () => {
             alt="Arrow"
             width={20}
             height={20}
-          
+
           />
-          <div className="font-['Roboto'] text-[12px] font-semibold">
-            Add New User
-          </div>
+          <Link
+          href={`/management/settings/account-details/user-configuration/add`}
+          >
+            <div className="font-['Roboto'] text-[12px] font-semibold">
+              Add New User
+            </div>
+          </Link>
         </div>
       </div>
 

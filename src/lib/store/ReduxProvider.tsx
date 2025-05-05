@@ -5,6 +5,8 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '@/lib/store';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { Roboto } from "next/font/google";
+import "../../app/globals.css";
 
 interface Props {
   children: React.ReactNode;

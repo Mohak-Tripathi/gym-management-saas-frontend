@@ -36,7 +36,7 @@ const BranchId = () => {
                   height={20}
                 />
               </div>
-              <div className="text-[20px] font-bold text-[#071726]">
+              <div className="text-[20px] font-bold text-black-primary">
                 Create New Branch
               </div>
             </div>
@@ -44,7 +44,7 @@ const BranchId = () => {
 
           <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
             <div className="flex flex-col gap-2">
-              <h2 className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">Branch</h2>
+              <h2 className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">Branch</h2>
               <p className="text-[14px] font-normal text-[#07172699] leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
             </div>
             <div className="grid grid-cols-2 gap-6">
@@ -67,12 +67,12 @@ const BranchId = () => {
 
           <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
             <div className="flex flex-col gap-2">
-              <h2 className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">Branch</h2>
+              <h2 className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">Branch</h2>
               <p className="text-[14px] font-normal text-[#07172699] leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
             </div>
             <Radio.Group className="w-full !flex flex-col gap-4">
-              <Radio value={'yes'} className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">Yes</Radio>
-              <Radio value={'no'} className="text-[14px] text-[#071726] font-semibold leading-[100%] !m-0">No</Radio>
+              <Radio value={'yes'} className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">Yes</Radio>
+              <Radio value={'no'} className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">No</Radio>
             </Radio.Group>
           </div>
         </div>
@@ -82,14 +82,14 @@ const BranchId = () => {
           <Link href='/management/settings/account-details/branch'>
             <button
               type='button'
-              className=' w-[147px] h-[40px] !bg-[#EAEEF8] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
+              className=' w-[147px] h-[40px] !bg-[#EAEEF8] !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
             >
               Cancel
             </button>
           </Link>
           <button
             type='submit'
-            className=' w-[147px] h-[40px] !bg-[#071726] !text-white rounded-lg px-4 py-2 cursor-pointer'
+            className=' w-[147px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
           >
             Add Member
           </button>

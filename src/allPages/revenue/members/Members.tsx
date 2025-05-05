@@ -87,7 +87,7 @@ const Members = () => {
   
             {/* Name and Email */}
             <div className="flex flex-col">
-              <p className="text-[14px] font-semibold text-[#071726] !m-0">
+              <p className="text-[14px] font-semibold text-black-primary !m-0">
                 {record.name}
               </p>
               <p className="text-[12px] text-gray-500 !m-0">
@@ -119,7 +119,7 @@ const Members = () => {
         key: 'subscriptionType',
         render: (subscriptionType: any) => {
           return (
-            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-[#E4E4E4]' : subscriptionType === 'Silver' ? 'bg-[#EFF6F8]' : 'bg-[#FFDE8F]'}`}>
+            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-[#E4E4E4]' : subscriptionType === 'Silver' ? 'bg-[#EFF6F8]' : 'bg-[#FFDE8F]'}`}>
               {subscriptionType}
             </p>
           );
@@ -141,7 +141,7 @@ const Members = () => {
         key: 'status',
         render: (status: any) => {
           return (
-            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${status === 'Active' ? 'bg-[#D5F4DF]' : 'bg-[#F4D5D8]'}`}>
+            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-[#D5F4DF]' : 'bg-[#F4D5D8]'}`}>
               {status}
             </p>
           );
@@ -153,7 +153,7 @@ const Members = () => {
         key: 'payment',
         render: (payment: any) => {
           return (
-            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-[#E1F4D5]' : payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}>
+            <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-[#E1F4D5]' : payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}>
               <Image
                 src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
                 height={20}
@@ -224,7 +224,7 @@ const Members = () => {
           {/* heading */}
           <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-start gap-2'>
-              <p className='font-semibold text-[14px] text-[#071726]'>Members Revenue</p>
+              <p className='font-semibold text-[14px] text-black-primary'>Members Revenue</p>
             </div>
           </div>
 
@@ -244,7 +244,7 @@ const Members = () => {
           {/* heading */}
           <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-start gap-2'>
-              <p className='font-semibold text-[14px] text-[#071726]'>Revenue From Order</p>
+              <p className='font-semibold text-[14px] text-black-primary'>Revenue From Order</p>
             </div>
           </div>
 
@@ -264,7 +264,7 @@ const Members = () => {
           {/* heading */}
           <div className='flex flex-col gap-4'>
             <div className='flex justify-between items-start gap-2'>
-              <p className='font-semibold text-[14px] text-[#071726]'>Pending Orders</p>
+              <p className='font-semibold text-[14px] text-black-primary'>Pending Orders</p>
             </div>
           </div>
 
@@ -309,7 +309,7 @@ const Members = () => {
 
           {/* add member btn */}
           <button
-            className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] leading-[100%] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
+            className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] leading-[100%] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
             <Image
               src={`/images/invoice.svg`}
               height={20}
@@ -327,7 +327,7 @@ const Members = () => {
           }}
         >
           <div className='flex flex-col flex-1 gap-4 w-full'>
-            <div className='flex gap-3 items-center !font-[600] text-[14px] text-[#071726]'>
+            <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
               <p className='!m-0  '>
                 Total Members
               </p>

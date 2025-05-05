@@ -118,7 +118,7 @@ const Header = () => {
             return (
               <li
                 key={index}
-                className={`w-auto h-[32px] px-3 rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'border-[#071726] bg-[#071726] text-white' : 'border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
+                className={`w-auto h-[32px] px-3 rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'border-black-primary bg-black-primary text-white' : 'border-[#0000001A] bg-transparent text-black-primary'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
               >
                 <Link href={record.src} className='flex gap-2.5 items-center justify-center' >
                   <Image
@@ -142,7 +142,7 @@ const Header = () => {
             return (
               <li
                 key={index}
-                className={`w-auto h-[32px] rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'px-3 border-[#071726] bg-[#071726] text-white' : 'px-1 border-[#0000001A] bg-transparent text-[#071726]'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
+                className={`w-auto h-[32px] rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'px-3 border-black-primary bg-black-primary text-white' : 'px-1 border-[#0000001A] bg-transparent text-black-primary'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
               >
                 <Link href={record.src} className='flex gap-2.5 items-center justify-center'>
                   <Image

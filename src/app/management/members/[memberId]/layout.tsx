@@ -21,7 +21,7 @@ export default function RootLayout({
           className='w-5 h-5 cursor-pointer'
           onClick={() => router.push(`/management/members/members`)}
         />
-        <p className='text-[14px] text-[#071726] font-normal flex items-center gap-1 !m-0'>
+        <p className='text-[14px] text-black-primary font-normal flex items-center gap-1 !m-0'>
           Member
           <Image
             src={`/images/iconly/light/arrowBlack.svg`}
@@ -30,7 +30,7 @@ export default function RootLayout({
             height={0}
             className='w-5 h-5'
           />
-          <span className='text-[14px] text-[#071726] font-bold '>
+          <span className='text-[14px] text-black-primary font-bold '>
             Member Profile Details
           </span>
         </p>

@@ -87,7 +87,7 @@ const Trainer = () => {
 
           {/* Name and Email */}
           <div className="flex flex-col">
-            <p className="text-[14px] font-semibold text-[#071726] !m-0">
+            <p className="text-[14px] font-semibold text-black-primary !m-0">
               {record.name}
             </p>
             <p className="text-[12px] text-gray-500 !m-0">
@@ -119,7 +119,7 @@ const Trainer = () => {
       key: 'workType',
       render: (workType: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${workType === 'Full Time' ? 'bg-[#FFDE8F]' : 'bg-[#EFF6F8]'}`}>
+          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${workType === 'Full Time' ? 'bg-[#FFDE8F]' : 'bg-[#EFF6F8]'}`}>
             {workType}
           </p>
         );
@@ -141,7 +141,7 @@ const Trainer = () => {
       key: 'status',
       render: (status: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${status === 'Active' ? 'bg-[#D5F4DF]' : 'bg-[#F4D5D8]'}`}>
+          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-[#D5F4DF]' : 'bg-[#F4D5D8]'}`}>
             {status}
           </p>
         );
@@ -153,7 +153,7 @@ const Trainer = () => {
       key: 'payment',
       render: (payment: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-[#E1F4D5]' : payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}>
+          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-[#E1F4D5]' : payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}>
             <Image
               src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
               height={20}
@@ -257,7 +257,7 @@ const Trainer = () => {
         {/* add member btn */}
         <button
           onClick={() => handleAddTrainerClick()}
-          className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
+          className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
@@ -275,7 +275,7 @@ const Trainer = () => {
         }}
       >
         <div className='flex flex-col flex-1 gap-4 w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-[#071726]'>
+          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
             <p className='!m-0  '>
               Total Trainer
             </p>

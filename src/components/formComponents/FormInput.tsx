@@ -33,7 +33,7 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
     return (
         <div className='flex flex-col gap-1.5'>
-            <Title className="!text-[#071726] !text-[14px] !font-semibold !mb-0">
+            <Title className="!text-black-primary !text-[14px] !font-semibold !mb-0">
                 {label}
             </Title>
             <Form.Item
@@ -44,7 +44,7 @@ const FormInput: React.FC<FormInputProps> = ({
                     placeholder={placeholder}
                     defaultValue={initialValue}
                     style={{ height: 40 }}
-                    className=' !rounded-[12px] !bg-transparent !text-[14px] !text-[#071726] !font-[400] cursor-pointer'
+                    className=' !rounded-[12px] !bg-transparent !text-[14px] !text-black-primary !font-[400] cursor-pointer'
                 />
             </Form.Item>
         </div>

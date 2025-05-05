@@ -93,13 +93,13 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     <button
                         type='button'
                         onClick={() => handleCancel()}
-                        className=' w-[147px] h-10 !bg-[#EAEEF8] !text-[#071726] rounded-lg px-4 py-2 cursor-pointer'
+                        className=' w-[147px] h-10 !bg-[#EAEEF8] !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
                     >
                         Cancel
                     </button>
                     <button
                         type='submit'
-                        className=' w-[147px] h-10 !bg-[#071726] !text-white rounded-lg px-4 py-2 cursor-pointer'
+                        className=' w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                     >
                         Add Member
                     </button>

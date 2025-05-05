@@ -13,7 +13,7 @@ const CommunityFeed = () => {
         }}
       >
         <div className='flex flex-col gap-4 w-full'>
-          <h2 className='text-[16px] text-[#071726] font-semibold leading-[100%] !m-0 '>CommunityFeed Feed</h2>
+          <h2 className='text-[16px] text-black-primary font-semibold leading-[100%] !m-0 '>CommunityFeed Feed</h2>
           <div className='flex items-center gap-2.5'>
             <Image
               src='/images/iconly/light/logoLock.svg'
@@ -23,7 +23,7 @@ const CommunityFeed = () => {
               className='cursor-pointer'
             />
             <div className='flex flex-col gap-2'>
-              <h2 className='text-[24px] text-[#071726] font-semibold leading-[100%] !m-0 '>LiftUp</h2>
+              <h2 className='text-[24px] text-black-primary font-semibold leading-[100%] !m-0 '>LiftUp</h2>
               <div className='flex gap-4'>
                 <p className='text-[12px] text-[#727272] font-normal leading-[100%] !m-0 '>What you want to share.</p>
                 <p className='text-[13px] text-[#727272] font-normal leading-[100%] !m-0 '>What you want to share.</p>
@@ -31,8 +31,8 @@ const CommunityFeed = () => {
             </div>
           </div>
           <div className='w-full flex items-center justify-between'>
-            <p className='text-[14px] text-[#071726] font-semibold leading-[100%] !m-0'>Event</p>
-            <p className='text-[14px] text-[#071726] font-semibold leading-[100%] !m-0'>See All</p>
+            <p className='text-[14px] text-black-primary font-semibold leading-[100%] !m-0'>Event</p>
+            <p className='text-[14px] text-black-primary font-semibold leading-[100%] !m-0'>See All</p>
           </div>
 
           <div className='flex flex-col gap-4 w-full h-[calc(100vh-360px)] overflow-y-scroll'>
@@ -42,9 +42,9 @@ const CommunityFeed = () => {
                 <div className='w-0.5 bg-[#0717261A]'></div>
                 <div className='flex flex-1 justify-between items-center'>
                   <div className='flex flex-col gap-1'>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>10:45 - 11:30 AM</p>
-                    <p className='text-[14px] text-[#071726] font-semibold !m-0'>Beginner Fit session</p>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>Sara Fisher</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>10:45 - 11:30 AM</p>
+                    <p className='text-[14px] text-black-primary font-semibold !m-0'>Beginner Fit session</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>Sara Fisher</p>
                   </div>
                   <Image
                     src='/images/iconly/light/moreCircle.svg'
@@ -63,9 +63,9 @@ const CommunityFeed = () => {
                 <div className='w-0.5 bg-[#0717261A]'></div>
                 <div className='flex flex-1 justify-between items-center'>
                   <div className='flex flex-col gap-1'>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>10:45 - 11:30 AM</p>
-                    <p className='text-[14px] text-[#071726] font-semibold !m-0'>Beginner Fit session</p>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>Sara Fisher</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>10:45 - 11:30 AM</p>
+                    <p className='text-[14px] text-black-primary font-semibold !m-0'>Beginner Fit session</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>Sara Fisher</p>
                   </div>
                   <Image
                     src='/images/iconly/light/moreCircle.svg'
@@ -84,9 +84,9 @@ const CommunityFeed = () => {
                 <div className='w-0.5 bg-[#0717261A]'></div>
                 <div className='flex flex-1 justify-between items-center'>
                   <div className='flex flex-col gap-1'>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>10:45 - 11:30 AM</p>
-                    <p className='text-[14px] text-[#071726] font-semibold !m-0'>Beginner Fit session</p>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>Sara Fisher</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>10:45 - 11:30 AM</p>
+                    <p className='text-[14px] text-black-primary font-semibold !m-0'>Beginner Fit session</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>Sara Fisher</p>
                   </div>
                   <Image
                     src='/images/iconly/light/moreCircle.svg'
@@ -105,9 +105,9 @@ const CommunityFeed = () => {
                 <div className='w-0.5 bg-[#0717261A]'></div>
                 <div className='flex flex-1 justify-between items-center'>
                   <div className='flex flex-col gap-1'>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>10:45 - 11:30 AM</p>
-                    <p className='text-[14px] text-[#071726] font-semibold !m-0'>Beginner Fit session</p>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>Sara Fisher</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>10:45 - 11:30 AM</p>
+                    <p className='text-[14px] text-black-primary font-semibold !m-0'>Beginner Fit session</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>Sara Fisher</p>
                   </div>
                   <Image
                     src='/images/iconly/light/moreCircle.svg'
@@ -126,9 +126,9 @@ const CommunityFeed = () => {
                 <div className='w-0.5 bg-[#0717261A]'></div>
                 <div className='flex flex-1 justify-between items-center'>
                   <div className='flex flex-col gap-1'>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>10:45 - 11:30 AM</p>
-                    <p className='text-[14px] text-[#071726] font-semibold !m-0'>Beginner Fit session</p>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>Sara Fisher</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>10:45 - 11:30 AM</p>
+                    <p className='text-[14px] text-black-primary font-semibold !m-0'>Beginner Fit session</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>Sara Fisher</p>
                   </div>
                   <Image
                     src='/images/iconly/light/moreCircle.svg'
@@ -147,9 +147,9 @@ const CommunityFeed = () => {
                 <div className='w-0.5 bg-[#0717261A]'></div>
                 <div className='flex flex-1 justify-between items-center'>
                   <div className='flex flex-col gap-1'>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>10:45 - 11:30 AM</p>
-                    <p className='text-[14px] text-[#071726] font-semibold !m-0'>Beginner Fit session</p>
-                    <p className='text-[12px] text-[#071726] font-normal !m-0'>Sara Fisher</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>10:45 - 11:30 AM</p>
+                    <p className='text-[14px] text-black-primary font-semibold !m-0'>Beginner Fit session</p>
+                    <p className='text-[12px] text-black-primary font-normal !m-0'>Sara Fisher</p>
                   </div>
                   <Image
                     src='/images/iconly/light/moreCircle.svg'
@@ -178,7 +178,7 @@ const CommunityFeed = () => {
           {/* heading */}
           <div className='w-full flex items-center justify-between'>
             <div className='flex flex-col gap-2'>
-              <h2 className='text-[20px] font-semibold leading-[100%] text-[#071726] !m-0'>Welcome Back, Alex Mason 👋</h2>
+              <h2 className='text-[20px] font-semibold leading-[100%] text-black-primary !m-0'>Welcome Back, Alex Mason 👋</h2>
               <p className='text-[14px] font-normal leading-[100%] text-[#07172699] !m-0 '>What you want to share.</p>
             </div>
             <div className='flex items-center gap-3'>
@@ -231,11 +231,11 @@ const CommunityFeed = () => {
               U
             </Avatar>
             <textarea
-              className='w-full h-full p-3 rounded-lg border border-[#0000001A] !resize-none !text-[14px] !font-normal text-[#071726] outline-none'
+              className='w-full h-full p-3 rounded-lg border border-[#0000001A] !resize-none !text-[14px] !font-normal text-black-primary outline-none'
               placeholder='What’s on your mind?'
               rows={3}
             />
-            <button className='flex gap-1.5 items-center w-24 justify-center !bg-[#071726] !text-[12px] font-semibold !text-[#fff] rounded-lg px-2 py-1.5 cursor-pointer'>
+            <button className='flex gap-1.5 items-center w-24 justify-center !bg-black-primary !text-[12px] font-semibold !text-[#fff] rounded-lg px-2 py-1.5 cursor-pointer'>
               <Image
                 src='/images/iconly/bold/send.svg'
                 alt='plus'
