@@ -38,3 +38,31 @@ export const postRequest = async (
     throw error;
   }
 };
+
+// put request
+export const putRequest = async (
+  url: string,
+  data: Record<string, any>
+) => {
+  try {
+    const response = await api.put(getFullUrl(url), data);
+    return response.data;
+  } catch (error) {
+    console.error('put request error:', error);
+    throw error;
+  }
+};
+
+// delete request
+export const deleteRequest = async (
+  url: string,
+): Promise<{ message: string }> => {
+  try {
+    const response = await api.delete(getFullUrl(url));
+    return response.data;
+  } catch (error) {
+    console.error('delete request error:', error);
+    throw error;
+  }
+};
+

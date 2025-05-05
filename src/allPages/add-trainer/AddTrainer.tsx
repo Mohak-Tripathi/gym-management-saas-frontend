@@ -1,14 +1,16 @@
 'use client'
 import FormInput from '@/components/formComponents/FormInput';
 import FormSelect from '@/components/formComponents/FormSelect';
-import { Form } from 'antd'
+import { postRequest } from '@/lib/services/request';
+import { Form, message } from 'antd'
+import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 interface AddTrainerProps {
     onClose: () => void;
     open: boolean;
     selectedTrainerData?: any;
-  }
+}
 
 const expertiseOptions = [
     { value: 'Yoga', label: 'Yoga' },
@@ -18,11 +20,45 @@ const expertiseOptions = [
     { value: 'HIIT', label: 'HIIT' },
 ]
 
+const workTypeOption = [
+    {label: 'Part Time', value: 'PART_TIME'},
+    {label: 'Full Time', value: 'FULL_TIME'},
+]
+
 const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerData }) => {
     const [form] = Form.useForm();
+    const router = useRouter()
 
-    const handleFinish = (values: any) => {
-        onClose()
+    const handleFinish = async (values: any) => {
+        console.log(values, "trainer values");
+
+        const payload = {
+            userData: {
+              fullName: values.fullName,
+              email: values.email,
+              role: values.role,
+              phone: values.phone,
+            },
+            trainerData: {
+              referenceMobileNo: values.referenceMobileNo,
+            //   gender: values.gender || "MALE", // defaulting if gender not present
+              specialization: values.expertise ? [values.expertise] : [], // wrap in array
+              workType: values.workType,
+            //   joiningDate: values.joiningDate || new Date().toISOString(), // default to now if not given
+              experienceYears: Number(values.experienceYears), // ensure it's a number
+              gymBranchId: "284bb49b-e9e3-41c2-8531-0653876aff13",
+            },
+          };
+
+        try {
+            const response = await postRequest("/api/trainers", payload);
+            message.success("New Branch creared successfully")
+            // router.push("/management/trainer/trainer")
+            console.log(response, "branch created");
+        } catch (error) {
+            console.error("Branch creation failed:", error);
+        }
+        // onClose()
     };
 
     const handleCancel = () => {
@@ -55,47 +91,46 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                 <div className='flex flex-col gap-4'>
                     <FormInput
                         label='Trainer name'
-                        name='trainerName'
+                        name='fullName'
                     />
                     <div className='w-full grid grid-cols-2 gap-4'>
-                        <FormInput
-                            label='Experience'
-                            name='experience'
-                        />
-
-                        <FormSelect
-                            label='Expertise'
-                            name='expertise'
-                        />
-
-                        <FormInput
-                            label='Certification'
-                            name='certification'
-                        />
-
-                        <FormSelect
-                            label='Work Type'
-                            name='workType'
-                        />
                         <FormInput
                             label='Email'
                             name='email'
                         />
 
                         <FormInput
-                            label='Mobile No.'
-                            name='mobileNumber'
+                            label='Role'
+                            name='role'
                         />
 
                         <FormInput
-                            label='Date of Birth'
-                            name='DOB'
+                            label='Mobile No.'
+                            name='phone'
                         />
 
                         <FormInput
                             label='Reference Mobile No.'
-                            name='referenceMobileNumber'
+                            name='referenceMobileNo'
                         />
+
+                        <FormSelect
+                            label='Expertise'
+                            name='expertise'
+                            options={expertiseOptions}
+                        />
+
+                        <FormInput
+                            label='Experience (Years)'
+                            name='experienceYears'
+                        />
+
+                        <FormSelect
+                            label='Work Type'
+                            name='workType'
+                            options={workTypeOption}
+                        />
+
                     </div>
 
                     <FormInput
