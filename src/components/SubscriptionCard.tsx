@@ -40,7 +40,7 @@ const SubscriptionCard = ({
               className="w-[24px] h-[24px]"
             />
           </div>
-          <h2 className="text-[14px] !font-semibold text-[#071726] leading-[100%] !m-0">{planTitle}</h2>
+          <h2 className="text-[14px] !font-semibold text-black-primary leading-[100%] !m-0">{planTitle}</h2>
         </div>
         <h2 className={`!font-semibold text-[14px] ${textColor} leading-[100%] !m-0`}>
           {duration}
@@ -48,14 +48,14 @@ const SubscriptionCard = ({
       </div>
 
       <div className="flex items-start justify-start gap-2">
-        <h2 className="!font-bold text-[32px] text-[#071726] leading-[100%] "> ₹ {discountedPrice}</h2>
+        <h2 className="!font-bold text-[32px] text-black-primary leading-[100%] "> ₹ {discountedPrice}</h2>
         <h3 className="!font-bold text-[20px] text-[#07172699] line-through leading-[100%]">
           ₹ {actualPrice}
         </h3>
       </div>
 
       <div className="flex justify-between items-center">
-        <p className="text-[#071726] !font-semibold text-[14px] leading-[100%] !m-0">
+        <p className="text-black-primary !font-semibold text-[14px] leading-[100%] !m-0">
           {classesCount} classess per month
         </p>
 

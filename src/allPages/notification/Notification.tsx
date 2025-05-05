@@ -72,7 +72,7 @@ const notifications = [
 const Notification = () => {
   return (
     <main className='w-full h-[calc(100%-80px)] flex flex-1 flex-col gap-3'>
-      <h1 className='!m-0 !font-[600] text-[20px] text-[#071726]'>
+      <h1 className='!m-0 !font-[600] text-[20px] text-black-primary'>
         Notification
       </h1>
 
@@ -82,7 +82,7 @@ const Notification = () => {
         }}
       >
         <div className='flex flex-col w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-[#071726]'>
+          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
             <p className='!m-0  '>
               Total Notification
             </p>
@@ -108,18 +108,18 @@ const Notification = () => {
                       />
                     </div>
                     <div className='flex flex-col gap-2'>
-                      <p className='!m-0 !font-[600] text-[14px] text-[#071726]'>
+                      <p className='!m-0 !font-[600] text-[14px] text-black-primary'>
                         {data.title}
                       </p>
-                      <p className='!m-0 !font-[400] text-[12px] text-[#071726]'>
+                      <p className='!m-0 !font-[400] text-[12px] text-black-primary'>
                         {data.desc}
                       </p>
                     </div>
                   </div>
 
                   <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
-                    <button className='w-[147px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer '>Mark as Read</button>
-                    <button className='w-[147px] h-[32px] rounded-xl bg-[#071726] border-none !text-[12px] !text-white font-[600] cursor-pointer '>View Changes</button>
+                    <button className='w-[147px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-black-primary font-[600] cursor-pointer '>Mark as Read</button>
+                    <button className='w-[147px] h-[32px] rounded-xl bg-black-primary border-none !text-[12px] !text-white font-[600] cursor-pointer '>View Changes</button>
                     <Image
                       src={`/images/iconly/light/delete.svg`}
                       height={20}

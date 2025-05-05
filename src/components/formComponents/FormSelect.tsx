@@ -39,7 +39,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 }) => {
     return (
         <div className='flex flex-col gap-1.5'>
-            <Title className="!text-[#071726] !text-[14px] !font-normal !mb-0">
+            <Title className="!text-black-primary !text-[14px] !font-normal !mb-0">
                 {label}
             </Title>
             <Form.Item

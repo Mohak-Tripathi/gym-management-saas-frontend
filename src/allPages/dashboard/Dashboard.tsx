@@ -22,7 +22,7 @@ const Dashboard = () => {
         >
           <div className="flex flex-col gap-3">
             <div className="flex justify-end items-center gap-1">
-              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-[#071726]">
+              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-black-primary">
                 Members
               </p>
               <Image
@@ -34,7 +34,7 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-between items-end">
               <div className="flex gap-1 items-end">
-                <p className="font-semibold text-[32px] text-[#071726] leading-[100%] !-mb-1 ">
+                <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   125
                 </p>
                 <p className="font-normal text-[12px] text-[#127F62] leading-[100%] !m-0">
@@ -47,7 +47,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#FFDD6E] font-normal text-[12px] leading-[100%] text-[#071726] rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-[#FFDD6E] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">445</span>
             </p>
           </div>
@@ -62,7 +62,7 @@ const Dashboard = () => {
         >
           <div className="flex flex-col gap-3">
             <div className="flex justify-end items-center gap-1">
-              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-[#071726]">
+              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-black-primary">
                 Expired
               </p>
               <Image
@@ -74,7 +74,7 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-between items-end">
               <div className="flex gap-1 items-end">
-                <p className="font-semibold text-[32px] text-[#071726] leading-[100%] !-mb-1 ">
+                <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   08
                 </p>
                 <p className="font-normal text-[12px] text-[#E14942] leading-[100%] !m-0">
@@ -87,7 +87,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#FFC8E4] font-normal text-[12px] leading-[100%] text-[#071726] rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-[#FFC8E4] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">45</span>
             </p>
           </div>
@@ -102,7 +102,7 @@ const Dashboard = () => {
         >
           <div className="flex flex-col gap-3">
             <div className="flex justify-end items-center gap-1">
-              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-[#071726]">
+              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-black-primary">
                 Earning
               </p>
               <Image
@@ -114,7 +114,7 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-between items-end">
               <div className="flex gap-1 items-end">
-                <p className="font-semibold text-[32px] text-[#071726] leading-[100%] !-mb-1 ">
+                <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   ₹ 7213
                 </p>
                 <p className="font-normal text-[12px] text-[#127F62] leading-[100%] !m-0">
@@ -127,7 +127,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#D9D2FF] font-normal text-[12px] leading-[100%] text-[#071726] rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-[#D9D2FF] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">₹ 32245</span>
             </p>
           </div>
@@ -142,7 +142,7 @@ const Dashboard = () => {
         >
           <div className="flex flex-col gap-3">
             <div className="flex justify-end items-center gap-1">
-              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-[#071726]">
+              <p className="!m-0 font-semibold text-[12px] leading-[100%] text-black-primary">
                 Classes Booked
               </p>
               <Image
@@ -154,7 +154,7 @@ const Dashboard = () => {
             </div>
             <div className="flex justify-between items-end">
               <div className="flex gap-1 items-end">
-                <p className="font-semibold text-[32px] text-[#071726] leading-[100%] !-mb-1 ">
+                <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   76
                 </p>
                 <p className="font-normal text-[12px] text-[#127F62] leading-[100%] !m-0">
@@ -167,7 +167,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#C7F5BC] font-normal text-[12px] leading-[100%] text-[#071726] rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-[#C7F5BC] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">345</span>
             </p>
           </div>
@@ -186,7 +186,7 @@ const Dashboard = () => {
           {/* heading */}
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-start gap-2">
-              <p className="font-semibold text-[14px] text-[#071726]">
+              <p className="font-semibold text-[14px] text-black-primary">
                 Revenue
               </p>
             </div>
@@ -206,7 +206,7 @@ const Dashboard = () => {
           {/* heading */}
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-start gap-2">
-              <p className="font-semibold text-[14px] text-[#071726]">
+              <p className="font-semibold text-[14px] text-black-primary">
                 Age Range
               </p>
             </div>
@@ -228,7 +228,7 @@ const Dashboard = () => {
           {/* heading */}
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-start gap-2">
-              <p className="font-semibold text-[14px] text-[#071726]">
+              <p className="font-semibold text-[14px] text-black-primary">
                 Members Activity
               </p>
             </div>
@@ -254,10 +254,10 @@ const Dashboard = () => {
           {/* heading */}
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-start gap-2">
-              <p className="font-semibold text-[14px] text-[#071726]">
+              <p className="font-semibold text-[14px] text-black-primary">
                 Community Feed
               </p>
-              <p className="font-semibold text-[12px] text-[#071726] cursor-pointer">
+              <p className="font-semibold text-[12px] text-black-primary cursor-pointer">
                 See All
               </p>
             </div>
@@ -277,10 +277,10 @@ const Dashboard = () => {
           {/* heading */}
           <div className="flex flex-col gap-4">
             <div className="flex justify-between items-start gap-2">
-              <p className="font-semibold text-[14px] text-[#071726]">
+              <p className="font-semibold text-[14px] text-black-primary">
                 Trainers Time Schedule
               </p>
-              <p className="font-semibold text-[12px] text-[#071726] cursor-pointer">
+              <p className="font-semibold text-[12px] text-black-primary cursor-pointer">
                 See All
               </p>
             </div>
@@ -302,7 +302,7 @@ const Dashboard = () => {
             {/* heading */}
             <div className="flex flex-col gap-4">
               <div className="flex justify-between items-start gap-2">
-                <p className="font-semibold text-[14px] text-[#071726]">
+                <p className="font-semibold text-[14px] text-black-primary">
                   Top Sold Products
                 </p>
               </div>
@@ -322,7 +322,7 @@ const Dashboard = () => {
             {/* heading */}
             <div className="flex flex-col gap-4">
               <div className="flex justify-between items-start gap-2">
-                <p className="font-semibold text-[14px] text-[#071726]">
+                <p className="font-semibold text-[14px] text-black-primary">
                   New Members
                 </p>
               </div>

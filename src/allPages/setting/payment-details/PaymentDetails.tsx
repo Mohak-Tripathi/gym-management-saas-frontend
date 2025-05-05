@@ -38,7 +38,7 @@ const PaymentDetails = () => {
                         />
                     </div>
 
-                    <p className="!font-semibold text-[14px] text-[#071726]">Add New Card</p>
+                    <p className="!font-semibold text-[14px] text-black-primary">Add New Card</p>
                 </div>
 
             </Link>

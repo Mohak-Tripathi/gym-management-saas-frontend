@@ -26,8 +26,8 @@ export default function RootLayout({
       <body className={`${roboto.variable} antialiased`}
       >
         <ReduxProviders>
-        <TokenSyncProvider>
-          {children}
+          <TokenSyncProvider>
+            {children}
           </TokenSyncProvider>
         </ReduxProviders>
       </body>

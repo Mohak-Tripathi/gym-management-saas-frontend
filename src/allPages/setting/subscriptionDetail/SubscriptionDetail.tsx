@@ -77,7 +77,7 @@ const SubscriptionDetail = () => {
             />
           </div>
 
-          <p className="!font-semibold text-[14px] text-[#071726]">Add New Plan</p>
+          <p className="!font-semibold text-[14px] text-black-primary">Add New Plan</p>
         </div>
       </Link>
     </div>

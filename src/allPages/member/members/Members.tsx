@@ -111,7 +111,7 @@ const Memebers = () => {
 
           {/* Name and Email */}
           <div className="flex flex-col">
-            <p className="text-[14px] font-semibold text-[#071726] !m-0">
+            <p className="text-[14px] font-semibold text-black-primary !m-0">
               {record.name}
             </p>
             <p className="text-[12px] text-gray-500 !m-0">
@@ -143,7 +143,7 @@ const Memebers = () => {
       key: 'subscriptionType',
       render: (subscriptionType: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-[#E4E4E4]' : subscriptionType === 'Silver' ? 'bg-[#EFF6F8]' : 'bg-[#FFDE8F]'}`}>
+          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-[#E4E4E4]' : subscriptionType === 'Silver' ? 'bg-[#EFF6F8]' : 'bg-[#FFDE8F]'}`}>
             {subscriptionType}
           </p>
         );
@@ -165,7 +165,7 @@ const Memebers = () => {
       key: 'status',
       render: (status: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${status === 'Active' ? 'bg-[#D5F4DF]' : 'bg-[#F4D5D8]'}`}>
+          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-[#D5F4DF]' : 'bg-[#F4D5D8]'}`}>
             {status}
           </p>
         );
@@ -177,7 +177,7 @@ const Memebers = () => {
       key: 'payment',
       render: (payment: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-[#E1F4D5]' : payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}>
+          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-[#E1F4D5]' : payment === 'Overdue' ? 'bg-[#F4D5EE]' : 'bg-[#F4ECD5]'}`}>
             <Image
               src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
               height={20}
@@ -291,7 +291,7 @@ const Memebers = () => {
         {/* add member btn */}
         <button
           onClick={() => handleAddMemberClick()}
-          className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-[#071726] font-[600] cursor-pointer flex justify-center items-center gap-2'>
+          className='w-[171px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
@@ -309,7 +309,7 @@ const Memebers = () => {
         }}
       >
         <div className='flex flex-col flex-1 gap-4 w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-[#071726]'>
+          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
             <p className='!m-0  '>
               Total Members
             </p>

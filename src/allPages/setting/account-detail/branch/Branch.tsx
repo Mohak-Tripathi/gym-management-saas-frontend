@@ -52,7 +52,7 @@ const Branch = () => {
       render: (isMainBranch: any) => {
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-[#071726] flex justify-center items-center ${
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${
               isMainBranch && "bg-[#FFDE8F]"
             }`}
           >
@@ -109,7 +109,7 @@ const Branch = () => {
               height={20}
             />
           </div>
-          <div className="text-[20px] font-bold text-[#071726]">
+          <div className="text-[20px] font-bold text-black-primary">
             Branch Space
           </div>
         </div>
@@ -121,7 +121,7 @@ const Branch = () => {
               width={16}
               height={16}
             />
-            <div className="text-[12px] font-semibold text-[#071726] leading-[100%]">
+            <div className="text-[12px] font-semibold text-black-primary leading-[100%]">
               Add New Branch
             </div>
           </div>
