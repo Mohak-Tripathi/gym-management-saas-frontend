@@ -12,7 +12,7 @@ const UserConfigId = () => {
   const [form] = Form.useForm();
 
   const handleFinish = (values: any) => {
-    console.log("Form Submitted");
+    console.log("Form Submitted", values);
   };
 
   const handleCancel = () => {
@@ -21,8 +21,9 @@ const UserConfigId = () => {
 
   return (
     <div className="flex flex-col gap-6 shadow-md p-6 w-full">
-      <div className="flex gap-4 items-center">
-        <div>
+
+      <div className="flex gap-4 items-center bg-[#F4F7FC] rounded-lg">
+      <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
           <Image
             src={`/images/iconly/light/buildings.svg`}
             alt="Arrow"
@@ -36,7 +37,9 @@ const UserConfigId = () => {
           Create New User{" "}
         </div>
       </div>
-      <div>
+
+
+      <div className="border border-[#D9D9D999]">
         <div className="flex flex-col gap-2">
           <div className="font-['Roboto] text-[14px] font-semibold">
             User{" "}
@@ -71,7 +74,7 @@ const UserConfigId = () => {
           </Form>
         </div>
       </div>
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-10 border border-[#D9D9D999]">
         <div className="flex flex-col gap-6">
           <div className="flex gap-2 flex-col">
             <div className="font-['Roboto] text-[14px] font-semibold">

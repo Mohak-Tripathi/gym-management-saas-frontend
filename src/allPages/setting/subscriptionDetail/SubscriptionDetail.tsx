@@ -1,10 +1,34 @@
 "use client"
 import SubscriptionCard from "@/components/SubscriptionCard";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { getRequest } from "@/lib/services/request";
 
 const SubscriptionDetail = () => {
+
+  const [subscriptionDetailsData, setSubscriptionDetailsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+
+
+  useEffect(() => {
+    const fetchAllSubscriptionPlan = async () => {
+      setLoading(true);
+      try {
+        const data = await getRequest(`/api/memberships?gymBranchId=${currentGymBranchId}`);
+        console.log(data, "subscriptionPlan");
+        setSubscriptionDetailsData(data); // Adjust if your API response is wrapped (e.g., data.items)
+      } catch (error) {
+        // Optionally handle error
+        setSubscriptionDetailsData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAllSubscriptionPlan();
+  }, []);
 
   return (
     <div className="w-full grid grid-cols-3 gap-6">
