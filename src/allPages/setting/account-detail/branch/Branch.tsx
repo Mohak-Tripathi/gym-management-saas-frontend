@@ -1,33 +1,58 @@
 "use client";
 
-import { Table } from "antd";
+import { message, Modal, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { gymBranchData } from "@/constant/GymBranchData";
 import Image from "next/image";
 import Link from "next/link";
-import { getRequest } from "@/lib/services/request";
+import { deleteRequest, getRequest } from "@/lib/services/request";
 
 const Branch = () => {
   const [branches, setBranches] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteBranchId, setDeleteBranchId] = useState('')
+
+  const fetchBranches = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest("/api/gym-branch");
+      console.log(data, "gymbranchdata");
+      setBranches(data);
+    } catch (error) {
+      setBranches([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchBranches = async () => {
-      setLoading(true);
-      try {
-        const data = await getRequest("/api/gym-branch");
-        console.log(data, "gymbranchdata");
-        setBranches(data); // Adjust if your API response is wrapped (e.g., data.items)
-      } catch (error) {
-        // Optionally handle error
-        setBranches([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchBranches();
   }, []);
+
+  const deleteIconClick = (branchId: string) => {
+    setDeleteBranchId(branchId)
+    setConfirmDeleteVisible(true)
+  }
+
+  const handleDeleteBranch = async () => {
+    try {
+      const response = await deleteRequest(`/api/gym-branch/${deleteBranchId}`);
+      message.success("Branch data updated successfully")
+      console.log(response, "branch updated");
+      await fetchBranches();
+    } catch (error) {
+      console.error("Branch creation failed:", error);
+    }
+    setDeleteBranchId('')
+    setConfirmDeleteVisible(false)
+  }
+
+  const handleCancel = () => {
+    console.log('cancel delete request');
+    setDeleteBranchId('')
+    setConfirmDeleteVisible(false)
+  }
 
   const columns = [
     {
@@ -52,9 +77,8 @@ const Branch = () => {
       render: (isMainBranch: any) => {
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${
-              isMainBranch && "bg-yellow-primary"
-            }`}
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${isMainBranch && "bg-yellow-primary"
+              }`}
           >
             {isMainBranch ? "Primary Branch" : ""}
           </p>
@@ -67,7 +91,9 @@ const Branch = () => {
       key: "action",
       render: (_: any, record: any, index: number) => (
         <div className="flex justify-end gap-4 items-center">
-          <div className="cursor-pointer p-1">
+          <Link
+            href={`/management/settings/account-details/branch/${record.id}`}
+            className="cursor-pointer p-1">
             <Image
               src="/images/iconly/light/Edit.svg"
               alt="Edit"
@@ -75,8 +101,10 @@ const Branch = () => {
               height={0}
               className="h-[20px] w-[20px]"
             />
-          </div>
-          <div className="cursor-pointer p-1">
+          </Link>
+          <div
+            onClick={() => deleteIconClick(record.id)}
+            className="cursor-pointer p-1">
             <Image
               src="/images/iconly/light/Delete-1.svg"
               alt="delete"
@@ -138,6 +166,18 @@ const Branch = () => {
           className="custom-small-table"
         />
       </div>
+
+      {/* Confirmation Modal */}
+      <Modal
+        title="Confirm Delete"
+        open={confirmDeleteVisible}
+        onOk={handleDeleteBranch}
+        onCancel={() => handleCancel()}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this branch?</p>
+      </Modal>
     </div>
   );
 };
