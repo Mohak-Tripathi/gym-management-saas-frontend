@@ -22,41 +22,42 @@ const api = axios.create({
 // });
 
 
-// api.interceptors.request.use(
-//   (config) => {
-//     if (typeof window !== 'undefined') {
-//       try {
-//         const userStr = localStorage.getItem('user');
-//         if (userStr) {
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      try {
+        // const userStr = localStorage.getItem('user');
+        // if (userStr) {
 
-//           const parsedOuter = JSON.parse(userStr); // First parse
-//           const parsedInner = JSON.parse(parsedOuter.user); // Second parse
+        //   const parsedOuter = JSON.parse(userStr); // First parse
+        //   const parsedInner = JSON.parse(parsedOuter.user); // Second parse
 
-//           const token = parsedInner?.loggedinUserData?.token;
-//           console.log(token, 'mytoken');
+        //   const token = parsedInner?.loggedinUserData?.token;
+        //   console.log(token, 'mytoken');
 
 
 
-//           // const parsedUser = JSON.parse(userStr);
-//           // const token = parsedUser?.loggedinUserData?.token;
+          // const parsedUser = JSON.parse(userStr);
+          // const token = parsedUser?.loggedinUserData?.token;
 
-//           // console.log(token, 'mytoken');
+          // console.log(token, 'mytoken');
+          const token = localStorage.getItem("token");
 
-//           if (token) {
-//             config.headers.Authorization = `Bearer ${token}`;
-//           }
-//         }
-//       } catch (error) {
-//         console.error('Error parsing token from localStorage:', error);
-//       }
-//     }
+          if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+          }
+        
+      } catch (error) {
+        console.error('Error parsing token from localStorage:', error);
+      }
+    }
 
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 
 export default api;
