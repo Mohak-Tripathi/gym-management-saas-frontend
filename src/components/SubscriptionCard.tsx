@@ -1,5 +1,8 @@
+import { deleteRequest } from "@/lib/services/request";
+import { message, Modal } from "antd";
 import Image from "next/image";
-import React from "react";
+import Link from "next/link";
+import React, { useState } from "react";
 
 type SubscriptionCardProps = {
   planTitle: string;
@@ -9,6 +12,8 @@ type SubscriptionCardProps = {
   backgroundColor: string;
   classesCount: string;
   textColor: string;
+  subscriptionId: string;
+  branchId: string;
 };
 
 const SubscriptionCard = ({
@@ -18,8 +23,33 @@ const SubscriptionCard = ({
   discountedPrice,
   backgroundColor = "#F7F7F5",
   classesCount,
-  textColor
+  textColor,
+  subscriptionId,
+  branchId,
 }: SubscriptionCardProps) => {
+
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteBranchId, setDeleteBranchId] = useState('')
+
+  const deleteIconClick = () => {
+    setConfirmDeleteVisible(true)
+  }
+  const handleDeleteSubscriptionPlan = async () => {
+    try {
+      const response = await deleteRequest(`/api/memberships/${subscriptionId}?gymBranchId=${branchId}`);
+      message.success("Branch data updated successfully")
+      console.log(response, "branch updated");
+    } catch (error) {
+      console.error("Branch creation failed:", error);
+    }
+    setDeleteBranchId('')
+    setConfirmDeleteVisible(false)
+  }
+
+  const handleCancel = () => {
+    setConfirmDeleteVisible(false)
+  }
+
   return (
     <div className="min-h-[180px] bg-white px-3.5 py-4 flex flex-col gap-4 rounded-xl"
       style={{
@@ -28,7 +58,7 @@ const SubscriptionCard = ({
     >
       <div
         className={`flex items-center justify-between p-2 rounded-lg ${backgroundColor} `}
-        // style={{ backgroundColor }}
+      // style={{ backgroundColor }}
       >
         <div className="flex gap-3 items-center">
           <div className="h-[36px] w-[36px] bg-white border border-[#0000001A] rounded-full flex items-center justify-center">
@@ -42,31 +72,57 @@ const SubscriptionCard = ({
           </div>
           <h2 className="text-[14px] !font-semibold text-black-primary leading-[100%] !m-0">{planTitle}</h2>
         </div>
-        <h2 className={`!font-semibold text-[14px] ${textColor} leading-[100%] !m-0`}>
+        {/* <h2 className={`!font-semibold text-[14px] ${textColor} leading-[100%] !m-0`}>
           {duration}
-        </h2>
+        </h2> */}
       </div>
 
       <div className="flex items-start justify-start gap-2">
         <h2 className="!font-bold text-[32px] text-black-primary leading-[100%] "> ₹ {discountedPrice}</h2>
-        <h3 className="!font-bold text-[20px] text-black-60 line-through leading-[100%]">
+        {/* <h3 className="!font-bold text-[20px] text-black-60 line-through leading-[100%]">
           ₹ {actualPrice}
-        </h3>
+        </h3> */}
       </div>
 
       <div className="flex justify-between items-center">
         <p className="text-black-primary !font-semibold text-[14px] leading-[100%] !m-0">
           {classesCount} classess per month
         </p>
+        <div className="flex gap-4 items-center">
+          <Link
+            href={`/management/settings/subscription-details/${subscriptionId}`}
+          >
+            <Image
+              src={`/images/iconly/light/Edit.svg`}
+              width={0}
+              height={0}
+              alt="Profile"
+              className="w-[20px] h-[20px] cursor-pointer"
+            />
+          </Link>
 
-        <Image
-          src={`/images/iconly/light/Edit.svg`}
-          width={0}
-          height={0}
-          alt="Profile"
-          className="w-[20px] h-[20px] cursor-pointer"
-        />
+          <Image
+            src={`/images/iconly/light/Delete-1.svg`}
+            width={0}
+            height={0}
+            alt="Profile"
+            className="w-[20px] h-[20px] cursor-pointer"
+            onClick={() => deleteIconClick()}
+          />
+        </div>
       </div>
+
+      {/* Confirmation Modal */}
+      <Modal
+        title="Confirm Delete"
+        open={confirmDeleteVisible}
+        onOk={handleDeleteSubscriptionPlan}
+        onCancel={() => handleCancel()}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this subscription plan?</p>
+      </Modal>
 
     </div>
   );

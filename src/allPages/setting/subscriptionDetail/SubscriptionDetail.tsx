@@ -7,7 +7,7 @@ import { getRequest } from "@/lib/services/request";
 
 const SubscriptionDetail = () => {
 
-  const [subscriptionDetailsData, setSubscriptionDetailsData] = useState([]);
+  const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
@@ -30,18 +30,28 @@ const SubscriptionDetail = () => {
     fetchAllSubscriptionPlan();
   }, []);
 
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <div className="w-full grid grid-cols-3 gap-6">
-      <SubscriptionCard
-        planTitle="Basic Plan"
-        duration="Monthly"
-        actualPrice={3499}
-        discountedPrice={2999}
-        classesCount="14"
-        backgroundColor="bg-[#F7F7F5]"
-        textColor='text-[#86867D]'
-      />
-      <SubscriptionCard
+      {subscriptionDetailsData.map((planDetail:any, index:number) => {
+        return (
+          <div key={index}>
+            <SubscriptionCard
+              planTitle={planDetail?.name}
+              duration="Monthly"
+              actualPrice={planDetail?.actualPrice}
+              discountedPrice={planDetail?.actualPrice}
+              classesCount={planDetail?.baseDuration}
+              backgroundColor="bg-[#F7F7F5]"
+              textColor='text-[#86867D]'
+              subscriptionId={planDetail?.id}
+              branchId={planDetail?.gymBranchId}
+            />
+          </div>
+        )
+      })}
+      {/* <SubscriptionCard
         planTitle="Silver Plan"
         duration="Half Year"
         actualPrice={18999}
@@ -58,7 +68,7 @@ const SubscriptionDetail = () => {
         classesCount="Unlimited"
         backgroundColor="bg-[#FFF5D5]"
         textColor='text-[#AC8606]'
-      />
+      /> */}
       <Link
         href={`/management/settings/subscription-details/add`}
         className="min-h-[180px] bg-white border border-dashed border-black px-3.5 py-4 flex justify-center items-center rounded-xl cursor-pointer"

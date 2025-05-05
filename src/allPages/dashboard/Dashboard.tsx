@@ -1,6 +1,7 @@
 "use client";
 import BubbleChart from '@/components/chart/BubbleChart'
 import DonutChart from '@/components/chart/DonutChart'
+import GraphChart from '@/components/chart/GraphChart';
 import Image from 'next/image'
 import React from 'react'
 import { useSelector } from "react-redux";
@@ -193,7 +194,9 @@ const Dashboard = () => {
           </div>
 
           {/* graph */}
-          <div></div>
+          <div>
+            <GraphChart />
+          </div>
         </div>
 
         {/* Age Range */}

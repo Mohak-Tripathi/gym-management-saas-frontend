@@ -1,28 +1,68 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Radio } from "antd";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import { postRequest } from "@/lib/services/request";
-import { useRouter } from "next/navigation";
+import { getRequest, postRequest, putRequest } from "@/lib/services/request";
+import { useParams, useRouter } from "next/navigation";
 
 const BranchId = () => {
   const [form] = Form.useForm();
   const router = useRouter()
+  const params = useParams()
+  const [loading, setLoading] = useState(false);
+  const [branchData, setBranchData] = useState<any>({});
+
+  useEffect(() => {
+    const fetchBranchById = async () => {
+      setLoading(true);
+      try {
+        const data = await getRequest(`/api/gym-branch/${params.branchId}`);
+        console.log(data, "gymbranchdata");
+        setBranchData(data); // Adjust if your API response is wrapped (e.g., data.items)
+      } catch (error) {
+        // Optionally handle error
+        setBranchData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBranchById();
+  }, [])
+
 
   const handleFinish = async (values: any) => {
     console.log(values, "values");
-    try {
-      const payload = { name: "New Branch", address: "Somewhere" };
-      const response = await postRequest("/api/gym-branch", values);
+    // return;
+    if (params.branchId != 'add') {
+      const payload = {
+        name: values.name || branchData?.name,
+        address: values.address || branchData?.address,
+        isMainBranch: values.isMainBranch
+      }
+      try {
+        const response = await putRequest(`/api/gym-branch/${params.branchId}`, payload);
 
-      message.success("New Branch creared successfully")
-      router.push("/management/settings/account-details/branch")
-      console.log(response, "branch created");
-    } catch (error) {
-      console.error("Branch creation failed:", error);
+        message.success("Branch data updated successfully")
+        router.push("/management/settings/account-details/branch")
+        console.log(response, "branch updated");
+      } catch (error) {
+        console.error("Branch creation failed:", error);
+      }
+    } else {
+      try {
+        const payload = { name: "New Branch", address: "Somewhere" };
+        const response = await postRequest("/api/gym-branch", values);
+
+        message.success("New Branch creared successfully")
+        router.push("/management/settings/account-details/branch")
+        console.log(response, "branch created");
+      } catch (error) {
+        console.error("Branch creation failed:", error);
+      }
     }
   };
 
@@ -30,7 +70,14 @@ const BranchId = () => {
     console.log("Form Submitted");
   };
 
-  return (
+  useEffect(() => {
+    console.log('branchData', branchData);
+
+  }, [branchData])
+
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <main
       className="flex flex-col w-full h-full gap-6 p-3 bg-white rounded-xl"
       style={{
@@ -70,8 +117,16 @@ const BranchId = () => {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-6">
-              <FormInput label="Branch Name" name="name" />
-              <FormInput label="Location" name="address" />
+              <FormInput
+                label="Branch Name"
+                name="name"
+                initialValue={branchData && branchData?.name}
+              />
+              <FormInput
+                label="Location"
+                name="address"
+                initialValue={branchData && branchData?.address}
+              />
               {/* <div className="w-full col-span-2">
                 <FormInput label="Description" name="description" />
               </div> */}
@@ -93,6 +148,7 @@ const BranchId = () => {
               name="isMainBranch"
               // label="Is Active?"
               rules={[{ required: true, message: "Please select an option" }]}
+              initialValue={branchData && branchData?.isMainBranch}
             >
               <Radio.Group className="w-full !flex flex-col gap-4">
                 <Radio
