@@ -25,8 +25,8 @@ const CommunityFeed = () => {
             <div className='flex flex-col gap-2'>
               <h2 className='text-[24px] text-black-primary font-semibold leading-[100%] !m-0 '>LiftUp</h2>
               <div className='flex gap-4'>
-                <p className='text-[12px] text-[#727272] font-normal leading-[100%] !m-0 '>What you want to share.</p>
-                <p className='text-[13px] text-[#727272] font-normal leading-[100%] !m-0 '>What you want to share.</p>
+                <p className='text-[12px] text-gray-neutral font-normal leading-[100%] !m-0 '>What you want to share.</p>
+                <p className='text-[13px] text-gray-neutral font-normal leading-[100%] !m-0 '>What you want to share.</p>
               </div>
             </div>
           </div>
@@ -179,7 +179,7 @@ const CommunityFeed = () => {
           <div className='w-full flex items-center justify-between'>
             <div className='flex flex-col gap-2'>
               <h2 className='text-[20px] font-semibold leading-[100%] text-black-primary !m-0'>Welcome Back, Alex Mason 👋</h2>
-              <p className='text-[14px] font-normal leading-[100%] text-[#07172699] !m-0 '>What you want to share.</p>
+              <p className='text-[14px] font-normal leading-[100%] text-black-60 !m-0 '>What you want to share.</p>
             </div>
             <div className='flex items-center gap-3'>
               <Tooltip title='Attachment' placement='top' color='#071726' mouseEnterDelay={0.5}>

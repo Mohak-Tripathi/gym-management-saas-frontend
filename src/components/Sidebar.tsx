@@ -82,7 +82,7 @@ const Sidebar = () => {
                   <div className={`text-[14px] font-semibold ${currentTab === sidebar.tabName ? 'text-white' : 'text-black-primary'}`}>
                     {sidebar.title}
                   </div>
-                  <div className={`text-[12px] font-normal ${currentTab === sidebar.tabName ? 'text-[#FFFFFF99]' : 'text-[#07172699]'}`}>
+                  <div className={`text-[12px] font-normal ${currentTab === sidebar.tabName ? 'text-[#FFFFFF99]' : 'text-black-60'}`}>
                     {sidebar.description}
                   </div>
                 </div>

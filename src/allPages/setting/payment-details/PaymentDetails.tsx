@@ -22,13 +22,13 @@ const PaymentDetails = () => {
 
             <Link
                 href={`/management/settings/payment-details/add`}
-                className="min-h-[180px] bg-white border border-dashed border-[#000] px-3.5 py-4 flex justify-center items-center rounded-xl cursor-pointer"
+                className="min-h-[180px] bg-white border border-dashed border-black px-3.5 py-4 flex justify-center items-center rounded-xl cursor-pointer"
                 style={{
                     boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
                 }}
             >
-                <div className="bg-[#F5FAFB] w-full h-full rounded-lg px-2 py-1 flex flex-col gap-2.5 justify-center items-center ">
-                    <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
+                <div className="bg-blue-light w-full h-full rounded-lg px-2 py-1 flex flex-col gap-2.5 justify-center items-center ">
+                    <div className="h-[36px] w-[36px] bg-white border border-[#0000001A] rounded-full flex items-center justify-center">
                         <Image
                             src='/images/iconly/light/plusCircleBlack.svg'
                             width={0}

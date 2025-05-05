@@ -86,7 +86,7 @@ const Notification = () => {
             <p className='!m-0  '>
               Total Notification
             </p>
-            <p className='!m-0 px-2 py-1 rounded-full bg-[#D5DFF4] '>
+            <p className='!m-0 px-2 py-1 rounded-full bg-count '>
               05 count
             </p>
           </div>
@@ -97,7 +97,7 @@ const Notification = () => {
           {notifications.map((data, index) => {
             return (
               <div key={index} className='flex flex-col w-full'>
-                <div className='w-full flex justify-between items-center hover:bg-[#F5FAFB] px-1 py-2 rounded-md group transition-all duration-200'>
+                <div className='w-full flex justify-between items-center hover:bg-blue-light px-1 py-2 rounded-md group transition-all duration-200'>
                   <div className='flex gap-2 items-center'>
                     <div className='p-1 flex justify-center items-center rounded-full border border-solid border-[#0000001A] bg-transparent'>
                       <Image
@@ -118,7 +118,7 @@ const Notification = () => {
                   </div>
 
                   <div className='flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200'>
-                    <button className='w-[147px] h-[32px] rounded-xl bg-[#EAEEF8] border-none !text-[12px] text-black-primary font-[600] cursor-pointer '>Mark as Read</button>
+                    <button className='w-[147px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer '>Mark as Read</button>
                     <button className='w-[147px] h-[32px] rounded-xl bg-black-primary border-none !text-[12px] !text-white font-[600] cursor-pointer '>View Changes</button>
                     <Image
                       src={`/images/iconly/light/delete.svg`}

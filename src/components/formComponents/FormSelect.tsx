@@ -64,7 +64,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
                             alt="down Arrow"
                         />
                     }
-                    className='!rounded-xl !border-none !text-[14px] !text-[#677171] !font-[400] cursor-pointer'
+                    className='!rounded-xl !border-none !text-[14px] !text-gray-primary !font-[400] cursor-pointer'
                 />
             </Form.Item>
         </div>

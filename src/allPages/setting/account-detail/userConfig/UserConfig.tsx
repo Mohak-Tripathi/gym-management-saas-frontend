@@ -40,7 +40,7 @@ const UserConfig = () => {
       render: (accessType: any) => {
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center   ${accessType == "super_admin" ? "bg-[#92eef1]" : "bg-[#DEFF8F]"
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center   ${accessType == "super_admin" ? "bg-cyan-primary" : "bg-green-lime"
               }   `}
           >
             {accessType}

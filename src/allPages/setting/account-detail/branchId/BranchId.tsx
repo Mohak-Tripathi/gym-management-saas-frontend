@@ -28,7 +28,7 @@ const BranchId = () => {
         <div className="w-full flex flex-col gap-4">
           <div className="bg-[#F4F7FC] rounded-lg px-2 py-1 flex items-center justify-between">
             <div className="flex gap-2.5 items-center justify-between">
-              <div className="h-[36px] w-[36px] bg-[#FFFFFF] border border-[#0000001A] rounded-full flex items-center justify-center">
+              <div className="h-[36px] w-[36px] bg-white border border-[#0000001A] rounded-full flex items-center justify-center">
                 <Image
                   src={`/images/iconly/light/buildings.svg`}
                   alt="Arrow"
@@ -45,7 +45,7 @@ const BranchId = () => {
           <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
             <div className="flex flex-col gap-2">
               <h2 className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">Branch</h2>
-              <p className="text-[14px] font-normal text-[#07172699] leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
+              <p className="text-[14px] font-normal text-black-60 leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
             </div>
             <div className="grid grid-cols-2 gap-6">
               <FormInput
@@ -68,7 +68,7 @@ const BranchId = () => {
           <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
             <div className="flex flex-col gap-2">
               <h2 className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">Branch</h2>
-              <p className="text-[14px] font-normal text-[#07172699] leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
+              <p className="text-[14px] font-normal text-black-60 leading-[100%] !m-0">You can add multiple branches as your need and assigned the person</p>
             </div>
             <Radio.Group className="w-full !flex flex-col gap-4">
               <Radio value={'yes'} className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">Yes</Radio>
@@ -82,7 +82,7 @@ const BranchId = () => {
           <Link href='/management/settings/account-details/branch'>
             <button
               type='button'
-              className=' w-[147px] h-[40px] !bg-[#EAEEF8] !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
+              className=' w-[147px] h-[40px] !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
             >
               Cancel
             </button>

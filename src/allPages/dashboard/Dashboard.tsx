@@ -37,17 +37,17 @@ const Dashboard = () => {
                 <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   125
                 </p>
-                <p className="font-normal text-[12px] text-[#127F62] leading-[100%] !m-0">
+                <p className="font-normal text-[12px] text-green-primary leading-[100%] !m-0"> 
                   ▲ +2.3%
                 </p>
               </div>
-              <p className="font-normal text-[11px] text-[#07172699] leading-[100%] !m-0 ">
+              <p className="font-normal text-[11px] text-black-60 leading-[100%] !m-0 ">
                 New member on this week
               </p>
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#FFDD6E] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-yellow-warm font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">445</span>
             </p>
           </div>
@@ -77,17 +77,17 @@ const Dashboard = () => {
                 <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   08
                 </p>
-                <p className="font-normal text-[12px] text-[#E14942] leading-[100%] !m-0">
+                <p className="font-normal text-[12px] text-red-primary leading-[100%] !m-0">
                   ▼ +2.3%
                 </p>
               </div>
-              <p className="font-normal text-[11px] text-[#07172699] leading-[100%] !m-0 ">
+              <p className="font-normal text-[11px] text-black-60 leading-[100%] !m-0 ">
                 Bookings on this week
               </p>
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#FFC8E4] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-pink-primary font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">45</span>
             </p>
           </div>
@@ -117,17 +117,17 @@ const Dashboard = () => {
                 <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   ₹ 7213
                 </p>
-                <p className="font-normal text-[12px] text-[#127F62] leading-[100%] !m-0">
+                <p className="font-normal text-[12px] text-green-primary leading-[100%] !m-0">
                   ▲ +2.3%
                 </p>
               </div>
-              <p className="font-normal text-[11px] text-[#07172699] leading-[100%] !m-0 ">
+              <p className="font-normal text-[11px] text-black-60 leading-[100%] !m-0 ">
                 Earning on this week
               </p>
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#D9D2FF] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-purple-secondary font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">₹ 32245</span>
             </p>
           </div>
@@ -157,17 +157,17 @@ const Dashboard = () => {
                 <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   76
                 </p>
-                <p className="font-normal text-[12px] text-[#127F62] leading-[100%] !m-0">
+                <p className="font-normal text-[12px] text-green-primary leading-[100%] !m-0">
                   ▲ +2.3%
                 </p>
               </div>
-              <p className="font-normal text-[11px] text-[#07172699] leading-[100%] !m-0 ">
+              <p className="font-normal text-[11px] text-black-60 leading-[100%] !m-0 ">
                 New bookings on this week
               </p>
             </div>
           </div>
           <div>
-            <p className="px-1.5 py-1 bg-[#C7F5BC] font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
+            <p className="px-1.5 py-1 bg-green-mint font-normal text-[12px] leading-[100%] text-black-primary rounded-t-md !m-0">
               This Month: <span className="font-semibold">345</span>
             </p>
           </div>
