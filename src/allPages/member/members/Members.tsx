@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react'
 import Title from 'antd/es/typography/Title';
 import { membersData } from '@/constant/membersData'
 import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
+import { getRequest } from '@/lib/services/request';
 
 const selectOptions = [
   {
@@ -21,6 +22,30 @@ const selectOptions = [
 
 const Memebers = () => {
   const router = useRouter();
+
+
+  const [members, setMembers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      setLoading(true);
+      try {
+        const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
+        console.log(data, "membersdata");
+        setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
+      } catch (error) {
+        // Optionally handle error
+        setMembers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMembers();
+  }, []);
+
 
   const threeDotPopover = (recordId: any) => {
     return (
@@ -230,7 +255,9 @@ const Memebers = () => {
     router.push('/management/members/members/add');
   }
 
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <main className='w-full h-full flex flex-col gap-4'>
       {/* filters */}
       <div className='w-full flex justify-between items-end gap-4'>
@@ -294,7 +321,7 @@ const Memebers = () => {
           <div className='w-full flex flex-col flex-1'>
             <Table
               columns={columns}
-              dataSource={membersData}
+              dataSource={members}
               pagination={false}
               scroll={{ y: 'calc(100vh - 370px)' }}
               className="custom-small-table"
@@ -316,7 +343,7 @@ const Memebers = () => {
 
       </div>
     </main>
-  )
+  );
 }
 
 export default Memebers
