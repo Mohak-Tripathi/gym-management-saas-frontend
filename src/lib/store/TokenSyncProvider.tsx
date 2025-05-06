@@ -6,8 +6,7 @@ import api from "@/lib/services/api";
 export default function TokenSyncProvider({ children }: { children: React.ReactNode }) {
   // Adjust the selector path to your actual Redux state shape
 //   const token = useSelector((state: any) => state.auth.token);
-
-  const { token } = useSelector((state: any) => state.user.loggedinUserData);
+const token = useSelector((state: any) => state.user.loggedinUserData?.token);
 
   useEffect(() => {
     if (token) {

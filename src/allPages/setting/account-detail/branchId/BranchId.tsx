@@ -16,6 +16,9 @@ const BranchId = () => {
   const [branchData, setBranchData] = useState<any>({});
 
   useEffect(() => {
+
+    if (params.branchId === "new") return; // Skip API call if creating new branch
+
     const fetchBranchById = async () => {
       setLoading(true);
       try {
@@ -31,17 +34,17 @@ const BranchId = () => {
     };
 
     fetchBranchById();
-  }, [])
+  }, [params.branchId]);
 
 
   const handleFinish = async (values: any) => {
     console.log(values, "values");
     // return;
-    if (params.branchId != 'add') {
+    if (params.branchId != 'new') {
       const payload = {
         name: values.name || branchData?.name,
         address: values.address || branchData?.address,
-        isMainBranch: values.isMainBranch
+        isMainBranch: values.isMainBranch || branchData?.isMainBranch,
       }
       try {
         const response = await putRequest(`/api/gym-branch/${params.branchId}`, payload);
@@ -54,7 +57,12 @@ const BranchId = () => {
       }
     } else {
       try {
-        const payload = { name: "New Branch", address: "Somewhere" };
+        // const payload = { name: "New Branch", address: "Somewhere" };
+        // const payload = {
+        //   name: values.name || branchData?.name,
+        //   address: values.address || branchData?.address,
+        //   isMainBranch: values.isMainBranch || branchData?.isMainBranch,
+        // }
         const response = await postRequest("/api/gym-branch", values);
 
         message.success("New Branch creared successfully")
