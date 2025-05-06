@@ -51,6 +51,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
     console.log(values, "values");
     // return;
     if (params.subscriptionId != 'add') {
+      console.log('put request');
       const payload = {
         name: values.name || subscriptionData?.name,
         actualPrice: Number(values.actualPrice) || Number(subscriptionData.actualPrice),
@@ -67,6 +68,8 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
         console.error("Branch creation failed:", error);
       }
     } else {
+      console.log('post request');
+      
       const payload = {
         name: values.name,
         actualPrice: Number(values.actualPrice),
@@ -75,7 +78,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
         gymBranchId: 'aa2ec403-de84-43eb-913a-9c63455f26ca'
       }
       try {
-        const response = await postRequest(`"/api/memberships"`, payload);
+        const response = await postRequest(`/api/memberships`, payload);
         message.success("New Branch creared successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch created");
