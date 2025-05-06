@@ -1,8 +1,6 @@
-import { deleteRequest } from "@/lib/services/request";
-import { message, Modal } from "antd";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React from "react";
 
 type SubscriptionCardProps = {
   planTitle: string;
@@ -14,7 +12,8 @@ type SubscriptionCardProps = {
   textColor: string;
   subscriptionId: string;
   branchId: string;
-};
+  deleteIconClick: any;
+}
 
 const SubscriptionCard = ({
   planTitle,
@@ -26,29 +25,8 @@ const SubscriptionCard = ({
   textColor,
   subscriptionId,
   branchId,
+  deleteIconClick,
 }: SubscriptionCardProps) => {
-
-  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
-  const [deleteBranchId, setDeleteBranchId] = useState('')
-
-  const deleteIconClick = () => {
-    setConfirmDeleteVisible(true)
-  }
-  const handleDeleteSubscriptionPlan = async () => {
-    try {
-      const response = await deleteRequest(`/api/memberships/${subscriptionId}?gymBranchId=${branchId}`);
-      message.success("Branch data updated successfully")
-      console.log(response, "branch updated");
-    } catch (error) {
-      console.error("Branch creation failed:", error);
-    }
-    setDeleteBranchId('')
-    setConfirmDeleteVisible(false)
-  }
-
-  const handleCancel = () => {
-    setConfirmDeleteVisible(false)
-  }
 
   return (
     <div className="min-h-[180px] bg-white px-3.5 py-4 flex flex-col gap-4 rounded-xl"
@@ -107,23 +85,10 @@ const SubscriptionCard = ({
             height={0}
             alt="Profile"
             className="w-[20px] h-[20px] cursor-pointer"
-            onClick={() => deleteIconClick()}
+            onClick={() => deleteIconClick(branchId, subscriptionId)}
           />
         </div>
       </div>
-
-      {/* Confirmation Modal */}
-      <Modal
-        title="Confirm Delete"
-        open={confirmDeleteVisible}
-        onOk={handleDeleteSubscriptionPlan}
-        onCancel={() => handleCancel()}
-        okText="Delete"
-        cancelText="Cancel"
-      >
-        <p>Are you sure you want to delete this subscription plan?</p>
-      </Modal>
-
     </div>
   );
 };
