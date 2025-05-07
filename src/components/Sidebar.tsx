@@ -11,7 +11,7 @@ const Sidebar = () => {
       'title': "Branch Space",
       'tabName': 'branch',
       "description": "multiple branches as you need",
-      'link': '/managemnet/settings/account-details/branch'
+      'link': '/management/settings/account-details/branch'
     },
     {
       "imgSrc": "/images/iconly/light/3User.svg",

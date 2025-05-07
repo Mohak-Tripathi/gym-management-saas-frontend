@@ -3,10 +3,11 @@ import AddTrainer from '@/allPages/add-trainer'
 import FormInput from '@/components/filterComponents/FilterInput'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { trainersData } from '@/constant/trainerData'
-import { Drawer, Popover, Table } from 'antd'
+import { deleteRequest, getRequest } from '@/lib/services/request'
+import { Drawer, message, Modal, Popover, Table } from 'antd'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 const selectOptions = [
   {
@@ -23,7 +24,61 @@ const selectOptions = [
 const Trainer = () => {
   const router = useRouter();
 
-  const threeDotPopover = (recordId: any) => {
+  const [trainersData, setTrainersData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const pathname = usePathname()
+  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+
+   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+   const [deleteTrainerId, setDeleteTrainerId] = useState('')
+   const [deleteBranchId, setDeleteBranchId] = useState('')
+
+  const fetchAllTrainersData = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest(`/api/trainers?gymBranchId=${currentGymBranchId}`);
+      console.log(data.data, "TrainersData");
+      setTrainersData(data.data);
+    } catch (error) {
+      // Optionally handle error
+      setTrainersData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteIconClick = (trainerId: any, branchId: any) => {
+    setDeleteBranchId(branchId)
+    setDeleteTrainerId(trainerId)
+    setConfirmDeleteVisible(true)
+  }
+
+  const handleDeleteTrainer = async () => {
+    try {
+      const response = await deleteRequest(`/api/trainers/${deleteTrainerId}?gymBranchId=${deleteBranchId}`);
+      message.success(`Branch ${response.message}`)
+      fetchAllTrainersData();
+      console.log(response, "branch updated");
+    } catch (error) {
+      console.error("Branch creation failed:", error);
+    }
+    setDeleteTrainerId('')
+    setConfirmDeleteVisible(false)
+  }
+
+  const handleCancel = () => {
+    setConfirmDeleteVisible(false)
+  }
+
+  useEffect(() => {
+    fetchAllTrainersData();
+  }, []);
+
+  useEffect(() => {
+    fetchAllTrainersData()
+  }, [pathname])
+
+  const threeDotPopover = (trainerId: string, branchId: string) => {
     return (
       <>
         <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
@@ -32,7 +87,7 @@ const Trainer = () => {
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Invoice</div>
               <Image
-                src="/images/Invoice.svg"
+                src="/images/invoice.svg"
                 alt="Invoice"
                 width={20}
                 height={20}
@@ -53,7 +108,9 @@ const Trainer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+          <div 
+          onClick={() => deleteIconClick(branchId, trainerId)}
+          className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Delete</div>
               <Image
@@ -72,8 +129,8 @@ const Trainer = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'user',
+      key: 'user',
       render: (_: any, record: any) => (
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
@@ -88,10 +145,10 @@ const Trainer = () => {
           {/* Name and Email */}
           <div className="flex flex-col">
             <p className="text-[14px] font-semibold text-black-primary !m-0">
-              {record.name}
+              {record.user.fullName}
             </p>
             <p className="text-[12px] text-gray-500 !m-0">
-              {record.email}
+              {record.user.email}
             </p>
           </div>
         </div>
@@ -101,25 +158,24 @@ const Trainer = () => {
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender',
+      width: "120px",
     },
     {
       title: 'Mobile Number',
       dataIndex: 'mobileNumber',
       key: 'mobileNumber',
-    },
-
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      render: (_: any, record: any) => (
+        <div>+91 {record.user.phone}</div>
+      )
     },
     {
       title: 'Work Type',
       dataIndex: 'workType',
       key: 'workType',
+      width: "200px",
       render: (workType: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${workType === 'Full Time' ? 'bg-yellow-primary' : 'bg-silver'}`}>
+          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${workType === 'Full Time' ? 'bg-yellow-primary' : 'bg-silver'}`}>
             {workType}
           </p>
         );
@@ -127,54 +183,54 @@ const Trainer = () => {
     },
     {
       title: 'Joined Date',
-      dataIndex: 'joinedDate',
-      key: 'joinedDate',
+      dataIndex: 'joiningDate',
+      key: 'joiningDate',
     },
-    {
-      title: 'Log in Time',
-      dataIndex: 'logInTime',
-      key: 'logInTime',
-    },
+    // {
+    //   title: 'Log in Time',
+    //   dataIndex: 'logInTime',
+    //   key: 'logInTime',
+    // },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      width: "200px",
       render: (status: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
+          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
             {status}
           </p>
         );
       },
     },
-    {
-      title: 'Payment/Salary',
-      dataIndex: 'payment',
-      key: 'payment',
-      render: (payment: any) => {
-        return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
-            <Image
-              src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
-              height={20}
-              width={20}
-              alt={`calender`}
-            />
-            {payment}
-          </p>
-        );
-      },
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+    // {
+    //   title: 'Payment/Salary',
+    //   dataIndex: 'payment',
+    //   key: 'payment',
+    //   width: "200px",
+    //   render: (payment: any) => {
+    //     return (
+    //       <p className={`w-[120px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
+    //         <Image
+    //           src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
+    //           height={20}
+    //           width={20}
+    //           alt={`calender`}
+    //         />
+    //         {payment}
+    //       </p>
+    //     );
+    //   },
+    // },
     {
       title: '',
       dataIndex: '',
       key: 'action',
-      render: (_: any, record: any, index: number) => (
+      render: (_: any, record: any, index: number) => {
+        console.log('trainerRecord', record);
+        
+        return (
         <div className="flex justify-end gap-4 items-center action-buttons">
 
           <div className="cursor-pointer p-1">
@@ -184,13 +240,13 @@ const Trainer = () => {
               width={0}
               height={0}
               className='h-[20px] w-[20px] cursor-pointer'
-              onClick={() => handleEdit(record.key)}
+              onClick={() => handleEdit(record.id)}
             />
           </div>
 
           <Popover
             placement="bottomRight"
-            content={() => threeDotPopover(record.key)}
+            content={() => threeDotPopover(record.userId, record.gymBranchId)}
             trigger="click"
             rootClassName="sidebar-popover"
             arrow={false}
@@ -206,7 +262,7 @@ const Trainer = () => {
             </div>
           </Popover>
         </div>
-      ),
+      )},
     },
   ];
 
@@ -274,39 +330,42 @@ const Trainer = () => {
           boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
         }}
       >
-        <div className='flex flex-col flex-1 gap-4 w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
-            <p className='!m-0  '>
-              Total Trainer
-            </p>
-            <p className='!m-0 px-2 py-1 rounded-full bg-count '>
-              105 count
-            </p>
-          </div>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <div className='flex flex-col flex-1 gap-4 w-full'>
+            <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
+              <p className='!m-0  '>
+                Total Trainer
+              </p>
+              <p className='!m-0 px-2 py-1 rounded-full bg-count '>
+                105 count
+              </p>
+            </div>
 
-          <div className='w-full flex flex-col flex-1'>
-            <Table
-              columns={columns}
-              dataSource={trainersData}
-              pagination={false}
-              scroll={{ y: 'calc(100vh - 370px)' }}
-              className="custom-small-table"
-              onRow={(record) => {
-                return {
-                  onClick: (e) => {
-                    const target = e.target as HTMLElement;
+            <div className='w-full flex flex-col flex-1'>
+              <Table
+                columns={columns}
+                dataSource={trainersData}
+                pagination={false}
+                scroll={{ y: 'calc(100vh - 370px)' }}
+                className="custom-small-table"
+                onRow={(record) => {
+                  return {
+                    onClick: (e) => {
+                      const target = e.target as HTMLElement;
 
-                    if (target.closest('.action-buttons')) return;
+                      if (target.closest('.action-buttons')) return;
 
-                    // Otherwise, navigate
-                    router.push(`/management/trainer/${record.key}/trainer-profile`);
-                  },
-                };
-              }}
-            />
-          </div>
+                      // Otherwise, navigate
+                      router.push(`/management/trainer/${record.key}/trainer-profile`);
+                    },
+                  };
+                }}
+              />
+            </div>
 
-          {/* <Drawer
+            {/* <Drawer
             title={selectedTrainerData?.length > 0 ? "Edit Trainer" : 'Add New Trainer'}
             placement='right'
             width={700}
@@ -319,9 +378,23 @@ const Trainer = () => {
               selectedTrainerData={selectedTrainerData}
             />
           </Drawer> */}
-        </div>
+          </div>
+        )}
 
       </div>
+
+      {/* Confirmation Modal */}
+      <Modal
+        title="Confirm Delete"
+        open={confirmDeleteVisible}
+        onOk={handleDeleteTrainer}
+        onCancel={() => handleCancel()}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this trainer?</p>
+      </Modal>
+
     </main>
   )
 }
