@@ -1,13 +1,15 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
-import { useRouter } from 'next/navigation';
-import { Drawer, Input, Popover, Table } from 'antd'
+import { usePathname, useRouter } from 'next/navigation';
+import { Drawer, Input, message, Popover, Table } from 'antd'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import Title from 'antd/es/typography/Title';
 import { membersData } from '@/constant/membersData'
 import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
-import { getRequest } from '@/lib/services/request';
+import { deleteRequest, getRequest } from '@/lib/services/request';
+import BranchId from '@/allPages/setting/account-detail/branchId';
+import Link from 'next/link';
 
 const selectOptions = [
   {
@@ -22,29 +24,67 @@ const selectOptions = [
 
 const Memebers = () => {
   const router = useRouter();
-
+  const pathname = usePathname()
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteMemberId, setDeleteMemberId] = useState('')
+  const [deleteBranchId, setDeleteBranchId] = useState('')
 
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
-  useEffect(() => {
-    const fetchMembers = async () => {
-      setLoading(true);
-      try {
-        const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
-        console.log(data, "membersdata");
-        setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
-      } catch (error) {
-        // Optionally handle error
-        setMembers([]);
-      } finally {
-        setLoading(false);
-      }
-    };
 
+
+  
+
+
+  const fetchMembers = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
+      console.log(data, "membersdata");
+      setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
+    } catch (error) {
+      // Optionally handle error
+      setMembers([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+
+  useEffect(() => {
     fetchMembers();
   }, []);
+
+  useEffect(() => {
+    fetchMembers()
+  }, [pathname])
+
+
+  const deleteIconClick = (memberId: any, branchId: any) => {
+    setDeleteMemberId(memberId)
+    setDeleteBranchId(branchId)
+    setConfirmDeleteVisible(true)
+  }
+
+  const handleDeleteSubscriptionPlan = async () => {
+    try {
+      const response = await deleteRequest(`/api/memberships/${deleteMemberId}?gymBranchId=${deleteBranchId}`);
+      message.success(`Member ${response.message}`)
+      fetchMembers();
+      console.log(response, "branch updated");
+    } catch (error) {
+      console.error("Branch creation failed:", error);
+    }
+    setDeleteBranchId('')
+    setConfirmDeleteVisible(false)
+  }
+
+  const handleCancel = () => {
+    setConfirmDeleteVisible(false)
+  }
 
 
   const threeDotPopover = (recordId: any) => {
@@ -201,16 +241,16 @@ const Memebers = () => {
       render: (_: any, record: any, index: number) => {
         return (
           <div className="flex justify-end gap-3 items-center action-buttons">
-            <div className="cursor-pointer p-1">
+
+            <Link href={`/your/edit/path/${record.key}`} className="cursor-pointer p-1">
               <Image
                 src="/images/iconly/light/Edit.svg"
                 alt="Edit"
                 width={0}
                 height={0}
                 className="h-[20px] w-[20px]"
-                onClick={() => handleEdit(record.key)}
               />
-            </div>
+            </Link>
 
             <Popover
               placement="bottomRight"
