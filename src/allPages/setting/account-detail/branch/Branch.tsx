@@ -6,9 +6,13 @@ import { gymBranchData } from "@/constant/GymBranchData";
 import Image from "next/image";
 import Link from "next/link";
 import { deleteRequest, getRequest } from "@/lib/services/request";
+import { useDispatch } from "react-redux";
+import  {setBranches}  from "../../../../lib/store/slices/branchSlice"
 
 const Branch = () => {
-  const [branches, setBranches] = useState([]);
+
+  const dispatch = useDispatch();
+  const [branchesData, setBranchesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [deleteBranchId, setDeleteBranchId] = useState('')
@@ -18,9 +22,21 @@ const Branch = () => {
     try {
       const data = await getRequest("/api/gym-branch");
       console.log(data, "gymbranchdata");
-      setBranches(data);
+      setBranchesData(data);
+
+
+      // Only keep required fields
+      const simplifiedBranches = data.map((branch:any) => ({
+        id: branch.id,
+        name: branch.name,
+        address: branch.address
+      }));
+
+      // Dispatch to Redux
+      dispatch(setBranches(simplifiedBranches));
+
     } catch (error) {
-      setBranches([]);
+      setBranchesData([]);
     } finally {
       setLoading(false);
     }
@@ -159,7 +175,7 @@ const Branch = () => {
       <div className="w-full flex flex-col flex-1">
         <Table
           columns={columns}
-          dataSource={branches}
+          dataSource={branchesData}
           pagination={false}
           rowKey="id"
           scroll={{ y: "calc(100vh - 370px)" }}

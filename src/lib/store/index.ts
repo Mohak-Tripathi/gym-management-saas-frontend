@@ -2,7 +2,9 @@ import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 
+
 import userReducer from './slices/userSlice';
+import branchReducer from './slices/branchSlice';
 
 // 👇 THIS PART CHANGES
 const createNoopStorage = () => {
@@ -26,11 +28,12 @@ const storage = typeof window !== 'undefined'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user'],
+  whitelist: ['user', 'branch'], // only persist the user slice
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
+  branch: branchReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
