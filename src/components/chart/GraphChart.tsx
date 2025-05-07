@@ -23,9 +23,8 @@ const data = [
 
 const GraphChart = () => {
     return (
-        <div className="bg-white p-4 rounded-xl shadow-md">
-            <h2 className="text-lg font-semibold mb-4">Revenue</h2>
-            <ResponsiveContainer width="100%" height={250}>
+        <div className="">
+            <ResponsiveContainer width="60%" height={250}>
                 <AreaChart data={data}>
                     <defs>
                         <linearGradient id="colorFill" x1="0" y1="0" x2="0" y2="1">
@@ -33,10 +32,44 @@ const GraphChart = () => {
                             <stop offset="95%" stopColor="#facc15" stopOpacity={0} />
                         </linearGradient>
                     </defs>
+
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="hour" />
-                    <YAxis />
-                    <Tooltip formatter={(value) => `₹${value}`} />
+
+                    <XAxis
+                        dataKey="hour"
+                        label={{
+                            value: 'Days',
+                            position: 'insideBottom',
+                            offset: -5,
+                            fontSize: 10,
+                        }}
+                        tick={{ fontSize: 10 }}
+                    />
+
+                    <YAxis
+                        label={{
+                            value: 'Duration',
+                            angle: -90,
+                            position: 'insideLeft',
+                            offset: 10,
+                            fontSize: 10,
+                        }}
+                        tick={{ fontSize: 10 }}
+                    />
+
+                    <Tooltip
+                        formatter={(value) => `₹${value}`}
+                        contentStyle={{
+                            fontSize: '12px',
+                            padding: '4px 8px',
+                            borderRadius: '4px',
+                        }}
+                        itemStyle={{
+                            fontSize: '12px',
+                            margin: 0,
+                        }}
+                    />
+
                     <Area
                         type="monotone"
                         dataKey="value"

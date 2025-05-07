@@ -91,7 +91,7 @@ const UserConfig = () => {
       <div className="flex items-center justify-between">
         <div className="flex gap-3 items-center justify-between">
           <Image
-            src={`/images/ph_buildings.svg`}
+            src={`/images/iconly/light/3User.svg`}
             alt="Arrow"
             width={20}
             height={20}

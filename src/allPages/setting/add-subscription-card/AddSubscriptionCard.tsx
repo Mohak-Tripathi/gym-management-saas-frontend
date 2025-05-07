@@ -30,9 +30,8 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
   console.log('params', params);
 
   useEffect(() => {
-
-    if (params.subscriptionId  === "add") return;
-
+    if(params.subscriptionId === 'add') return;
+ 
     const fetchSubscriptionById = async () => {
       setLoading(true);
       try {

@@ -6,7 +6,7 @@ import { Rule } from 'antd/es/form';
 
 const { Option } = Select;
 
-interface FormSelectProps {
+interface FormMultiselectProps {
     label: string;
     name: string;
     customClass?: string;
@@ -22,7 +22,7 @@ interface FormSelectProps {
     inputRules?: Rule[]
 }
 
-const FormSelect: React.FC<FormSelectProps> = ({
+const FormMultiselect: React.FC<FormMultiselectProps> = ({
     label,
     name,
     customClass = '',
@@ -49,7 +49,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
             >
                 <Select
                     showSearch
-                    style={{ height: 40 }}
+                    mode="multiple"
                     placeholder={placeholder}
                     options={options}
                     defaultValue={initialValue}
@@ -65,11 +65,11 @@ const FormSelect: React.FC<FormSelectProps> = ({
                             alt="down Arrow"
                         />
                     }
-                    className='!rounded-xl !border-none !text-[14px] !text-gray-primary !font-[400] cursor-pointer'
+                    className='!rounded-xl h-[40px] !border-none !text-[14px] !text-gray-primary !font-[400] cursor-pointer'
                 />
             </Form.Item>
         </div>
     );
 };
 
-export default FormSelect;
+export default FormMultiselect;
