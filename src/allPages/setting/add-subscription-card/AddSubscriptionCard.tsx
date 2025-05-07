@@ -19,7 +19,7 @@ const benifitsOptions = [
   { label: 'Zumba', value: 'zumba' },
 ]
 
-const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open }) => {
+const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) => {
   const [form] = Form.useForm();
   const router = useRouter()
   const params = useParams()
@@ -30,6 +30,9 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
   console.log('params', params);
 
   useEffect(() => {
+
+    if (params.subscriptionId  === "add") return;
+
     const fetchSubscriptionById = async () => {
       setLoading(true);
       try {
@@ -51,7 +54,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
     console.log(values, "values");
     // return;
     if (params.subscriptionId != 'add') {
-      console.log('put request');
+      // console.log('put request');
       const payload = {
         name: values.name || subscriptionData?.name,
         actualPrice: Number(values.actualPrice) || Number(subscriptionData.actualPrice),

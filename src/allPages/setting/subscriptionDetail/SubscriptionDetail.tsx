@@ -62,6 +62,12 @@ const SubscriptionDetail = () => {
     setConfirmDeleteVisible(false)
   }
 
+  const backgroundColors = [
+    "bg-[#F7F7F5]", // 0 - Basic
+    "bg-[#F4F7FC]", // 1 - Intermediate
+    "bg-[#FFF5D5]"  // 2 - Advanced
+  ];
+
   return loading ? (
     <div>Loading...</div>
   ) : (
@@ -69,7 +75,7 @@ const SubscriptionDetail = () => {
       {subscriptionDetailsData.map((planDetail: any, index: number) => {
         return (
           <div key={index}>
-            <SubscriptionCard
+            {/* <SubscriptionCard
               planTitle={planDetail?.name}
               duration="Monthly"
               actualPrice={planDetail?.actualPrice}
@@ -77,6 +83,19 @@ const SubscriptionDetail = () => {
               classesCount={planDetail?.baseDuration}
               backgroundColor="bg-[#F7F7F5]"
               textColor='text-[#86867D]'
+              subscriptionId={planDetail?.id}
+              branchId={planDetail?.gymBranchId}
+              deleteIconClick={deleteIconClick}
+            /> */}
+
+            <SubscriptionCard
+              planTitle={planDetail?.name}
+              duration="Monthly"
+              actualPrice={planDetail?.actualPrice}
+              discountedPrice={planDetail?.actualPrice}
+              classesCount={planDetail?.baseDuration}
+              backgroundColor={backgroundColors[index % backgroundColors.length]}
+              textColor="text-[#86867D]"
               subscriptionId={planDetail?.id}
               branchId={planDetail?.gymBranchId}
               deleteIconClick={deleteIconClick}
