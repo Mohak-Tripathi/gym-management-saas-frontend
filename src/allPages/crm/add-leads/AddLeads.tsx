@@ -34,7 +34,7 @@ const genderOption = [
     { label: 'Female', value: 'FEMALE' },
 ]
 
-const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerData }) => {
+const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerData }) => {
     const [form] = Form.useForm();
     const router = useRouter()
     const params = useParams()
@@ -236,7 +236,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                             type='submit'
                             className=' w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                         >
-                            Add Trainer
+                            Add Lead
                         </button>
                     </div>
                 </Form>
@@ -245,4 +245,4 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
     )
 }
 
-export default AddTrainer
+export default AddLeads

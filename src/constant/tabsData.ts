@@ -57,3 +57,18 @@ export const settingTabs = [
         'src': '/management/settings/community-feed'
     },
 ]
+
+export const crmTabs = [
+    {
+        'title': 'Leads',
+        'src': '/management/crm/Leads'
+    },
+    {
+        'title': 'Open Deals',
+        'src': '/management/crm/open-deals'
+    },
+    {
+        'title': 'Leads Summary',
+        'src': '/management/crm/leads-summary'
+    },
+]
