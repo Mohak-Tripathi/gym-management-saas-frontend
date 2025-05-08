@@ -164,7 +164,7 @@ const SignIn = () => {
         <div className="flex h-[60%] justify-between w-[60%] gap-16">
           <div className="text-white  flex flex-col   gap-32 w-[45%]">
             <Image
-              src="/images/Logo.svg"
+              src="/images/iconly/bold/logoWhite.svg"
               alt="Background"
               className="w-[302px] h-24"
               width={0}

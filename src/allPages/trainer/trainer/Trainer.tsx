@@ -40,7 +40,7 @@ const Trainer = () => {
       console.log(data.data, "TrainersData");
       setTrainersData(data.data);
     } catch (error) {
-      // Optionally handle error
+      console.log('trainer data error', error);
       setTrainersData([]);
     } finally {
       setLoading(false);
@@ -174,9 +174,13 @@ const Trainer = () => {
       key: 'workType',
       width: "200px",
       render: (workType: any) => {
+        const workTypeLabels: Record<string, string> = {
+          FULL_TIME: 'Full Time',
+          PART_TIME: 'Part Time',
+        };
         return (
-          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${workType === 'Full Time' ? 'bg-yellow-primary' : 'bg-silver'}`}>
-            {workType}
+          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${workType === 'FULL_TIME' ? 'bg-yellow-primary' : 'bg-silver'}`}>
+            {workTypeLabels[workType] || workType}
           </p>
         );
       },
@@ -246,7 +250,7 @@ const Trainer = () => {
 
           <Popover
             placement="bottomRight"
-            content={() => threeDotPopover(record.userId, record.gymBranchId)}
+            content={() => threeDotPopover(record.id, record.gymBranchId)}
             trigger="click"
             rootClassName="sidebar-popover"
             arrow={false}
@@ -339,7 +343,7 @@ const Trainer = () => {
                 Total Trainer
               </p>
               <p className='!m-0 px-2 py-1 rounded-full bg-count '>
-                105 count
+                {trainersData && trainersData.length} count
               </p>
             </div>
 
@@ -354,30 +358,13 @@ const Trainer = () => {
                   return {
                     onClick: (e) => {
                       const target = e.target as HTMLElement;
-
                       if (target.closest('.action-buttons')) return;
-
-                      // Otherwise, navigate
-                      router.push(`/management/trainer/${record.key}/trainer-profile`);
+                      router.push(`/management/trainer/${record.id}/trainer-profile`);
                     },
                   };
                 }}
               />
             </div>
-
-            {/* <Drawer
-            title={selectedTrainerData?.length > 0 ? "Edit Trainer" : 'Add New Trainer'}
-            placement='right'
-            width={700}
-            onClose={onClose}
-            open={open}
-          >
-            <AddTrainer
-              onClose={onClose}
-              open={open}
-              selectedTrainerData={selectedTrainerData}
-            />
-          </Drawer> */}
           </div>
         )}
 
