@@ -76,7 +76,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                 userData: {
                     fullName: values.fullName,
                     email: values.email,
-                    role: values.role,
+                    role: 'TRAINER',
                     phone: values.phone,
                 },
                 trainerData: {
@@ -101,21 +101,25 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
 
         } else {
             const payload = {
-                // fullName: values.fullName || trainerData && trainerData?.user?.fullName,
-                // email: values.email || trainerData && trainerData?.user?.email,
-                // role: values.role || trainerData && trainerData?.user?.role,
-                // phone: values.phone || trainerData && trainerData?.user?.phone,
-                referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
-                specialization: values.specialization || trainerData && trainerData?.specialization,
-                experienceYears: Number(values.experienceYears) || Number(trainerData && trainerData?.experienceYears),
-                workType: values.workType || trainerData && trainerData?.workType,
-                gender: values.gender || trainerData && trainerData?.gender || "MALE",
-                joiningDate: values.joiningDate || trainerData?.joiningDate || new Date().toISOString(),
-                gymBranchId: values.gymBranchId,
+                userData: {
+                    fullName: values.fullName || trainerData && trainerData?.user?.fullName,
+                    email: values.email || trainerData && trainerData?.user?.email,
+                    role: 'TRAINER',
+                    phone: values.phone || trainerData && trainerData?.user?.phone,
+                },
+                trainerData: {
+                    referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
+                    specialization: values.specialization || trainerData && trainerData?.specialization,
+                    experienceYears: Number(values.experienceYears) || Number(trainerData && trainerData?.experienceYears),
+                    workType: values.workType || trainerData && trainerData?.workType,
+                    gender: values.gender || trainerData && trainerData?.gender || "MALE",
+                    joiningDate: values.joiningDate || trainerData?.joiningDate || new Date().toISOString(),
+                    gymBranchId: values.gymBranchId,
+                }
             };
 
             try {
-                const response = await putRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${values.gymBranchId}`, payload);
+                const response = await putRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`, payload);
                 message.success("New Branch creared successfully")
                 router.push("/management/trainer/trainer")
                 console.log(response, "branch created");
@@ -156,11 +160,11 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                                 initialValue={trainerData && trainerData?.user?.email}
                             />
 
-                            <FormInput
+                            {/* <FormInput
                                 label='Role'
                                 name='role'
                                 initialValue={trainerData && trainerData?.user?.role}
-                            />
+                            /> */}
 
                             <FormInput
                                 label='Mobile No.'

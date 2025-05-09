@@ -36,8 +36,9 @@ const TrainerProfileSideBar = () => {
   const handleProfileClick = (key: string) => {
     router.push(`/management/trainer/${key}/trainer-profile`);
   }
+  
   return (
-    <main className={`w-[330px] min-h-[100%] flex flex-col gap-3 bg-white rounded-xl p-3 `}
+    <main className={`w-[330px] min-h-[100%] h-full flex flex-col gap-3 bg-white rounded-xl p-3 `}
       style={{
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
       }}

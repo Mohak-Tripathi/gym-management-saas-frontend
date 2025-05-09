@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <main className="w-full h-full ">
       <div className="h-full w-full flex gap-4">
-        <div className="w-[35%] min-w-[310px] ">
+        <div className="w-[35%] min-w-[310px] max-w-[450px] ">
           <Sidebar />
         </div>
         {children}

@@ -363,7 +363,6 @@ const Memebers = () => {
               columns={columns}
               dataSource={members}
               pagination={false}
-              scroll={{ y: 'calc(100vh - 370px)' }}
               className="custom-small-table"
               onRow={(record) => {
                 return {

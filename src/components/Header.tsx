@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 
 const managemnet = [
   {
@@ -53,6 +54,13 @@ const moreMenu = [
 ]
 
 const Header = () => {
+
+  const { branches } = useSelector((state: any) => state.branch);
+
+  const branchOptions = branches?.map((branch: any) => ({
+    value: branch.id,
+    label: branch.name,
+  }));
 
   const handleChange = (value: string) => {
   };
@@ -113,15 +121,21 @@ const Header = () => {
           />
           <Select
             aria-label="Select Branch"
-            defaultValue="lucy"
+            rootClassName='branchSelect'
             style={{ width: 120 }}
             onChange={handleChange}
-            options={[
-              { value: 'jack', label: 'Jack' },
-              { value: 'lucy', label: 'Lucy' },
-              { value: 'Yiminghe', label: 'yiminghe' },
-              { value: 'disabled', label: 'Disabled', disabled: true },
-            ]}
+            options={branchOptions}
+            suffixIcon={
+              <Image
+                loading="lazy"
+                src="/images/dropdown.svg"
+                width={16}
+                height={16}
+                className={`w-4`}
+                alt="down Arrow"
+              />
+            }
+            defaultValue={branchOptions[0].value}
           />
         </div>
       </div>
