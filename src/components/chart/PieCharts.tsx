@@ -19,7 +19,7 @@ const donutData = [
 const PieCharts = () => {
 
   return (
-    <div className="w-full h-56 flex flex-col gap-4 md:flex-row">
+    <div className="w-full h-56 flex flex-col gap-4 md:flex-row"> 
       {/* Donut chart */}
       <div className="md:w-2/4 relative h-auto">
         <ResponsiveContainer width="100%" height="100%">
