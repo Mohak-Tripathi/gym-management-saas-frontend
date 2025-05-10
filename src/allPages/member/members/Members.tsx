@@ -5,7 +5,7 @@ import { Drawer, Input, message, Popover, Table } from 'antd'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import Title from 'antd/es/typography/Title';
-import { membersData } from '@/constant/membersData'
+// import { membersData } from '@/constant/membersData'
 import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
 import { deleteRequest, getRequest } from '@/lib/services/request';
 import BranchId from '@/allPages/setting/account-detail/branchId';
@@ -33,9 +33,6 @@ const Memebers = () => {
   const [loading, setLoading] = useState(false);
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
-
-
-  
 
 
   const fetchMembers = async () => {
@@ -136,8 +133,8 @@ const Memebers = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'user',
+      key: 'user',
       render: (_: any, record: any) => (
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
@@ -152,11 +149,11 @@ const Memebers = () => {
           {/* Name and Email */}
           <div className="flex flex-col">
             <p className="text-[14px] font-semibold text-black-primary !m-0">
-              {record.name}
+              {record.user.fullName}
             </p>
-            <p className="text-[12px] text-gray-500 !m-0">
+            {/* <p className="text-[12px] text-gray-500 !m-0">
               {record.email}
-            </p>
+            </p> */}
           </div>
         </div>
       )
@@ -170,12 +167,18 @@ const Memebers = () => {
       title: 'Mobile Number',
       dataIndex: 'mobileNumber',
       key: 'mobileNumber',
+      render: (_: any, record: any) => (
+        <div>+91 {record.user.phone}</div>
+      )
     },
 
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      render: (_: any, record: any) => (
+        <div>+91 {record.user.email}</div>
+      )
     },
     {
       title: 'Subscription Type',
@@ -193,11 +196,17 @@ const Memebers = () => {
       title: 'Joined Date',
       dataIndex: 'joinedDate',
       key: 'joinedDate',
+      render: (_: any, record: any) => (
+        <div>+91 {record.traineeMembershipData.startDate}</div>
+      )
     },
     {
       title: 'Expiry Date',
       dataIndex: 'expiryDate',
       key: 'expiryDate',
+      render: (_: any, record: any) => (
+        <div>+91 {record.traineeMembershipData.endDate}</div>
+      )
     },
     {
       title: 'Status',
@@ -242,7 +251,7 @@ const Memebers = () => {
         return (
           <div className="flex justify-end gap-3 items-center action-buttons">
 
-            <Link href={`/your/edit/path/${record.key}`} className="cursor-pointer p-1">
+            <Link href={`/management/members/members/${record.key}`} className="cursor-pointer p-1">
               <Image
                 src="/images/iconly/light/Edit.svg"
                 alt="Edit"
@@ -363,6 +372,9 @@ const Memebers = () => {
               columns={columns}
               dataSource={members}
               pagination={false}
+              rowKey={(record) => record.user.email}
+              scroll={{ y: 'calc(100vh - 370px)' }}
+
               className="custom-small-table"
               onRow={(record) => {
                 return {

@@ -185,6 +185,7 @@ const Trainer = () => {
     {
       title: 'Joined Date',
       dataIndex: 'joiningDate',
+      key: 'joiningDate',
       render: (date: string) => dayjs(date).format('DD-MM-YYYY'),
     },
     // {
@@ -192,6 +193,7 @@ const Trainer = () => {
     //   dataIndex: 'logInTime',
     //   key: 'logInTime',
     // },
+
     {
       title: 'Status',
       dataIndex: 'status',
