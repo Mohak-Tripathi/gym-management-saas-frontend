@@ -115,7 +115,7 @@ const Memebers = () => {
             </div>
           </div>
 
-          <div  onClick={() => deleteIconClick(traineeId, branchId)} className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+          <div onClick={() => deleteIconClick(traineeId, branchId)} className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Delete</div>
               <Image
@@ -179,7 +179,7 @@ const Memebers = () => {
       dataIndex: 'email',
       key: 'email',
       render: (_: any, record: any) => (
-        <div>+91 {record.user.email}</div>
+        <div>{record.user.email}</div>
       )
     },
     {
@@ -210,7 +210,7 @@ const Memebers = () => {
       dataIndex: 'endDate',
       key: 'endDate',
       render: (_: any, record: any) => {
-      
+
         const rawDate = record?.traineeMemberships?.[0]?.endDate;
         return rawDate ? dayjs(rawDate).format('DD-MM-YYYY') : '-';
       }
@@ -224,12 +224,11 @@ const Memebers = () => {
         const endDate = record?.traineeMemberships?.[0]?.endDate;
         const isActive = endDate ? dayjs().isBefore(dayjs(endDate)) : false;
         const displayStatus = isActive ? 'ACTIVE' : 'EXPIRED';
-    
+
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${
-              isActive ? 'bg-green-secondary' : 'bg-pink-pastel'
-            }`}
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${isActive ? 'bg-green-secondary' : 'bg-pink-pastel'
+              }`}
           >
             {displayStatus}
           </p>
@@ -276,14 +275,14 @@ const Memebers = () => {
         return (
           <div className="flex justify-end gap-3 items-center action-buttons">
 
-            <Link href={`/management/members/members/${record.key}`} className="cursor-pointer p-1">
+            <Link href={`/management/members/members/${record.id}`} className="cursor-pointer p-1">
               <Image
                 src="/images/iconly/light/Edit.svg"
                 alt="Edit"
                 width={0}
                 height={0}
                 className="h-[20px] w-[20px]"
-                onClick={() => handleEdit(record.id)}
+              // onClick={() => handleEdit(record.id)}
               />
             </Link>
 
@@ -322,10 +321,10 @@ const Memebers = () => {
 
   const [selectedMemberData, setSelectedMemberData] = useState<any>(null);
 
-  const handleEdit = (editMemberId: string) => {
-    console.log(editMemberId, "memberId");
-    router.push(`/management/members/members/${editMemberId}`);
-  }
+  // const handleEdit = (editMemberId: string) => {
+  //   console.log(editMemberId, "memberId");
+  //   router.push(`/management/members/members/${editMemberId}`);
+  // }
 
   const handleAddMemberClick = () => {
     router.push('/management/members/members/add');
@@ -411,7 +410,7 @@ const Memebers = () => {
                     if (target.closest('.action-buttons')) return;
 
                     // Otherwise, navigate
-                    router.push(`/management/members/${record.key}/member-profile`);
+                    router.push(`/management/members/${record.id}/member-profile`);
                   },
                 };
               }}
@@ -422,8 +421,8 @@ const Memebers = () => {
       </div>
 
 
-            {/* Confirmation Modal */}
-            <Modal
+      {/* Confirmation Modal */}
+      <Modal
         title="Confirm Delete"
         open={confirmDeleteVisible}
         onOk={handleDeleteTrainee}

@@ -87,6 +87,11 @@ const Branch = () => {
       key: "address",
     },
     {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
+    },
+    {
       title: "Status",
       dataIndex: "isMainBranch",
       key: "isMainBranch",

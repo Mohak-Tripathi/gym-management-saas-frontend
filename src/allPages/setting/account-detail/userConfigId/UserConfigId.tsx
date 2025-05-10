@@ -1,8 +1,7 @@
 "use client";
 
-import { Image, message } from "antd";
+import { Image, message} from "antd";
 import React, { useEffect, useState } from "react";
-import { Radio } from "antd";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form } from "antd";
 import Link from "next/link";
@@ -10,6 +9,7 @@ import { useSelector } from "react-redux";
 import FormSelect from "@/components/formComponents/FormSelect";
 import { useParams, useRouter } from "next/navigation";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
+import { toast } from "sonner";
 
 const UserConfigId = () => {
   const { branches } = useSelector((state: any) => state.branch);
@@ -26,6 +26,20 @@ const UserConfigId = () => {
     value: branch.id,
     label: branch.name,
   }));
+
+
+  const UserRoleOptions = [
+    {
+      value: "ADMIN",
+      label: "Admin",
+    }, {
+
+      value: "RECEPTIONIST",
+      label: "Receptionist",
+    }
+
+  ]
+
 
   const fetchUserById = async () => {
     setLoading(true);
@@ -69,19 +83,23 @@ const UserConfigId = () => {
     }
     else {
       const payload = {
-          fullName: values.fullName || userData && userData?.fullName,
-          email: values.email || userData && userData?.email,
-          role: values.role || userData && userData?.role,
-          phone: values.phone || userData && userData?.phone,
-          gymBranchId: values.gymBranchId || userData && userData?.gymBranchId,
+        fullName: values.fullName || userData && userData?.fullName,
+        email: values.email || userData && userData?.email,
+        role: values.role || userData && userData?.role,
+        phone: values.phone || userData && userData?.phone,
+        gymBranchId: values.gymBranchId || userData && userData?.gymBranchId,
       };
 
       try {
         const response = await putRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, payload);
-        message.success("User data updated successfully")
+
+ 
+        toast.success("User data updated successfully")
+        // message.success("User data updated successfully")
         router.push("/management/settings/account-details/user-configuration")
         console.log(response, "User data updated successfully");
       } catch (error) {
+        toast.error("User data updation failed")
         console.error("User data updation failed:", error);
       }
     }
@@ -156,9 +174,10 @@ const UserConfigId = () => {
                 />
               )}
 
-              <FormInput
+              <FormSelect
                 label="Role"
                 name="role"
+                options={UserRoleOptions}
                 initialValue={userData && userData?.role}
               />
 

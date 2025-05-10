@@ -9,6 +9,7 @@ import { Form, message } from 'antd'
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 
 
 interface AddMemberProps {
@@ -27,7 +28,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
     const [loading, setLoading] = useState(false);
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
 
-    console.log(subscriptionDetailsData, "subscriptionDetailsData");
 
     const { branches } = useSelector((state: any) => state.branch);
 
@@ -35,6 +35,15 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         value: branch.id,
         label: branch.name,
     }));
+
+    const GenderOptions = [{
+        value: "MALE",
+        label: "Male",
+    }, {
+
+        value: "FEMALE",
+        label: "Female",
+    }]
 
 
 
@@ -64,7 +73,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         fetchAllSubscriptionPlan();
     }, []);
 
-    console.log(params, params.editMemberId,  "params");
+    console.log(params, params.editMemberId, "params");
 
     useEffect(() => {
 
@@ -74,8 +83,8 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             setLoading(true);
             try {
                 const data = await getRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`);
-                console.log(data, "gymSubscriptiondata");
-                setMemberData(data);
+                console.log(data.data, "memeberdata");
+                setMemberData(data.data);
             } catch (error) {
                 // Optionally handle error
                 setMemberData([]);
@@ -126,33 +135,33 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
 
             const payload = {
                 "userData": {
-                    "email": values.email || memberData?.userData?.email,
-                    "fullName": values.fullName || memberData?.userData?.fullName,
+                    "email": values.email || memberData?.user?.email,
+                    "fullName": values.fullName || memberData?.user?.fullName,
                     "role": "TRAINEE",
-                    "phone": values.phone || memberData?.userData?.phone,
+                    "phone": values.phone || memberData?.user?.phone,
                 },
                 "traineeData": {
-                    "referenceMobileNo": values.referenceMobileNo || memberData?.traineeData?.referenceMobileNo,
-                    "gender": values.gender,
-                    "image": values.image || memberData?.traineeData?.image,
-                    "age": values.age || memberData?.traineeData?.age,
-                    "address": values.address || memberData?.traineeData?.address,
-                    "personalizedGoal": values.personalizedGoal || memberData?.traineeData?.personalizedGoal,
-                    "healthIssues": values.healthIssues || memberData?.traineeData?.healthIssues,
-                    "gymBranchId": values.gymBranchId || memberData?.traineeData?.gymBranchId,
+                    "referenceMobileNo": values.referenceMobileNo || memberData?.referenceMobileNo,
+                    "gender": values.gender || memberData?.gender,
+                    "image": values.image || memberData?.image,
+                    "age": Number(values.age) || memberData?.age,
+                    "address": values.address || memberData?.address,
+                    "personalizedGoal": values.personalizedGoal || memberData?.personalizedGoal,
+                    "healthIssues": values.healthIssues || memberData?.healthIssues,
+                    "gymBranchId": values.gymBranchId || memberData?.gymBranchId,
                 },
                 "traineeMembershipData": {
-                    "membershipId": values.membershipId,
-                    "discountedPrice": values.discountedPrice,
-                    "discountPercentage": values.discountPercentage,
-                    "reasonOfDiscount": values.reasonOfDiscount,
-                    "extraMonths": Number(values.extraMonths),
-                    "startDate": values.startDate,
-                    "endDate": values.endDate,
+                    "membershipId": values.membershipId || memberData?.traineeMemberships[0]?.membershipId,
+                    "discountedPrice": Number(values.discountedPrice) || memberData?.traineeMemberships[0]?.discountPrice,
+                    "discountPercentage": Number(values.discountPercentage) || memberData?.traineeMemberships[0]?.discountPercentage,
+                    "reasonOfDiscount": values.reasonOfDiscount || memberData?.traineeMemberships[0]?.reasonOfDiscount,
+                    "extraMonths": Number(values.extraMonths) || memberData?.traineeMemberships[0]?.extraMonths,
+                    "startDate": values.startDate || memberData?.traineeMemberships[0]?.startDate,
+                    "endDate": values.endDate || memberData?.traineeMemberships[0]?.endDate,
                     // gymId and gymBranchId will be added by the backend
                 }
             }
-   
+
             try {
                 const response = await putRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`, payload);
 
@@ -210,12 +219,13 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         onClose()
     }
 
-    return (
+
+    return loading ? (
+        <div>Loading...</div>
+    ) : (
 
         <main className='w-full h-full'>
-            {loading ? (
-                <div>Loading...</div>
-            ) : (
+
             <Form
                 form={form}
                 onFinish={handleFinish}
@@ -223,50 +233,52 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                 //     memberName: selectedMemberData?.name,
                 // }}
                 layout="vertical"
-                className='h-full flex flex-col justify-between gap-4'
+                className='h-full flex flex-col justify-between gap-8'
             >
                 {/* user data */}
                 <div className='flex flex-col gap-4'>
                     <FormInput
                         label='Member name'
                         name='fullName'
-                        // initialValue={memberData && memberData.data.userData.fullName}
+                        initialValue={memberData && memberData?.user?.fullName}
                     />
                     <div className='w-full grid grid-cols-2 gap-4'>
                         <FormInput
                             label='Email'
                             name='email'
-                            // initialValue={memberData && memberData.data.userData.email}
+                            initialValue={memberData && memberData?.user?.email}
                         />
 
                         <FormInput
                             label='Mobile No.'
                             name='phone'
-                            // initialValue={memberData && memberData.userData.phone}
+                            initialValue={memberData && memberData?.user?.phone}
                         />
 
                         <FormInput
                             label='Reference Mobile No.'
                             name='referenceMobileNo'
-                            // initialValue={memberData && memberData.traineeData.referenceMobileNo}
+                            initialValue={memberData && memberData?.referenceMobileNo}
                         />
 
-                        <FormInput
+                        <FormSelect
                             label='Gender'
                             name='gender'
-                            // initialValue={memberData && memberData.traineeData.gender}
+                            options={GenderOptions}
+
+                            initialValue={memberData && memberData?.gender}
                         />
 
                         <FormInput
                             label='Age'
                             name='age'
-                            // initialValue={memberData && memberData.traineeData.age}
+                            initialValue={memberData && memberData?.age}
                         />
 
                         <FormInput
                             label='Image'
                             name='image'
-                            // initialValue={memberData && memberData.traineeData.image}
+                            initialValue={memberData && memberData?.image}
                         />
 
 
@@ -275,7 +287,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     <FormInput
                         label='Address'
                         name='address'
-                        // initialValue={memberData && memberData.traineeData.address}
+                        initialValue={memberData && memberData?.address}
                     />
 
                     <div className='w-full grid grid-cols-2 gap-4'>
@@ -283,60 +295,67 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                             options={userGoals}
                             label='Goal'
                             name='personalizedGoal'
-                            // initialValue={memberData && memberData.traineeData.personalizedGoal}
+                            initialValue={memberData && memberData?.personalizedGoal}
                         />
 
                         <FormMultiselect
                             options={healthIssues}
                             label='Health Issues'
                             name='healthIssues'
-                            // initialValue={memberData && memberData.traineeData.healthIssues}
+                            initialValue={memberData && memberData?.healthIssues}
                         />
 
                         <FormSelect
                             options={subscriptionDetailsData}
                             label='Subscription Plan'
                             name='membershipId'
-                            // initialValue={memberData}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.membershipId}
                         />
 
                         <FormInput
                             label='Discounted Price'
                             name="discountedPrice"
-                            // initialValue={memberData && memberData.traineeData.discountedPrice}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.discountedPrice}
+
                         />
                         <FormInput
-                            label='Discount Percentage'
+                            label='Discount %'
                             name='discountPercentage'
-                            //initialValue={memberData && memberData.traineeData.discountPercentage}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.discountPercentage}
+
                         />
                         <FormInput
                             label='Reason of Discount'
                             name='reasonOfDiscount'
-                            //initialValue={memberData && memberData.traineeData.reasonOfDiscount}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.reasonOfDiscount}
+
                         />
                         <FormInput
                             label='Extra Months'
                             name='extraMonths'
-                            //initialValue={memberData && memberData.traineeData.extraMonths}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.extraMonths}
+                        //initialValue={memberData && memberData.traineeData.extraMonths}
 
                         />
                         <FormSelect
                             options={branchOptions}
                             label='Branch Name'
                             name='gymBranchId'
-                            //initialValue={memberData && memberData.traineeData.gymBranchId}
+                            initialValue={memberData && memberData?.gymBranchId}
+
                         />
 
                         <FormDate
                             label='Subscription end date'
                             name='startDate'
-                            //initialValue={memberData && memberData.traineeData.startDate}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.startDate)}
+                        //initialValue={memberData && memberData.traineeData.startDate}
                         />
                         <FormDate
                             label='Subscription start date'
                             name='endDate'
-                            //initialValue={memberData && memberData.traineeData.endDate}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.endDate)}
+                        //initialValue={memberData && memberData.traineeData.endDate}
                         />
 
                     </div>
@@ -344,7 +363,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                 </div>
 
                 {/* buttons */}
-                <div className='flex justify-center gap-4'>
+                <div className='flex justify-start gap-6 '>
                     <button
                         type='button'
                         onClick={() => handleCancel()}
@@ -356,13 +375,14 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                         type='submit'
                         className=' w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                     >
-                        Add Member
+                        Edit Member
                     </button>
                 </div>
             </Form>
-            )}
+
         </main>
     )
+
 }
 
 export default AddMember

@@ -1,11 +1,13 @@
 "use client";
 import FormInput from "@/components/formComponents/FormInput";
+import FormMultiselect from "@/components/formComponents/FormMultiselect";
 import FormSelect from "@/components/formComponents/FormSelect";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
 import { Form, message } from "antd";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface AddSubscriptionCardProps {
   onClose: () => void;
@@ -54,19 +56,23 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
     // return;
     if (params.subscriptionId != 'add') {
       // console.log('put request');
+
       const payload = {
         name: values.name || subscriptionData?.name,
-        actualPrice: Number(values.actualPrice) || Number(subscriptionData.actualPrice),
+        actualPrice: values.actualPrice || subscriptionData.actualPrice,
+        membershipDiscountedPrice: Number(values.membershipDiscountedPrice) || Number(subscriptionData.membershipDiscountedPrice),
         baseDuration: Number(values.baseDuration) || Number(subscriptionData.baseDuration),
-        benefits: [values.benefits || subscriptionData?.benefits[0]],
+        benefits: values.benefits || subscriptionData?.benefits,
       }
       try {
         const response = await putRequest(`/api/memberships/${params.subscriptionId}?gymBranchId=${currentGymBranchId}`, payload);
 
-        message.success("Branch data updated successfully")
+        // message.success("Branch data updated successfully")
+        toast.success("Subscription Plan updated successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch updated");
       } catch (error) {
+        toast.error("Subscription Plan updation failed")
         console.error("Branch creation failed:", error);
       }
     } else {
@@ -74,17 +80,19 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
       
       const payload = {
         name: values.name,
-        actualPrice: Number(values.actualPrice),
+        actualPrice: values.actualPrice,
         baseDuration: Number(values.baseDuration),
-        benefits: [values.benefits],
+        membershipDiscountedPrice: Number(values.membershipDiscountedPrice) ,
+        benefits: values.benefits,
         gymBranchId: 'aa2ec403-de84-43eb-913a-9c63455f26ca'
       }
       try {
         const response = await postRequest(`/api/memberships`, payload);
-        message.success("New Branch creared successfully")
+        toast.success("New Subscription Plan created successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch created");
       } catch (error) {
+        toast.error("Subscription Plan creation failed")
         console.error("Branch creation failed:", error);
       }
     }
@@ -130,7 +138,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
           </div>
 
           <div className="col-span-2">
-            <FormSelect
+            <FormMultiselect
               label="Benefits "
               name="benefits"
               options={benifitsOptions}
@@ -143,11 +151,16 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
             name="actualPrice"
             initialValue={subscriptionData.actualPrice}
           />
+          <FormInput
+            label="Membership Price"
+            name="membershipDiscountedPrice"
+            initialValue={subscriptionData.membershipDiscountedPrice}
+          />
 
           {/* <FormInput label="Discounted Price" name="discountedPrice" /> */}
 
           <FormInput
-            label="Classes allowed"
+            label="Base Duration"
             name="baseDuration"
             initialValue={subscriptionData.baseDuration}
           />

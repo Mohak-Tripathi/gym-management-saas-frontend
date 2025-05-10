@@ -90,9 +90,9 @@ const SubscriptionDetail = () => {
 
             <SubscriptionCard
               planTitle={planDetail?.name}
-              duration="Monthly"
+              duration={planDetail?.baseDuration === 1 ? "Monthly" : planDetail?.baseDuration === 3 ? "Quarterly" : planDetail?.baseDuration === 6 ? "Half Year" : planDetail?.baseDuration === 12 ? "Yearly" : ""}
               actualPrice={planDetail?.actualPrice}
-              discountedPrice={planDetail?.actualPrice}
+              membershipDiscountedPrice={planDetail?.membershipDiscountedPrice}
               classesCount={planDetail?.baseDuration}
               backgroundColor={backgroundColors[index % backgroundColors.length]}
               textColor="text-[#86867D]"
