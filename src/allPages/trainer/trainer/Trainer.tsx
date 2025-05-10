@@ -269,6 +269,7 @@ const Trainer = () => {
   ];
 
   const handleEdit = (trainerId: string) => {
+    console.log('trainerId', trainerId);
     router.push(`/management/trainer/trainer/${trainerId}`);
   }
 

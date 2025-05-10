@@ -10,6 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
+
 interface AddMemberProps {
     onClose: () => void;
     open: boolean;
@@ -63,7 +64,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         fetchAllSubscriptionPlan();
     }, []);
 
-
+    console.log(params, params.editMemberId,  "params");
 
     useEffect(() => {
 
@@ -153,7 +154,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             }
    
             try {
-                const response = await putRequest(`/api/trainees/${params.subscriptionId}?gymBranchId=${currentGymBranchId}`, payload);
+                const response = await putRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`, payload);
 
                 message.success("Members updated successfully")
                 router.push("/management/members/members/")
@@ -229,13 +230,13 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     <FormInput
                         label='Member name'
                         name='fullName'
-                        // initialValue={memberData && memberData.userData.fullName}
+                        // initialValue={memberData && memberData.data.userData.fullName}
                     />
                     <div className='w-full grid grid-cols-2 gap-4'>
                         <FormInput
                             label='Email'
                             name='email'
-                            // initialValue={memberData && memberData.userData.email}
+                            // initialValue={memberData && memberData.data.userData.email}
                         />
 
                         <FormInput

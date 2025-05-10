@@ -1,7 +1,7 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { usePathname, useRouter } from 'next/navigation';
-import { Drawer, Input, message, Popover, Table } from 'antd'
+import { Drawer, Input, message, Modal, Popover, Table } from 'antd'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import Title from 'antd/es/typography/Title';
@@ -10,6 +10,7 @@ import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
 import { deleteRequest, getRequest } from '@/lib/services/request';
 import BranchId from '@/allPages/setting/account-detail/branchId';
 import Link from 'next/link';
+import dayjs from 'dayjs';
 
 const selectOptions = [
   {
@@ -60,15 +61,15 @@ const Memebers = () => {
   }, [pathname])
 
 
-  const deleteIconClick = (memberId: any, branchId: any) => {
-    setDeleteMemberId(memberId)
+  const deleteIconClick = (traineeId: any, branchId: any) => {
+    setDeleteMemberId(traineeId)
     setDeleteBranchId(branchId)
     setConfirmDeleteVisible(true)
   }
 
-  const handleDeleteSubscriptionPlan = async () => {
+  const handleDeleteTrainee = async () => {
     try {
-      const response = await deleteRequest(`/api/memberships/${deleteMemberId}?gymBranchId=${deleteBranchId}`);
+      const response = await deleteRequest(`/api/trainees/${deleteMemberId}?gymBranchId=${deleteBranchId}`);
       message.success(`Member ${response.message}`)
       fetchMembers();
       console.log(response, "branch updated");
@@ -84,7 +85,7 @@ const Memebers = () => {
   }
 
 
-  const threeDotPopover = (recordId: any) => {
+  const threeDotPopover = (traineeId: string, branchId: string) => {
     return (
       <>
         <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
@@ -114,7 +115,7 @@ const Memebers = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+          <div  onClick={() => deleteIconClick(traineeId, branchId)} className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Delete</div>
               <Image
@@ -129,6 +130,7 @@ const Memebers = () => {
       </>
     )
   }
+
 
   const columns = [
     {
@@ -194,31 +196,53 @@ const Memebers = () => {
     },
     {
       title: 'Joined Date',
-      dataIndex: 'joinedDate',
-      key: 'joinedDate',
-      render: (_: any, record: any) => (
-        <div>+91 {record.traineeMembershipData.startDate}</div>
-      )
+      dataIndex: 'startDate',
+      key: 'startDate',
+      // render: (date: string) => dayjs(date).format('DD-MM-YYYY'),
+
+      render: (_: any, record: any) => {
+        const rawDate = record?.traineeMemberships?.[0]?.startDate;
+        return rawDate ? dayjs(rawDate).format('DD-MM-YYYY') : '-';
+      }
     },
     {
       title: 'Expiry Date',
-      dataIndex: 'expiryDate',
-      key: 'expiryDate',
-      render: (_: any, record: any) => (
-        <div>+91 {record.traineeMembershipData.endDate}</div>
-      )
+      dataIndex: 'endDate',
+      key: 'endDate',
+      render: (_: any, record: any) => {
+      
+        const rawDate = record?.traineeMemberships?.[0]?.endDate;
+        return rawDate ? dayjs(rawDate).format('DD-MM-YYYY') : '-';
+      }
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status: any) => {
+
+      render: (_: any, record: any) => {
+        const endDate = record?.traineeMemberships?.[0]?.endDate;
+        const isActive = endDate ? dayjs().isBefore(dayjs(endDate)) : false;
+        const displayStatus = isActive ? 'ACTIVE' : 'EXPIRED';
+    
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
-            {status}
+          <p
+            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${
+              isActive ? 'bg-green-secondary' : 'bg-pink-pastel'
+            }`}
+          >
+            {displayStatus}
           </p>
         );
       },
+
+      // render: (status: any) => {
+      //   return (
+      //     <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
+      //       {status}
+      //     </p>
+      //   );
+      // },
     },
     {
       title: 'Payment',
@@ -248,6 +272,7 @@ const Memebers = () => {
       dataIndex: '',
       key: 'action',
       render: (_: any, record: any, index: number) => {
+        console.log(record, "myy_record")
         return (
           <div className="flex justify-end gap-3 items-center action-buttons">
 
@@ -258,12 +283,13 @@ const Memebers = () => {
                 width={0}
                 height={0}
                 className="h-[20px] w-[20px]"
+                onClick={() => handleEdit(record.id)}
               />
             </Link>
 
             <Popover
               placement="bottomRight"
-              content={() => threeDotPopover(record.key)}
+              content={() => threeDotPopover(record.id, record.gymBranchId)}
               trigger="click"
               rootClassName="sidebar-popover"
               arrow={false}
@@ -296,8 +322,9 @@ const Memebers = () => {
 
   const [selectedMemberData, setSelectedMemberData] = useState<any>(null);
 
-  const handleEdit = (memberId: string) => {
-    router.push(`/management/members/members/${memberId}`);
+  const handleEdit = (editMemberId: string) => {
+    console.log(editMemberId, "memberId");
+    router.push(`/management/members/members/${editMemberId}`);
   }
 
   const handleAddMemberClick = () => {
@@ -393,6 +420,19 @@ const Memebers = () => {
         </div>
 
       </div>
+
+
+            {/* Confirmation Modal */}
+            <Modal
+        title="Confirm Delete"
+        open={confirmDeleteVisible}
+        onOk={handleDeleteTrainee}
+        onCancel={() => handleCancel()}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this trainer?</p>
+      </Modal>
     </main>
   );
 }
