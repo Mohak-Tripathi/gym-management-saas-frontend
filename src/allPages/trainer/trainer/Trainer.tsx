@@ -185,12 +185,14 @@ const Trainer = () => {
       title: 'Joined Date',
       dataIndex: 'joiningDate',
       key: 'joiningDate',
+
     },
     // {
     //   title: 'Log in Time',
     //   dataIndex: 'logInTime',
     //   key: 'logInTime',
     // },
+
     {
       title: 'Status',
       dataIndex: 'status',

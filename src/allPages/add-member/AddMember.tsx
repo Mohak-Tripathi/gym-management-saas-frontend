@@ -1,5 +1,7 @@
 'use client'
+import FormDate from '@/components/formComponents/FormDate';
 import FormInput from '@/components/formComponents/FormInput';
+import FormMultiselect from '@/components/formComponents/FormMultiselect';
 import FormSelect from '@/components/formComponents/FormSelect';
 import { membersData } from '@/constant/membersData';
 import { getRequest, postRequest, putRequest } from '@/lib/services/request';
@@ -70,7 +72,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         const fetchMemberDataById = async () => {
             setLoading(true);
             try {
-                const data = await getRequest(`/api/trainees/${params.subscriptionId}?gymBranchId=${currentGymBranchId}`);
+                const data = await getRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`);
                 console.log(data, "gymSubscriptiondata");
                 setMemberData(data);
             } catch (error) {
@@ -85,50 +87,71 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
     }, [])
 
 
+    const healthIssues = [
+        { value: 'Diabetes', label: 'Diabetes' },
+        { value: 'Hypertension', label: 'Hypertension' },
+        { value: 'Asthma', label: 'Asthma' },
+        { value: 'HeartDisease', label: 'Heart Disease' },
+        { value: 'JointPain', label: 'Joint Pain' },
+        { value: 'BackPain', label: 'Back Pain' },
+        { value: 'Obesity', label: 'Obesity' },
+        { value: 'Arthritis', label: 'Arthritis' },
+        { value: 'Thyroid', label: 'Thyroid' },
+        { value: 'PCOS', label: 'PCOS' },
+    ];
+
+    const userGoals = [
+        { value: 'WeightLoss', label: 'Weight Loss' },
+        { value: 'MuscleGain', label: 'Muscle Gain' },
+        { value: 'GeneralFitness', label: 'General Fitness' },
+        { value: 'Endurance', label: 'Build Endurance' },
+        { value: 'Flexibility', label: 'Improve Flexibility' },
+        { value: 'Rehabilitation', label: 'Rehabilitation' },
+        { value: 'StressRelief', label: 'Stress Relief' },
+        { value: 'BodyToning', label: 'Body Toning' },
+        { value: 'SportsPerformance', label: 'Sports Performance' },
+        { value: 'PostPregnancyFitness', label: 'Post-Pregnancy Fitness' },
+    ];
+
+
+
 
 
 
     const handleFinish = async (values: any) => {
         console.log(values, "values");
 
-        const payload = {
-            "userData": {
-              "email": values.email,
-              "fullName": values.fullName,
-              "role": "TRAINEE",
-              "phone": values.phone,
-            },
-            "traineeData": {
-              "referenceMobileNo": values.referenceMobileNo,
-              "gender": values.gender,
-              "image": values.image,
-              "age": values.age,
-              "address": values.address,
-              "personalizedGoal": ["Fat Loss", "Muscle Gain"],
-              "healthIssues": ["Back Pain"],
-              "gymBranchId": values.gymBranchId,            },
-            "traineeMembershipData": {
-              "membershipId": values, 
-              "discountedPrice": values.discountedPrice,
-              "discountPercentage": values.discountPercentage,
-              "reasonOfDiscount": values.reasonOfDiscount,
-              "extraMonths": values.extraMonths,
-              "startDate": values.startDate,
-              "endDate": values.endDate,
-              // gymId and gymBranchId will be added by the backend
-            }
-          }
-
-        // gymBranchId, 
-        // return;
         if (params.editMemberId != 'add') {
-            // console.log('put request');
+
             const payload = {
-                name: values.name || memberData?.name,
-                actualPrice: Number(values.actualPrice) || Number(memberData.actualPrice),
-                baseDuration: Number(values.baseDuration) || Number(memberData.baseDuration),
-                benefits: [values.benefits || memberData?.benefits[0]],
+                "userData": {
+                    "email": values.email || memberData?.userData?.email,
+                    "fullName": values.fullName || memberData?.userData?.fullName,
+                    "role": "TRAINEE",
+                    "phone": values.phone || memberData?.userData?.phone,
+                },
+                "traineeData": {
+                    "referenceMobileNo": values.referenceMobileNo || memberData?.traineeData?.referenceMobileNo,
+                    "gender": values.gender,
+                    "image": values.image || memberData?.traineeData?.image,
+                    "age": values.age || memberData?.traineeData?.age,
+                    "address": values.address || memberData?.traineeData?.address,
+                    "personalizedGoal": values.personalizedGoal || memberData?.traineeData?.personalizedGoal,
+                    "healthIssues": values.healthIssues || memberData?.traineeData?.healthIssues,
+                    "gymBranchId": values.gymBranchId || memberData?.traineeData?.gymBranchId,
+                },
+                "traineeMembershipData": {
+                    "membershipId": values.membershipId,
+                    "discountedPrice": values.discountedPrice,
+                    "discountPercentage": values.discountPercentage,
+                    "reasonOfDiscount": values.reasonOfDiscount,
+                    "extraMonths": Number(values.extraMonths),
+                    "startDate": values.startDate,
+                    "endDate": values.endDate,
+                    // gymId and gymBranchId will be added by the backend
+                }
             }
+   
             try {
                 const response = await putRequest(`/api/trainees/${params.subscriptionId}?gymBranchId=${currentGymBranchId}`, payload);
 
@@ -142,15 +165,36 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             console.log('post request');
 
             const payload = {
-                name: values.name,
-                actualPrice: Number(values.actualPrice),
-                baseDuration: Number(values.baseDuration),
-                benefits: [values.benefits],
-                gymBranchId: 'aa2ec403-de84-43eb-913a-9c63455f26ca'
+                "userData": {
+                    "email": values.email,
+                    "fullName": values.fullName,
+                    "role": "TRAINEE",
+                    "phone": values.phone,
+                },
+                "traineeData": {
+                    "referenceMobileNo": values.referenceMobileNo,
+                    "gender": values.gender,
+                    "image": values.image,
+                    "age": Number(values.age),
+                    "address": values.address,
+                    "personalizedGoal": values.personalizedGoal,
+                    "healthIssues": values.healthIssues,
+                    "gymBranchId": values.gymBranchId,
+                },
+                "traineeMembershipData": {
+                    "membershipId": values.membershipId,
+                    "discountedPrice": Number(values.discountedPrice),
+                    "discountPercentage": Number(values.discountPercentage),
+                    "reasonOfDiscount": values.reasonOfDiscount,
+                    "extraMonths": Number(values.extraMonths),
+                    "startDate": values.startDate,
+                    "endDate": values.endDate,
+                    // gymId and gymBranchId will be added by the backend
+                }
             }
             try {
                 const response = await postRequest(`/api/trainees`, payload);
-                message.success("New Branch creared successfully")
+                message.success("New Member got created successfully")
                 router.push("/management/members/members/")
                 console.log(response, "new member created");
             } catch (error) {
@@ -158,7 +202,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             }
         }
 
-        onClose();
+        // onClose();
     };
 
     const handleCancel = () => {
@@ -166,13 +210,17 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
     }
 
     return (
+
         <main className='w-full h-full'>
+            {loading ? (
+                <div>Loading...</div>
+            ) : (
             <Form
                 form={form}
                 onFinish={handleFinish}
-                initialValues={{
-                    memberName: selectedMemberData?.name,
-                }}
+                // initialValues={{
+                //     memberName: selectedMemberData?.name,
+                // }}
                 layout="vertical"
                 className='h-full flex flex-col justify-between gap-4'
             >
@@ -181,36 +229,43 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     <FormInput
                         label='Member name'
                         name='fullName'
+                        // initialValue={memberData && memberData.userData.fullName}
                     />
                     <div className='w-full grid grid-cols-2 gap-4'>
                         <FormInput
                             label='Email'
                             name='email'
+                            // initialValue={memberData && memberData.userData.email}
                         />
 
                         <FormInput
                             label='Mobile No.'
                             name='phone'
+                            // initialValue={memberData && memberData.userData.phone}
                         />
 
                         <FormInput
                             label='Reference Mobile No.'
                             name='referenceMobileNo'
+                            // initialValue={memberData && memberData.traineeData.referenceMobileNo}
                         />
 
                         <FormInput
                             label='Gender'
                             name='gender'
+                            // initialValue={memberData && memberData.traineeData.gender}
                         />
 
                         <FormInput
                             label='Age'
                             name='age'
+                            // initialValue={memberData && memberData.traineeData.age}
                         />
 
                         <FormInput
                             label='Image'
                             name='image'
+                            // initialValue={memberData && memberData.traineeData.image}
                         />
 
 
@@ -219,57 +274,69 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     <FormInput
                         label='Address'
                         name='address'
+                        // initialValue={memberData && memberData.traineeData.address}
                     />
 
                     <div className='w-full grid grid-cols-2 gap-4'>
-                        <FormInput
+                        <FormMultiselect
+                            options={userGoals}
                             label='Goal'
                             name='personalizedGoal'
+                            // initialValue={memberData && memberData.traineeData.personalizedGoal}
                         />
 
-                        <FormInput
+                        <FormMultiselect
+                            options={healthIssues}
                             label='Health Issues'
                             name='healthIssues'
+                            // initialValue={memberData && memberData.traineeData.healthIssues}
                         />
 
                         <FormSelect
                             options={subscriptionDetailsData}
                             label='Subscription Plan'
                             name='membershipId'
+                            // initialValue={memberData}
                         />
 
                         <FormInput
                             label='Discounted Price'
                             name="discountedPrice"
+                            // initialValue={memberData && memberData.traineeData.discountedPrice}
                         />
                         <FormInput
                             label='Discount Percentage'
                             name='discountPercentage'
+                            //initialValue={memberData && memberData.traineeData.discountPercentage}
                         />
                         <FormInput
                             label='Reason of Discount'
                             name='reasonOfDiscount'
+                            //initialValue={memberData && memberData.traineeData.reasonOfDiscount}
                         />
                         <FormInput
                             label='Extra Months'
                             name='extraMonths'
+                            //initialValue={memberData && memberData.traineeData.extraMonths}
+
                         />
                         <FormSelect
                             options={branchOptions}
                             label='Branch Name'
                             name='gymBranchId'
+                            //initialValue={memberData && memberData.traineeData.gymBranchId}
                         />
 
-                        <FormInput
+                        <FormDate
                             label='Subscription end date'
                             name='startDate'
+                            //initialValue={memberData && memberData.traineeData.startDate}
                         />
-                        <FormInput
+                        <FormDate
                             label='Subscription start date'
                             name='endDate'
+                            //initialValue={memberData && memberData.traineeData.endDate}
                         />
-
-
 
                     </div>
 
@@ -292,6 +359,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     </button>
                 </div>
             </Form>
+            )}
         </main>
     )
 }
