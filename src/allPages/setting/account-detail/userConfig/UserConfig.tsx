@@ -1,6 +1,6 @@
 "use client";
 
-import { message, Modal, Table } from "antd";
+import { message, Modal, Table, notification } from "antd";
 
 import React, { useEffect, useState } from "react";
 import { userConfig } from "@/constant/userConfig";
@@ -25,12 +25,24 @@ const UserConfig = () => {
   const [deleteBranchId, setDeleteBranchId] = useState('')
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
+
+
+
+
+
   const fetchAllUsersData = async () => {
     setLoading(true);
     try {
       const data = await getRequest(`/api/auth?gymBranchId=${currentGymBranchId}`);
-      setUsersData(data.data);
+
+      const newUserData = data.data.filter((user: any) => {
+        return user.role !== "TRAINER" &&  user.role !== "TRAINEE"
+
+      })
+      console.log(newUserData, "newUserData");
+      setUsersData(newUserData);
       console.log('userData', data.data);
+
       
     } catch (error) {
       console.log('user data error', error);
@@ -53,6 +65,11 @@ const UserConfig = () => {
   const handleDeleteUser = async () => {
     try {
       const response = await deleteRequest(`/api/auth/${deleteUserId}?gymBranchId=${deleteBranchId}`);
+      notification.success({
+        message: 'Success',
+        description: `Branch ${response.message}`
+      });
+      
       message.success(`Branch ${response.message}`)
       fetchAllUsersData();
       console.log(response, "branch updated");
@@ -195,6 +212,7 @@ const UserConfig = () => {
 
       <div className="w-full flex flex-col flex-1">
         <Table
+        rowKey={(record) => record.id}
           columns={columns}
           dataSource={usersData}
           pagination={false}

@@ -45,6 +45,7 @@ const BranchId = () => {
         name: values.name || branchData?.name,
         address: values.address || branchData?.address,
         isMainBranch: values.isMainBranch || branchData?.isMainBranch,
+        description: values.description || branchData?.description,
       }
       try {
         const response = await putRequest(`/api/gym-branch/${params.branchId}`, payload);
@@ -109,7 +110,7 @@ const BranchId = () => {
                 />
               </div>
               <div className="text-[20px] font-bold text-black-primary">
-                {params.branchId === 'add' ? 'Create New Branch' : 'Edit Branchs'}
+                {params.branchId === 'new' ? 'Create New Branch' : 'Edit Branch'}
                 
               </div>
             </div>
@@ -136,9 +137,11 @@ const BranchId = () => {
                 name="address"
                 initialValue={branchData && branchData?.address}
               />
-              {/* <div className="w-full col-span-2">
-                <FormInput label="Description" name="description" />
-              </div> */}
+              <div className="w-full col-span-2">
+                <FormInput label="Description" name="description"
+                 initialValue={branchData && branchData?.description} />
+               
+              </div>
             </div>
           </div>
 
@@ -191,7 +194,7 @@ const BranchId = () => {
             type="submit"
             className=" w-[147px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
-            Add Branch
+                  {params.branchId === 'new' ? 'Add Branch' : 'Edit Branch'}
           </button>
         </div>
       </Form>
