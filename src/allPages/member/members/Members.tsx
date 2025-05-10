@@ -374,6 +374,7 @@ const Memebers = () => {
               pagination={false}
               rowKey={(record) => record.user.email}
               scroll={{ y: 'calc(100vh - 370px)' }}
+
               className="custom-small-table"
               onRow={(record) => {
                 return {

@@ -167,7 +167,6 @@ const BillingHistory = () => {
               dataSource={trainersBillingData}
               pagination={false}
               rowSelection={rowSelection}
-              scroll={{ x: 'calc(100vw - 370px)', y: 'calc(100vh - 370px)' }}
               className="custom-small-table"
             />
           </div>

@@ -98,7 +98,7 @@ const BranchId = () => {
         onFinish={handleFinish}
       >
         <div className="w-full flex flex-col gap-4">
-          <div className="bg-[#F4F7FC] rounded-lg px-2 py-1 flex items-center justify-between">
+          <div className="bg-blue-secondary rounded-lg px-2 py-1 flex items-center justify-between">
             <div className="flex gap-2.5 items-center justify-between">
               <div className="h-[36px] w-[36px] bg-white border border-[#0000001A] rounded-full flex items-center justify-center">
                 <Image
@@ -109,7 +109,8 @@ const BranchId = () => {
                 />
               </div>
               <div className="text-[20px] font-bold text-black-primary">
-                Create New Branch
+                {params.branchId === 'add' ? 'Create New Branch' : 'Edit Branchs'}
+                
               </div>
             </div>
           </div>

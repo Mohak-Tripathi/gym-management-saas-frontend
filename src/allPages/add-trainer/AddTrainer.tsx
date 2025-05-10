@@ -8,6 +8,7 @@ import { Form, message } from 'antd'
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
 
 interface AddTrainerProps {
     onClose: () => void;
@@ -42,7 +43,12 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
     const [trainerData, setTrainerData] = useState<any>({});
     const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
-    console.log('params', params);
+    const { branches } = useSelector((state: any) => state.branch);
+
+    const branchOptions = branches?.map((branch: any) => ({
+        value: branch.id,
+        label: branch.name,
+    }));
 
     useEffect(() => {
         if (params.editTrainerId === 'add') return;
@@ -70,7 +76,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                 userData: {
                     fullName: values.fullName,
                     email: values.email,
-                    role: values.role,
+                    role: 'TRAINER',
                     phone: values.phone,
                 },
                 trainerData: {
@@ -80,7 +86,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                     workType: values.workType,
                     joiningDate: values.joiningDate || new Date().toISOString(),
                     experienceYears: Number(values.experienceYears),
-                    gymBranchId: "aa2ec403-de84-43eb-913a-9c63455f26ca",
+                    gymBranchId: values.gymBranchId,
                 },
             };
 
@@ -95,17 +101,21 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
 
         } else {
             const payload = {
-                // fullName: values.fullName || trainerData && trainerData?.user?.fullName,
-                // email: values.email || trainerData && trainerData?.user?.email,
-                // role: values.role || trainerData && trainerData?.user?.role,
-                // phone: values.phone || trainerData && trainerData?.user?.phone,
-                referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
-                specialization: values.specialization || trainerData && trainerData?.specialization,
-                experienceYears: Number(values.experienceYears) || Number(trainerData && trainerData?.experienceYears),
-                workType: values.workType || trainerData && trainerData?.workType,
-                gender: values.gender || trainerData && trainerData?.gender || "MALE",
-                joiningDate: values.joiningDate || trainerData?.joiningDate || new Date().toISOString(),
-                gymBranchId: "aa2ec403-de84-43eb-913a-9c63455f26ca",
+                userData: {
+                    fullName: values.fullName || trainerData && trainerData?.user?.fullName,
+                    email: values.email || trainerData && trainerData?.user?.email,
+                    role: 'TRAINER',
+                    phone: values.phone || trainerData && trainerData?.user?.phone,
+                },
+                trainerData: {
+                    referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
+                    specialization: values.specialization || trainerData && trainerData?.specialization,
+                    experienceYears: Number(values.experienceYears) || Number(trainerData && trainerData?.experienceYears),
+                    workType: values.workType || trainerData && trainerData?.workType,
+                    gender: values.gender || trainerData && trainerData?.gender || "MALE",
+                    joiningDate: values.joiningDate || trainerData?.joiningDate || new Date().toISOString(),
+                    gymBranchId: values.gymBranchId,
+                }
             };
 
             try {
@@ -150,11 +160,11 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                                 initialValue={trainerData && trainerData?.user?.email}
                             />
 
-                            <FormInput
+                            {/* <FormInput
                                 label='Role'
                                 name='role'
                                 initialValue={trainerData && trainerData?.user?.role}
-                            />
+                            /> */}
 
                             <FormInput
                                 label='Mobile No.'
@@ -199,6 +209,13 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                                 label='Joining Date'
                                 name='joiningDate'
                                 initialValue={trainerData?.joiningDate && dayjs(trainerData.joiningDate)}
+                            />
+
+                            <FormSelect
+                                label='Branch Name'
+                                name='gymBranchId'
+                                options={branchOptions}
+                                initialValue={trainerData && trainerData?.gymBranchId}
                             />
 
                         </div>

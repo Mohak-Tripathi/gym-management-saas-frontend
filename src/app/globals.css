@@ -135,3 +135,8 @@ body {
   border-radius: 12px !important;
   outline: none !important;
 }
+
+.branchSelect .ant-select-selector {
+  border: none !important;
+  border-color: transparent !important;
+}

@@ -2,20 +2,46 @@
 import { Switch } from 'antd'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { trainersData } from '@/constant/trainerData'
+import { getRequest } from '@/lib/services/request'
 
 const TrainerProfile = () => {
 
-  const params = useParams();
+  const params = useParams()
+
+  const [loading, setLoading] = useState(false);
+  const [trainerData, setTrainerData] = useState<any>({});
+  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
   const trainer = trainersData.find((trainer) => trainer.key === params.trainerId);
+
+  useEffect(() => {
+    const fetchTrainerById = async () => {
+      setLoading(true);
+      try {
+        const data = await getRequest(`/api/trainers/${params.trainerId}?gymBranchId=${currentGymBranchId}`);
+        console.log(data.data, "gymTrainerdatabyid");
+        setTrainerData(data.data);
+      } catch (error) {
+        // Optionally handle error
+        setTrainerData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrainerById();
+  }, [])
 
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
   };
 
-  return (
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+
     <main className={`h-[clac(100%-200px)] flex flex-col gap-4 flex-1 bg-white rounded-xl p-3 `}
       style={{
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
@@ -31,14 +57,14 @@ const TrainerProfile = () => {
             className='w-20 h-20'
           />
           <div className='flex flex-col gap-1'>
-            <h2 className={`text-[20px] text-black-primary font-semibold !m-0`}>{trainer?.name}</h2>
-            <p className={`w-20 h-6 rounded-lg text-[14px] text-black-primary font-medium flex items-center !m-0`}>{trainer?.status}</p>
+            <h2 className={`text-[20px] text-black-primary font-semibold !m-0`}>{trainerData?.user?.fullName}</h2>
+            {/* <p className={`w-20 h-6 rounded-lg text-[14px] text-black-primary font-medium flex items-center !m-0`}>{trainer?.status}</p> */}
           </div>
         </div>
 
         <div className='flex gap-6 items-center'>
 
-          <p
+          {/* <p
             className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${trainer?.payment === 'Paid' ? 'bg-green-pastel' : trainer?.payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}
           >
             <Image
@@ -48,7 +74,7 @@ const TrainerProfile = () => {
               alt={`calender`}
             />
             {trainer?.payment}
-          </p>
+          </p> */}
 
           <div className='flex gap-3 items-center'>
             <Image
@@ -59,13 +85,13 @@ const TrainerProfile = () => {
               className='h-[20px] w-[20px] cursor-pointer'
             />
 
-            <Image
+            {/* <Image
               src="/images/iconly/light/moreCircle.svg"
               alt="more menu"
               width={0}
               height={0}
               className='h-[20px] w-[20px] cursor-pointer'
-            />
+            /> */}
           </div>
 
         </div>
@@ -79,20 +105,20 @@ const TrainerProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Gender</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.gender}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.gender}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Email Address</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.email}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.user?.email}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Mobile No.</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.mobileNumber}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.user?.phone}</p>
           </div>
 
-          <div className='flex flex-col gap-1'>
+          {/* <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Date of Birth</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>12/04/1990</p>
           </div>
@@ -100,7 +126,7 @@ const TrainerProfile = () => {
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Aadhar Number</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>2346 2434 5667</p>
-          </div>
+          </div> */}
 
         </div>
 
@@ -141,22 +167,22 @@ const TrainerProfile = () => {
 
         <div className='w-full grid grid-cols-4 gap-4'>
 
-          <div className='flex flex-col gap-1'>
+          {/* <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Log in Time</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.logInTime}</p>
-          </div>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.logInTime}</p>
+          </div> */}
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Joined Date</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainer?.joinedDate}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.joiningDate}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Work Type</h2>
             <p
-              className={`h-6 w-24 rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${trainer?.workType === 'Paid' ? 'bg-green-pastel' : trainer?.workType === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}
+              className={`h-5 w-24 rounded-xl !m-0 !px-1.5 !py-1 !text-[12px] leading-[100%] !font-[500] !text-black-primary flex justify-center items-center ${trainerData?.workType === 'FULL_TIME' ? 'bg-green-pastel' : trainerData?.workType === 'PART_TIME' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}
             >
-              {trainer?.workType}
+              {trainerData?.workType === 'FULL_TIME' ? 'Full Time' : 'Part Time'}
             </p>
           </div>
 
