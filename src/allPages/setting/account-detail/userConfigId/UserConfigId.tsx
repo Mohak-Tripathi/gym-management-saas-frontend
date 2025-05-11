@@ -45,7 +45,6 @@ const UserConfigId = () => {
     setLoading(true);
     try {
       const data = await getRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`);
-      console.log(data.data, "gymUserdata");
       setUserData(data.data);
     } catch (error) {
       // Optionally handle error

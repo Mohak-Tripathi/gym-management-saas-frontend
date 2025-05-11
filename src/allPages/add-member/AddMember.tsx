@@ -10,6 +10,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import { toast } from 'sonner';
 
 
 interface AddMemberProps {
@@ -51,8 +52,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         setLoading(true);
         try {
             const data = await getRequest(`/api/memberships?gymBranchId=${currentGymBranchId}`);
-            console.log(data, "subscriptionPlan");
-
             // Extract only id and name
             const filteredData = data.map((plan: any) => ({
                 value: plan.id,
@@ -73,8 +72,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         fetchAllSubscriptionPlan();
     }, []);
 
-    console.log(params, params.editMemberId, "params");
-
     useEffect(() => {
 
         if (params.editMemberId === "add") return;
@@ -83,7 +80,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             setLoading(true);
             try {
                 const data = await getRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`);
-                console.log(data.data, "memeberdata");
                 setMemberData(data.data);
             } catch (error) {
                 // Optionally handle error
@@ -129,8 +125,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
 
 
     const handleFinish = async (values: any) => {
-        console.log(values, "values");
-
         if (params.editMemberId != 'add') {
 
             const payload = {
@@ -165,15 +159,14 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             try {
                 const response = await putRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`, payload);
 
-                message.success("Members updated successfully")
+                toast.success("Member data update successfully")
                 router.push("/management/members/members/")
                 console.log(response, "members updated");
             } catch (error) {
                 console.error("Branch creation failed:", error);
+                toast.error("Failed to update member")
             }
         } else {
-            console.log('post request');
-
             const payload = {
                 "userData": {
                     "email": values.email,
@@ -204,11 +197,12 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             }
             try {
                 const response = await postRequest(`/api/trainees`, payload);
-                message.success("New Member got created successfully")
+                toast.success("New Member added successfully")
                 router.push("/management/members/members/")
                 console.log(response, "new member created");
             } catch (error) {
                 console.error("New Member creation failed:", error);
+                toast.error("Failed to add new member")
             }
         }
 
@@ -229,14 +223,11 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             <Form
                 form={form}
                 onFinish={handleFinish}
-                // initialValues={{
-                //     memberName: selectedMemberData?.name,
-                // }}
                 layout="vertical"
                 className='h-full flex flex-col justify-between gap-8'
             >
                 {/* user data */}
-                <div className='flex flex-col gap-4'>
+                <div className='flex flex-col gap-4 h-[calc(100%-40px)]  overflow-y-scroll pr-2'>
                     <FormInput
                         label='Member name'
                         name='fullName'
@@ -367,15 +358,15 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                     <button
                         type='button'
                         onClick={() => handleCancel()}
-                        className=' w-[147px] h-10 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
+                        className=' w-[147px] h-8 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
                     >
                         Cancel
                     </button>
                     <button
                         type='submit'
-                        className=' w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
+                        className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                     >
-                        Edit Member
+                       {params?.editMemberId === 'add' ? 'Add Member' : 'Edit Member'}
                     </button>
                 </div>
             </Form>

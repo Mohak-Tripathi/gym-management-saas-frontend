@@ -36,14 +36,10 @@ const UserConfig = () => {
       const data = await getRequest(`/api/auth?gymBranchId=${currentGymBranchId}`);
 
       const newUserData = data.data.filter((user: any) => {
-        return user.role !== "TRAINER" &&  user.role !== "TRAINEE"
+        return user.role !== "TRAINER" && user.role !== "TRAINEE"
 
       })
-      console.log(newUserData, "newUserData");
       setUsersData(newUserData);
-      console.log('userData', data.data);
-
-      
     } catch (error) {
       console.log('user data error', error);
       setUsersData([]);
@@ -69,7 +65,7 @@ const UserConfig = () => {
         message: 'Success',
         description: `Branch ${response.message}`
       });
-      
+
       message.success(`Branch ${response.message}`)
       fetchAllUsersData();
       console.log(response, "branch updated");
@@ -212,7 +208,7 @@ const UserConfig = () => {
 
       <div className="w-full flex flex-col flex-1">
         <Table
-        rowKey={(record) => record.id}
+          rowKey={(record) => record.id}
           columns={columns}
           dataSource={usersData}
           pagination={false}

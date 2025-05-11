@@ -21,8 +21,6 @@ const SignIn = () => {
     remember?: boolean;
   }) => {
     try {
-      console.log(values, "values");
-
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_API_URL}/api/auth/login`,
         {
@@ -38,13 +36,9 @@ const SignIn = () => {
         }
       );
 
-      // Handle success (e.g., save token, redirect, etc.)
-      console.log("Login successful:", response.data.data);
-
       const token = response.data.data.token;
       localStorage.setItem("token", token);
 
-      // ✅ Set the token in a cookie (accessible to middleware)
       setCookie("token", token, {
         maxAge: 60 * 60 * 24 * 7, // 7 days
         path: "/",
@@ -205,14 +199,8 @@ const SignIn = () => {
             <div>
               <Form
                 layout="vertical"
-                // onFinish={(values) => {
-                //   // Handle form submission here
-                //   console.log("Form values:", values);
-                // }}
                 onFinish={handleTraineeSignIn}
-                className="mt-8 
-                
-                !mb-0"
+                className="mt-8 !mb-0"
                 rootClassName="customizedFormStyling"
               >
                 <Form.Item

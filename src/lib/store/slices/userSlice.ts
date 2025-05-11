@@ -1,6 +1,4 @@
-// store/slices/userSlice.ts
 import { createSlice } from '@reduxjs/toolkit';
-
 
 interface User {
   userId: string;
@@ -27,9 +25,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action: { payload: LoggedInUserData }) {
-      console.log(action.payload, "action.payload")
       state.loggedinUserData = action.payload;
-      
     },
     clearUser() {
       return initialState;

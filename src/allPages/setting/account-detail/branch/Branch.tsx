@@ -21,10 +21,7 @@ const Branch = () => {
     setLoading(true);
     try {
       const data = await getRequest("/api/gym-branch");
-      console.log(data, "gymbranchdata");
       setBranchesData(data);
-
-
       // Only keep required fields
       const simplifiedBranches = data.map((branch: any) => ({
         id: branch.id,
@@ -65,7 +62,6 @@ const Branch = () => {
   }
 
   const handleCancel = () => {
-    console.log('cancel delete request');
     setDeleteBranchId('')
     setConfirmDeleteVisible(false)
   }
@@ -193,7 +189,7 @@ const Branch = () => {
             scroll={{ x: 'max-content' }}
             className="custom-small-table"
           />
-          </div>
+        </div>
       </div>
 
       {/* Confirmation Modal */}

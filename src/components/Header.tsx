@@ -136,6 +136,7 @@ const Header = () => {
               />
             }
             defaultValue={branchOptions[0].value}
+            className='flex flex-1 max-w-[200px]'
           />
         </div>
       </div>
@@ -145,11 +146,12 @@ const Header = () => {
         <ul className='!m-0 flex gap-4'>
           {managemnet.map((record, index) => {
             return (
-              <li
+              <Link
                 key={index}
-                className={`w-auto xl:h-[32px] h-[28px] !px-3 rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'border-black-primary bg-black-primary text-white' : 'border-[#0000001A] bg-transparent text-black-primary'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
-              >
-                <Link href={record.src} className='flex gap-2.5 items-center justify-center' >
+                href={record.src} className='flex gap-2.5 items-center justify-center' >
+                <li
+                  className={`w-auto xl:h-[32px] h-[28px] !px-3 rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'border-black-primary bg-black-primary text-white' : 'border-[#0000001A] bg-transparent text-black-primary'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
+                >
                   <Image
                     src={currentPath === record.title.toLocaleLowerCase() ? record.activeIcon : record.inactiveIcon}
                     height={0}
@@ -158,8 +160,8 @@ const Header = () => {
                     className='xl:w-[20px] xl:h-[20px] w-[18px] h-[18px]'
                   />
                   <p className='xl:text-[12px] text-[10px] leading-[100%] font-[600] !m-0 '>{record.title}</p>
-                </Link>
-              </li>
+                </li>
+              </Link>
             )
           })}
         </ul>
@@ -170,11 +172,12 @@ const Header = () => {
         <ul className='!m-0 flex gap-4'>
           {moreMenu.map((record, index) => {
             return (
-              <li
+              <Link
                 key={index}
-                className={`w-auto xl:h-[32px] h-[28px] rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'px-3 border-black-primary bg-black-primary text-white' : 'px-1 border-[#0000001A] bg-transparent text-black-primary'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
-              >
-                <Link href={record.src} className='flex gap-2.5 items-center justify-center'>
+                href={record.src} className='flex gap-2.5 items-center justify-center'>
+                <li
+                  className={`w-auto xl:h-[32px] h-[28px] rounded-[66px] border-[1px] border-solid ${currentPath === record.title.toLocaleLowerCase() ? 'px-3 border-black-primary bg-black-primary text-white' : 'px-1 border-[#0000001A] bg-transparent text-black-primary'} flex gap-2.5 items-center justify-center cursor-pointer transition-all duration-200`}
+                >
                   <Image
                     src={currentPath === record.title.toLocaleLowerCase() ? record.activeIcon : record.inactiveIcon}
                     height={0}
@@ -185,8 +188,8 @@ const Header = () => {
                   {currentPath === record.title.toLocaleLowerCase() && (
                     <p className='xl:text-[12px] text-[10px] leading-[100%] font-[600] !m-0 '>{record.title}</p>
                   )}
-                </Link>
-              </li>
+                </li>
+              </Link>
             )
           })}
           <li>
@@ -197,7 +200,11 @@ const Header = () => {
               rootClassName="sidebar-popover"
               arrow={false}
             >
-              <Avatar className='cursor-pointer' style={{ backgroundColor: '#071726', verticalAlign: 'middle' }} size="default">
+              <Avatar
+                src={`/images/iconly/light/user.svg`}
+                className='cursor-pointer'
+                style={{ backgroundColor: '#fff', verticalAlign: 'middle' }}
+                size="default">
                 U
               </Avatar>
             </Popover>

@@ -19,7 +19,6 @@ const TrainerProfileSideBar = () => {
     setLoading(true);
     try {
       const data = await getRequest(`/api/trainers?gymBranchId=${currentGymBranchId}`);
-      console.log(data.data, "TrainersData");
       setTrainersData(data.data);
     } catch (error) {
       console.log('trainer data error', error);
@@ -77,19 +76,19 @@ const TrainerProfileSideBar = () => {
                   <div className={`w-full flex justify-between items-center ${params?.trainerId == trainer.id ? 'bg-black-primary' : ''}  rounded-2xl p-1`}>
                     <div className={`w-full flex gap-2 items-center`}>
                       <Image
-                        src={params?.trainerId == trainer.id ? `/images/iconly/bold/profile.svg` : `/images/iconly/light/profile.svg`}
+                        src={params?.trainerId == trainer.id ? `/images/iconly/light/user.svg` : `/images/iconly/light/user.svg`}
                         height={0}
                         width={0}
                         alt={`profile`}
-                        className='w-[20px] h-[20px]'
+                        className='w-[24px] h-[24px] bg-white rounded-full'
                       />
                       <div className='flex flex-col gap-1'>
                         <h2 className={`${params?.trainerId == trainer.id ? 'text-white' : 'text-black-primary'} !text-[14px] !font-[600] !mb-0`}>
                           {trainer?.user?.fullName}
                         </h2>
-                        {/* <p className={`${params?.trainerId == trainer.id ? 'text-white' : 'text-black-primary'} !text-[12px] !font-normal !mb-0`}>
+                        <p className={`${params?.trainerId == trainer.id ? 'text-white' : 'text-black-primary'} !text-[10px] leading-[100%] !font-normal !mb-0`}>
                           {trainer.status}
-                        </p> */}
+                        </p>
                       </div>
                     </div>
                     {params?.trainerId == trainer.id && (
