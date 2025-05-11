@@ -57,7 +57,6 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
             setLoading(true);
             try {
                 const data = await getRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`);
-                console.log(data.data, "gymTrainerdata");
                 setTrainerData(data.data);
             } catch (error) {
                 // Optionally handle error
@@ -228,13 +227,13 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
                         <button
                             type='button'
                             onClick={() => handleCancel()}
-                            className=' w-[147px] h-10 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] h-8 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
                         >
                             Cancel
                         </button>
                         <button
                             type='submit'
-                            className=' w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                         >
                             Add Lead
                         </button>

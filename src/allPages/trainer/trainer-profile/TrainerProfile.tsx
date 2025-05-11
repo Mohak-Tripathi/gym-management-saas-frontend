@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { trainersData } from '@/constant/trainerData'
 import { getRequest } from '@/lib/services/request'
+import dayjs from 'dayjs';
 
 const TrainerProfile = () => {
 
@@ -21,7 +22,6 @@ const TrainerProfile = () => {
       setLoading(true);
       try {
         const data = await getRequest(`/api/trainers/${params.trainerId}?gymBranchId=${currentGymBranchId}`);
-        console.log(data.data, "gymTrainerdatabyid");
         setTrainerData(data.data);
       } catch (error) {
         // Optionally handle error
@@ -39,7 +39,13 @@ const TrainerProfile = () => {
   };
 
   return loading ? (
-    <div>Loading...</div>
+    <main className={`h-[clac(100%-200px)] flex flex-col gap-4 flex-1 bg-white rounded-xl p-3 `}
+      style={{
+        boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+      }}
+    >
+      Loading...
+    </main>
   ) : (
 
     <main className={`h-[clac(100%-200px)] flex flex-col gap-4 flex-1 bg-white rounded-xl p-3 `}
@@ -50,15 +56,15 @@ const TrainerProfile = () => {
       <div className='w-full flex justify-between items-center gap-4'>
         <div className='flex flex-row items-center gap-1'>
           <Image
-            src={`/images/iconly/light/profile.svg`}
+            src={`/images/iconly/light/user.svg`}
             height={0}
             width={0}
             alt={`profile`}
             className='w-20 h-20'
           />
-          <div className='flex flex-col gap-1'>
-            <h2 className={`text-[20px] text-black-primary font-semibold !m-0`}>{trainerData?.user?.fullName}</h2>
-            {/* <p className={`w-20 h-6 rounded-lg text-[14px] text-black-primary font-medium flex items-center !m-0`}>{trainer?.status}</p> */}
+          <div className='flex flex-col gap-2'>
+            <h2 className={`text-[20px] leading-[100%] text-black-primary font-semibold !m-0`}>{trainerData?.user?.fullName}</h2>
+            <p className={`flex justify-center items-center w-[80px] h-[24px] rounded-lg text-[14px] leading-[100%] bg-green-secondary text-black-primary font-medium !m-0`}>{trainer?.status ? trainer.status : 'ACTIVE'}</p>
           </div>
         </div>
 
@@ -115,18 +121,18 @@ const TrainerProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Mobile No.</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.user?.phone}</p>
-          </div>
-
-          {/* <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Date of Birth</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>12/04/1990</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>+91 {trainerData?.user?.phone}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
-            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Aadhar Number</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>2346 2434 5667</p>
-          </div> */}
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Experience</h2>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.experienceYears} Years</p>
+          </div>
+
+          <div className='flex flex-col gap-1'>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Specialization</h2>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.specialization?.length ? trainerData.specialization.join(', ') : '-'}</p> 
+          </div>
 
         </div>
 
@@ -174,7 +180,7 @@ const TrainerProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Joined Date</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.joiningDate}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.joiningDate ? dayjs(trainerData.joiningDate).format('DD-MM-YYYY') : '-'}</p>
           </div>
 
           <div className='flex flex-col gap-1'>

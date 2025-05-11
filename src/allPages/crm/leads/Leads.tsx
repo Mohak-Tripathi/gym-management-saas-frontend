@@ -25,66 +25,66 @@ const selectOptions = [
 const Leads = () => {
   const router = useRouter();
   const pathname = usePathname()
-  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
-  const [deleteMemberId, setDeleteMemberId] = useState('')
-  const [deleteBranchId, setDeleteBranchId] = useState('')
+  // const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  // const [deleteMemberId, setDeleteMemberId] = useState('')
+  // const [deleteBranchId, setDeleteBranchId] = useState('')
 
-  const [members, setMembers] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
-
-
+  // const [members, setMembers] = useState([]);
+  // const [loading, setLoading] = useState(false);
+  // const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
 
 
 
-  const fetchMembers = async () => {
-    setLoading(true);
-    try {
-      const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
-      console.log(data, "membersdata");
-      setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
-    } catch (error) {
-      // Optionally handle error
-      setMembers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+
+
+  // const fetchMembers = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
+  //     console.log(data, "membersdata");
+  //     setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
+  //   } catch (error) {
+  //     // Optionally handle error
+  //     setMembers([]);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
 
 
-  useEffect(() => {
-    fetchMembers();
-  }, []);
+  // useEffect(() => {
+  //   fetchMembers();
+  // }, []);
 
-  useEffect(() => {
-    fetchMembers()
-  }, [pathname])
+  // useEffect(() => {
+  //   fetchMembers()
+  // }, [pathname])
 
 
-  const deleteIconClick = (memberId: any, branchId: any) => {
-    setDeleteMemberId(memberId)
-    setDeleteBranchId(branchId)
-    setConfirmDeleteVisible(true)
-  }
+  // const deleteIconClick = (memberId: any, branchId: any) => {
+  //   setDeleteMemberId(memberId)
+  //   setDeleteBranchId(branchId)
+  //   setConfirmDeleteVisible(true)
+  // }
 
-  const handleDeleteSubscriptionPlan = async () => {
-    try {
-      const response = await deleteRequest(`/api/memberships/${deleteMemberId}?gymBranchId=${deleteBranchId}`);
-      message.success(`Member ${response.message}`)
-      fetchMembers();
-      console.log(response, "branch updated");
-    } catch (error) {
-      console.error("Branch creation failed:", error);
-    }
-    setDeleteBranchId('')
-    setConfirmDeleteVisible(false)
-  }
+  // const handleDeleteSubscriptionPlan = async () => {
+  //   try {
+  //     const response = await deleteRequest(`/api/memberships/${deleteMemberId}?gymBranchId=${deleteBranchId}`);
+  //     message.success(`Member ${response.message}`)
+  //     fetchMembers();
+  //     console.log(response, "branch updated");
+  //   } catch (error) {
+  //     console.error("Branch creation failed:", error);
+  //   }
+  //   setDeleteBranchId('')
+  //   setConfirmDeleteVisible(false)
+  // }
 
-  const handleCancel = () => {
-    setConfirmDeleteVisible(false)
-  }
+  // const handleCancel = () => {
+  //   setConfirmDeleteVisible(false)
+  // }
 
 
   const threeDotPopover = (recordId: any) => {
@@ -142,7 +142,7 @@ const Leads = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/profile.svg`}
+            src={`/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
@@ -295,9 +295,7 @@ const Leads = () => {
     router.push('/management/crm/leads/add');
   }
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
+  return (
     <main className='w-full h-full flex flex-col gap-4'>
       {/* filters */}
       <div className='w-full flex justify-between items-end gap-4'>
@@ -325,14 +323,16 @@ const Leads = () => {
         {/* add member btn */}
         <button
           onClick={() => handleAddMemberClick()}
-          className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] leading-[100%] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+          className='w-[171px] h-[32px] rounded-xl border-[0.5px] border-solid border-black-10 bg-blue-secondary cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
             width={20}
             alt={`calender`}
           />
-          Add New Lead
+          <p className='!text-[12px] leading-[100%] text-black-primary font-[600] !m-0'>
+            Add New Lead
+          </p>
         </button>
       </div>
 
@@ -354,8 +354,9 @@ const Leads = () => {
 
           <div className='w-full flex flex-col flex-1'>
             <Table
+              rowKey={(record) => record.key}
               columns={columns}
-              dataSource={members}
+              dataSource={membersData}
               pagination={false}
               className="custom-small-table"
               onRow={(record) => {

@@ -28,7 +28,7 @@ const BillingHistory = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/profile.svg`}
+            src={`/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
@@ -158,14 +158,18 @@ const BillingHistory = () => {
         </div>
 
         {/* add member btn */}
-        <button className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button
+          className='w-[171px] h-[32px] rounded-xl border-[0.5px] border-solid border-black-10 bg-blue-secondary cursor-pointer flex justify-center items-center gap-2'
+        >
           <Image
             src={`/images/download.svg`}
             height={20}
             width={20}
             alt={`download`}
           />
-          Download
+          <p className='!text-[12px] leading-[100%] text-black-primary font-[600] !m-0'>
+            Download
+          </p>
         </button>
       </div>
 
@@ -187,6 +191,7 @@ const BillingHistory = () => {
 
           <div className='w-full flex flex-col flex-1'>
             <Table
+              rowKey={(record) => record.key}
               columns={columns}
               dataSource={membersBillingData}
               pagination={false}

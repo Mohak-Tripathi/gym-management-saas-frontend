@@ -1,18 +1,49 @@
 'use client'
 import { membersData } from '@/constant/membersData'
+import { getRequest } from '@/lib/services/request'
 import { Divider } from 'antd'
 import Image from 'next/image'
-import { useParams, useRouter } from 'next/navigation'
-import React from 'react'
+import { useParams, usePathname, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
 
 const MemberProfileSideBar = () => {
   const params = useParams();
   const router = useRouter();
 
+  const [membersData, setMembersData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const pathname = usePathname()
+  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+
+  const fetchAllMembersData = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest(`/api/trainees?gymBranchId=${currentGymBranchId}`);
+      setMembersData(data.data);
+    } catch (error) {
+      console.log('Member data error', error);
+      setMembersData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllMembersData()
+  }, [])
+
   const handleProfileClick = (key: string) => {
     router.push(`/management/members/${key}/member-profile`);
   }
-  return (
+  return loading ? (
+    <main className={`w-[330px] h-[100%] flex flex-col gap-3 bg-white rounded-xl p-3 `}
+      style={{
+        boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+      }}
+    >
+      Loading...
+    </main>
+  ) : (
     <main className={`w-[330px] h-[100%] flex flex-col gap-3 bg-white rounded-xl p-3 `}
       style={{
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
@@ -43,27 +74,27 @@ const MemberProfileSideBar = () => {
           return (
             <div
               key={index}
-              onClick={() => handleProfileClick(member.key)}
+              onClick={() => handleProfileClick(member.id)}
               className='w-full cursor-pointer'>
-              <div className={`w-full flex justify-between items-center ${params?.memberId == member.key ? 'bg-black-primary' : ''}  rounded-2xl p-1`}>
+              <div className={`w-full flex justify-between items-center ${params?.memberId == member.id ? 'bg-black-primary' : ''}  rounded-2xl p-1`}>
                 <div className={`w-full flex gap-2 items-center`}>
                   <Image
-                    src={params?.memberId == member.key ? `/images/iconly/bold/profile.svg` : `/images/iconly/light/profile.svg`}
+                    src={params?.memberId == member.id ? `/images/iconly/light/user.svg` : `/images/iconly/light/user.svg`}
                     height={0}
                     width={0}
                     alt={`profile`}
-                    className='w-[20px] h-[20px]'
+                    className='w-[24px] h-[24px] bg-white rounded-full'
                   />
                   <div className='flex flex-col gap-1'>
-                    <h2 className={`${params?.memberId == member.key ? 'text-white' : 'text-black-primary'} !text-[14px] !font-[600] !mb-0`}>
-                      {member.name}
+                    <h2 className={`${params?.memberId == member.id ? 'text-white' : 'text-black-primary'} !text-[14px] leading-[100% !font-[600] !mb-0`}>
+                      {member?.user?.fullName}
                     </h2>
-                    <p className={`${params?.memberId == member.key ? 'text-white' : 'text-black-primary'} !text-[12px] !font-normal !mb-0`}>
+                    <p className={`${params?.memberId == member.id ? 'text-white' : 'text-black-primary'} !text-[10px] leading-[100%] !font-normal !mb-0`}>
                       {member.status}
                     </p>
                   </div>
                 </div>
-                {params?.memberId == member.key && (
+                {params?.memberId == member.id && (
                   <Image
                     src={`/images/iconly/bold/arrowWhite.svg`}
                     height={0}

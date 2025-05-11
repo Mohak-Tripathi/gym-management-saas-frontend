@@ -11,6 +11,7 @@ import { deleteRequest, getRequest } from '@/lib/services/request';
 import BranchId from '@/allPages/setting/account-detail/branchId';
 import Link from 'next/link';
 import dayjs from 'dayjs';
+import { toast } from 'sonner';
 
 const selectOptions = [
   {
@@ -40,7 +41,6 @@ const Memebers = () => {
     setLoading(true);
     try {
       const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
-      console.log(data, "membersdata");
       setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
     } catch (error) {
       // Optionally handle error
@@ -70,11 +70,12 @@ const Memebers = () => {
   const handleDeleteTrainee = async () => {
     try {
       const response = await deleteRequest(`/api/trainees/${deleteMemberId}?gymBranchId=${deleteBranchId}`);
-      message.success(`Member ${response.message}`)
+      toast.success("Member deleted successfully")
       fetchMembers();
       console.log(response, "branch updated");
     } catch (error) {
       console.error("Branch creation failed:", error);
+      toast.error("Failed to delete member")
     }
     setDeleteBranchId('')
     setConfirmDeleteVisible(false)
@@ -94,7 +95,7 @@ const Memebers = () => {
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Invoice</div>
               <Image
-                src="/images/Invoice.svg"
+                src="/images/invoice.svg"
                 alt="Invoice"
                 width={20}
                 height={20}
@@ -141,7 +142,7 @@ const Memebers = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/profile.svg`}
+            src={`/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
@@ -153,9 +154,9 @@ const Memebers = () => {
             <p className="text-[14px] font-semibold text-black-primary !m-0">
               {record.user.fullName}
             </p>
-            {/* <p className="text-[12px] text-gray-500 !m-0">
-              {record.email}
-            </p> */}
+            <p className="text-[12px] text-gray-500 !m-0">
+              {record.user.email}
+            </p>
           </div>
         </div>
       )
@@ -174,26 +175,26 @@ const Memebers = () => {
       )
     },
 
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      render: (_: any, record: any) => (
-        <div>{record.user.email}</div>
-      )
-    },
-    {
-      title: 'Subscription Type',
-      dataIndex: 'subscriptionType',
-      key: 'subscriptionType',
-      render: (subscriptionType: any) => {
-        return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
-            {subscriptionType}
-          </p>
-        );
-      },
-    },
+    // {
+    //   title: 'Email',
+    //   dataIndex: 'email',
+    //   key: 'email',
+    //   render: (_: any, record: any) => (
+    //     <div>{record.user.email}</div>
+    //   )
+    // },
+    // {
+    //   title: 'Subscription Type',
+    //   dataIndex: 'subscriptionType',
+    //   key: 'subscriptionType',
+    //   render: (subscriptionType: any) => {
+    //     return (
+    //       <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
+    //         {subscriptionType}
+    //       </p>
+    //     );
+    //   },
+    // },
     {
       title: 'Joined Date',
       dataIndex: 'startDate',
@@ -227,7 +228,7 @@ const Memebers = () => {
 
         return (
           <p
-            className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${isActive ? 'bg-green-secondary' : 'bg-pink-pastel'
+            className={`w-[100px] rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${isActive ? 'bg-green-secondary' : 'bg-pink-pastel'
               }`}
           >
             {displayStatus}
@@ -243,46 +244,44 @@ const Memebers = () => {
       //   );
       // },
     },
-    {
-      title: 'Payment',
-      dataIndex: 'payment',
-      key: 'payment',
-      render: (payment: any) => {
-        return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
-            <Image
-              src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
-              height={20}
-              width={20}
-              alt={`calender`}
-            />
-            {payment}
-          </p>
-        );
-      },
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+    // {
+    //   title: 'Payment',
+    //   dataIndex: 'payment',
+    //   key: 'payment',
+    //   render: (payment: any) => {
+    //     return (
+    //       <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
+    //         <Image
+    //           src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
+    //           height={20}
+    //           width={20}
+    //           alt={`calender`}
+    //         />
+    //         {payment}
+    //       </p>
+    //     );
+    //   },
+    // },
+    // {
+    //   title: 'Address',
+    //   dataIndex: 'address',
+    //   key: 'address',
+    // },
     {
       title: '',
       dataIndex: '',
       key: 'action',
       render: (_: any, record: any, index: number) => {
-        console.log(record, "myy_record")
         return (
-          <div className="flex justify-end gap-3 items-center action-buttons">
+          <div className="flex justify-end gap-3 items-center">
 
-            <Link href={`/management/members/members/${record.id}`} className="cursor-pointer p-1">
+            <Link href={`/management/members/members/${record.id}`} className="cursor-pointer p-1 action-buttons">
               <Image
                 src="/images/iconly/light/Edit.svg"
                 alt="Edit"
                 width={0}
                 height={0}
                 className="h-[20px] w-[20px]"
-              // onClick={() => handleEdit(record.id)}
               />
             </Link>
 
@@ -293,7 +292,7 @@ const Memebers = () => {
               rootClassName="sidebar-popover"
               arrow={false}
             >
-              <div className="cursor-pointer p-1">
+              <div className="cursor-pointer p-1 action-buttons">
                 <Image
                   src="/images/iconly/light/moreCircle.svg"
                   alt="more menu"
@@ -303,28 +302,21 @@ const Memebers = () => {
                 />
               </div>
             </Popover>
+
+            {/* <Link href={`/management/members/members/${record.id}`} className="cursor-pointer p-1"> */}
+              <Image
+                src="/images/iconly/light/arrowBlack.svg"
+                alt="arrowBlack"
+                width={0}
+                height={0}
+                className="h-[20px] w-[20px] cursor-pointer"
+              />
+            {/* </Link> */}
           </div>
         )
       },
     },
   ];
-
-  const [open, setOpen] = useState(false);
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const [selectedMemberData, setSelectedMemberData] = useState<any>(null);
-
-  // const handleEdit = (editMemberId: string) => {
-  //   console.log(editMemberId, "memberId");
-  //   router.push(`/management/members/members/${editMemberId}`);
-  // }
 
   const handleAddMemberClick = () => {
     router.push('/management/members/members/add');
@@ -366,14 +358,16 @@ const Memebers = () => {
         {/* add member btn */}
         <button
           onClick={() => handleAddMemberClick()}
-          className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+          className='w-[171px] h-[32px] rounded-xl border-[0.5px] border-solid border-black-10 bg-blue-secondary cursor-pointer flex justify-center items-center gap-2'>
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
             width={20}
             alt={`calender`}
           />
-          Add New Member
+          <p className='!text-[12px] leading-[100%] text-black-primary font-[600] !m-0'>
+            Add New Member
+          </p>
         </button>
       </div>
 
@@ -389,7 +383,7 @@ const Memebers = () => {
               Total Members
             </p>
             <p className='!m-0 px-2 py-1 rounded-full bg-count '>
-              565 count
+              {members && members.length} count
             </p>
           </div>
 

@@ -9,6 +9,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
+import { toast } from "sonner";
 
 interface AddTrainerProps {
     onClose: () => void;
@@ -57,7 +58,6 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
             setLoading(true);
             try {
                 const data = await getRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`);
-                console.log(data.data, "gymTrainerdata");
                 setTrainerData(data.data);
             } catch (error) {
                 // Optionally handle error
@@ -93,10 +93,12 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
             try {
                 const response = await postRequest("/api/trainers", payload);
                 message.success("New Branch creared successfully")
+                toast.success("Trainer created successfully")
                 router.push("/management/trainer/trainer")
                 console.log(response, "branch created");
             } catch (error) {
                 console.error("Branch creation failed:", error);
+                toast.error("Failed to create trainer")
             }
 
         } else {
@@ -228,17 +230,17 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                     </div>
 
                     {/* buttons */}
-                    <div className='flex justify-center gap-4'>
+                    <div className='flex justify-start gap-4'>
                         <button
                             type='button'
                             onClick={() => handleCancel()}
-                            className=' w-[147px] h-10 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] h-8 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
                         >
                             Cancel
                         </button>
                         <button
                             type='submit'
-                            className=' w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                         >
                             Add Trainer
                         </button>

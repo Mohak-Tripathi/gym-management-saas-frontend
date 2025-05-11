@@ -29,8 +29,6 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
   const [subscriptionData, setSubscriptionData] = useState<any>({});
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
-  console.log('params', params);
-
   useEffect(() => {
     if(params.subscriptionId === 'add') return;
  
@@ -52,11 +50,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
   }, [])
 
   const handleFinish = async (values: any) => {
-    console.log(values, "values");
-    // return;
     if (params.subscriptionId != 'add') {
-      // console.log('put request');
-
       const payload = {
         name: values.name || subscriptionData?.name,
         actualPrice: values.actualPrice || subscriptionData.actualPrice,
@@ -66,8 +60,6 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
       }
       try {
         const response = await putRequest(`/api/memberships/${params.subscriptionId}?gymBranchId=${currentGymBranchId}`, payload);
-
-        // message.success("Branch data updated successfully")
         toast.success("Subscription Plan updated successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch updated");
@@ -172,14 +164,14 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
           <button
             type="button"
             onClick={() => handleCancel()}
-            className=" w-[147px] h-10 !bg-blue-light !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
+            className=" w-[147px] h-8 !bg-blue-light !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
           >
             Cancel
           </button>
           {/* </Link> */}
           <button
             type="submit"
-            className="min-w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
+            className="min-w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
             Add Subcription Plan
           </button>

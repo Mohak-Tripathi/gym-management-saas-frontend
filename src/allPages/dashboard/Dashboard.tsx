@@ -9,8 +9,6 @@ import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const { user, token } = useSelector((state: any) => state.user.loggedinUserData);
-  console.log(user, token, "myuser");
-
   return (
     <main className="w-full flex-1 flex flex-col gap-4">
       {/* matrix panel */}
@@ -39,7 +37,7 @@ const Dashboard = () => {
                 <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   125
                 </p>
-                <p className="font-normal text-[12px] text-green-primary leading-[100%] !m-0"> 
+                <p className="font-normal text-[12px] text-green-primary leading-[100%] !m-0">
                   ▲ +2.3%
                 </p>
               </div>
@@ -191,6 +189,22 @@ const Dashboard = () => {
               <p className="font-semibold text-[14px] text-black-primary">
                 Revenue
               </p>
+              <div className='p-1 border-[0.5px] border-solid border-black-10 rounded-[8px]'>
+                <ul className='flex items-center gap-1 !m-0'>
+                  <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
+                    Today
+                  </li>
+                  <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
+                    Week
+                  </li>
+                  <li className={`text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer p-1 bg-yellow-secondary rounded-[8px]`}>
+                    Month
+                  </li>
+                  <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
+                    Year
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 

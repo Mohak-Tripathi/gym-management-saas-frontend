@@ -19,93 +19,93 @@ const selectOptions = [
 ]
 
 const BillingHistory = () => {
-    const columns = [
-      {
-        title: 'Invoice',
-        dataIndex: 'name',
-        key: 'name',
-        render: (_: any, record: any) => (
-          <div className='flex items-center gap-3'>
-            {/* Profile Image */}
+  const columns = [
+    {
+      title: 'Invoice',
+      dataIndex: 'name',
+      key: 'name',
+      render: (_: any, record: any) => (
+        <div className='flex items-center gap-3'>
+          {/* Profile Image */}
+          <Image
+            src={`/images/iconly/light/user.svg`}
+            width={0}
+            height={0}
+            alt="Profile"
+            className="w-6 h-6 rounded-full object-cover"
+          />
+
+          {/* Name and Email */}
+          <div className="flex flex-col">
+            <p className="text-[14px] font-semibold text-black-primary !m-0">
+              {record.name}
+            </p>
+            <p className="text-[12px] text-gray-500 !m-0">
+              {record.email}
+            </p>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Salary',
+      dataIndex: 'amount',
+      key: 'amount',
+    },
+    {
+      title: 'Billing Date',
+      dataIndex: 'invoiceDate',
+      key: 'invoiceDate',
+    },
+    {
+      title: 'Invoice Name',
+      dataIndex: 'invoiceName',
+      key: 'invoiceName',
+    },
+    {
+      title: 'Accounts No.',
+      dataIndex: 'accountsNo',
+      key: 'accountsNo',
+    },
+    {
+      title: '',
+      dataIndex: '',
+      key: 'action',
+      render: (_: any, record: any, index: number) => (
+        <div className="flex justify-end gap-4 items-center">
+
+          <div className="cursor-pointer p-1">
             <Image
-              src={`/images/iconly/light/profile.svg`}
+              src="/images/iconly/light/Show.svg"
+              alt="Edit"
               width={0}
               height={0}
-              alt="Profile"
-              className="w-6 h-6 rounded-full object-cover"
+              className='h-[20px] w-[20px] cursor-pointer'
             />
-  
-            {/* Name and Email */}
-            <div className="flex flex-col">
-              <p className="text-[14px] font-semibold text-black-primary !m-0">
-                {record.name}
-              </p>
-              <p className="text-[12px] text-gray-500 !m-0">
-                {record.email}
-              </p>
-            </div>
           </div>
-        )
-      },
-      {
-        title: 'Salary',
-        dataIndex: 'amount',
-        key: 'amount',
-      },
-      {
-        title: 'Billing Date',
-        dataIndex: 'invoiceDate',
-        key: 'invoiceDate',
-      },
-      {
-        title: 'Invoice Name',
-        dataIndex: 'invoiceName',
-        key: 'invoiceName',
-      },
-      {
-        title: 'Accounts No.',
-        dataIndex: 'accountsNo',
-        key: 'accountsNo',
-      },
-      {
-        title: '',
-        dataIndex: '',
-        key: 'action',
-        render: (_: any, record: any, index: number) => (
-          <div className="flex justify-end gap-4 items-center">
-  
-            <div className="cursor-pointer p-1">
-              <Image
-                src="/images/iconly/light/Show.svg"
-                alt="Edit"
-                width={0}
-                height={0}
-                className='h-[20px] w-[20px] cursor-pointer'
-              />
-            </div>
-  
-            <div className="cursor-pointer p-1">
-              <Image
-                src="/images/iconly/light/delete.svg"
-                alt="more menu"
-                width={0}
-                height={0}
-                className='h-[20px] w-[20px] cursor-pointer'
-              />
-            </div>
+
+          <div className="cursor-pointer p-1">
+            <Image
+              src="/images/iconly/light/delete.svg"
+              alt="more menu"
+              width={0}
+              height={0}
+              className='h-[20px] w-[20px] cursor-pointer'
+            />
           </div>
-        ),
-      },
-    ];
-  
-    const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: (selectedKeys: React.Key[]) => {
-        setSelectedRowKeys(selectedKeys as (string | number)[]);
-      },
-    };
+        </div>
+      ),
+    },
+  ];
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (selectedKeys: React.Key[]) => {
+      setSelectedRowKeys(selectedKeys as (string | number)[]);
+    },
+  };
 
   return (
     <main className='w-full h-full flex flex-col gap-4'>
@@ -134,14 +134,18 @@ const BillingHistory = () => {
         </div>
 
         {/* add member btn */}
-        <button className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button
+          className='w-[171px] h-[32px] rounded-xl border-[0.5px] border-solid border-black-10 bg-blue-secondary cursor-pointer flex justify-center items-center gap-2'
+        >
           <Image
             src={`/images/download.svg`}
             height={20}
             width={20}
             alt={`download`}
           />
-          Download
+          <p className='!text-[12px] leading-[100%] text-black-primary font-[600] !m-0'>
+            Download
+          </p>
         </button>
       </div>
 
@@ -163,6 +167,7 @@ const BillingHistory = () => {
 
           <div className='w-full flex flex-col flex-1'>
             <Table
+              rowKey={(record) => record.key}
               columns={columns}
               dataSource={trainersBillingData}
               pagination={false}
@@ -173,7 +178,7 @@ const BillingHistory = () => {
         </div>
 
       </div>
-    </main>
+    </main >
   )
 }
 

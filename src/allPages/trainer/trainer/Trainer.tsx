@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs';
+import { toast } from "sonner";
 
 const selectOptions = [
   {
@@ -28,15 +29,14 @@ const Trainer = () => {
   const pathname = usePathname()
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
-   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
-   const [deleteTrainerId, setDeleteTrainerId] = useState('')
-   const [deleteBranchId, setDeleteBranchId] = useState('')
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteTrainerId, setDeleteTrainerId] = useState('')
+  const [deleteBranchId, setDeleteBranchId] = useState('')
 
   const fetchAllTrainersData = async () => {
     setLoading(true);
     try {
       const data = await getRequest(`/api/trainers?gymBranchId=${currentGymBranchId}`);
-      console.log(data.data, "TrainersData");
       setTrainersData(data.data);
     } catch (error) {
       console.log('trainer data error', error);
@@ -55,11 +55,12 @@ const Trainer = () => {
   const handleDeleteTrainer = async () => {
     try {
       const response = await deleteRequest(`/api/trainers/${deleteTrainerId}?gymBranchId=${deleteBranchId}`);
-      message.success(`Branch ${response.message}`)
+      toast.success("Trainer deleted successfully")
       fetchAllTrainersData();
       console.log(response, "branch updated");
     } catch (error) {
-      console.error("Branch creation failed:", error);
+      console.error("trainer deletion failed:", error);
+      toast.error("Failed to delete trainer")
     }
     setDeleteTrainerId('')
     setConfirmDeleteVisible(false)
@@ -107,9 +108,9 @@ const Trainer = () => {
             </div>
           </div>
 
-          <div 
-          onClick={() => deleteIconClick(trainerId, branchId)}
-          className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+          <div
+            onClick={() => deleteIconClick(trainerId, branchId)}
+            className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Delete</div>
               <Image
@@ -134,7 +135,7 @@ const Trainer = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/trainer.svg`}
+            src={`/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
@@ -200,7 +201,7 @@ const Trainer = () => {
       key: 'status',
       render: (status: any) => {
         return (
-          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
+          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'ACTIVE' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
             {status}
           </p>
         );
@@ -230,46 +231,44 @@ const Trainer = () => {
       dataIndex: '',
       key: 'action',
       render: (_: any, record: any, index: number) => {
-        console.log('trainerRecord', record);
-        
         return (
-        <div className="flex justify-end gap-4 items-center action-buttons">
+          <div className="flex justify-end gap-4 items-center action-buttons">
 
-          <div className="cursor-pointer p-1">
-            <Image
-              src="/images/iconly/light/Edit.svg"
-              alt="Edit"
-              width={0}
-              height={0}
-              className='h-[20px] w-[20px] cursor-pointer'
-              onClick={() => handleEdit(record.id)}
-            />
-          </div>
-
-          <Popover
-            placement="bottomRight"
-            content={() => threeDotPopover(record.id, record.gymBranchId)}
-            trigger="click"
-            rootClassName="sidebar-popover"
-            arrow={false}
-          >
             <div className="cursor-pointer p-1">
               <Image
-                src="/images/iconly/light/moreCircle.svg"
-                alt="more menu"
+                src="/images/iconly/light/Edit.svg"
+                alt="Edit"
                 width={0}
                 height={0}
                 className='h-[20px] w-[20px] cursor-pointer'
+                onClick={() => handleEdit(record.id)}
               />
             </div>
-          </Popover>
-        </div>
-      )},
+
+            <Popover
+              placement="bottomRight"
+              content={() => threeDotPopover(record.id, record.gymBranchId)}
+              trigger="click"
+              rootClassName="sidebar-popover"
+              arrow={false}
+            >
+              <div className="cursor-pointer p-1">
+                <Image
+                  src="/images/iconly/light/moreCircle.svg"
+                  alt="more menu"
+                  width={0}
+                  height={0}
+                  className='h-[20px] w-[20px] cursor-pointer'
+                />
+              </div>
+            </Popover>
+          </div>
+        )
+      },
     },
   ];
 
   const handleEdit = (trainerId: string) => {
-    console.log('trainerId', trainerId);
     router.push(`/management/trainer/trainer/${trainerId}`);
   }
 
@@ -316,14 +315,17 @@ const Trainer = () => {
         {/* add member btn */}
         <button
           onClick={() => handleAddTrainerClick()}
-          className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+          className='w-[171px] h-[32px] rounded-xl border-[0.5px] border-solid border-black-10 bg-blue-secondary cursor-pointer flex justify-center items-center gap-2'
+        >
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
             width={20}
             alt={`calender`}
           />
-          Add New Trainer
+          <p className='!text-[12px] leading-[100%] text-black-primary font-[600] !m-0'>
+            Add New Trainer
+          </p>
         </button>
       </div>
 
@@ -348,6 +350,7 @@ const Trainer = () => {
 
             <div className='w-full flex flex-col flex-1'>
               <Table
+                rowKey={(record) => record.id}
                 columns={columns}
                 dataSource={trainersData}
                 pagination={false}

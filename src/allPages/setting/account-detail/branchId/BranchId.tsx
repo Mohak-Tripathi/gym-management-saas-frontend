@@ -23,7 +23,6 @@ const BranchId = () => {
       setLoading(true);
       try {
         const data = await getRequest(`/api/gym-branch/${params.branchId}`);
-        console.log(data, "gymbranchdata");
         setBranchData(data); // Adjust if your API response is wrapped (e.g., data.items)
       } catch (error) {
         // Optionally handle error
@@ -38,7 +37,6 @@ const BranchId = () => {
 
 
   const handleFinish = async (values: any) => {
-    console.log(values, "values");
     // return;
     if (params.branchId != 'new') {
       const payload = {
@@ -74,15 +72,6 @@ const BranchId = () => {
       }
     }
   };
-
-  const handleCancel = () => {
-    console.log("Form Submitted");
-  };
-
-  useEffect(() => {
-    console.log('branchData', branchData);
-
-  }, [branchData])
 
   return loading ? (
     <div>Loading...</div>
