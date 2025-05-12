@@ -1,8 +1,8 @@
 "use client";
-import BubbleChart from '@/components/chart/BubbleChart'
-import DonutChart from '@/components/chart/DonutChart'
-import GraphChart from '@/components/chart/GraphChart';
-import PieCharts from '@/components/chart/PieCharts';
+import BubbleChart from '@/components/dashboardChart/BubbleChart'
+import DonutChart from '@/components/dashboardChart/DonutChart'
+import GraphChart from '@/components/dashboardChart/GraphChart';
+import PieCharts from '@/components/dashboardChart/PieCharts';
 import Image from 'next/image'
 import React from 'react'
 import { useSelector } from "react-redux";

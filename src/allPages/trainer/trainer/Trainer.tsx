@@ -8,6 +8,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs';
 import { toast } from "sonner";
+import { statusOption, workTypeOption } from '@/constant/filterData'
 
 const selectOptions = [
   {
@@ -290,13 +291,13 @@ const Trainer = () => {
           <FormSelect
             label='Status'
             name='status'
-          // options={selectOptions}
+            options={statusOption}
           />
 
           <FormSelect
             label='Work Type'
             name='workType'
-          // options={selectOptions}
+            options={workTypeOption}
           />
 
           <FormSelect

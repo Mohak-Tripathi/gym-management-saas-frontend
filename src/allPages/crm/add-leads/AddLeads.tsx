@@ -9,6 +9,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
+import { workTypeOption } from '@/constant/filterData';
 
 interface AddTrainerProps {
     onClose: () => void;
@@ -22,11 +23,6 @@ const expertiseOptions = [
     { value: 'Pilates', label: 'Pilates' },
     { value: 'CrossFit', label: 'CrossFit' },
     { value: 'HIIT', label: 'HIIT' },
-]
-
-const workTypeOption = [
-    { label: 'Part Time', value: 'PART_TIME' },
-    { label: 'Full Time', value: 'FULL_TIME' },
 ]
 
 const genderOption = [

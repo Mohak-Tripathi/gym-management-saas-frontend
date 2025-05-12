@@ -10,6 +10,8 @@ import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
 import { deleteRequest, getRequest } from '@/lib/services/request';
 import BranchId from '@/allPages/setting/account-detail/branchId';
 import Link from 'next/link';
+import { statusOption } from '@/constant/filterData';
+import { leadssData } from '@/constant/leadsData';
 
 const selectOptions = [
   {
@@ -91,20 +93,6 @@ const Leads = () => {
     return (
       <>
         <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
-          {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
-            <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
-              <div>Invoice</div>
-              <Image
-                src="/images/Invoice.svg"
-                alt="Invoice"
-                width={20}
-                height={20}
-              />
-            </div>
-          </div>
-          {/* </Link> */}
-
           <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Email</div>
@@ -171,33 +159,15 @@ const Leads = () => {
       dataIndex: 'mobileNumber',
       key: 'mobileNumber',
     },
-
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
     },
     {
-      title: 'Subscription Type',
-      dataIndex: 'subscriptionType',
-      key: 'subscriptionType',
-      render: (subscriptionType: any) => {
-        return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
-            {subscriptionType}
-          </p>
-        );
-      },
-    },
-    {
-      title: 'Joined Date',
-      dataIndex: 'joinedDate',
-      key: 'joinedDate',
-    },
-    {
-      title: 'Expiry Date',
-      dataIndex: 'expiryDate',
-      key: 'expiryDate',
+      title: 'Goal',
+      dataIndex: 'goal',
+      key: 'goal',
     },
     {
       title: 'Status',
@@ -205,34 +175,11 @@ const Leads = () => {
       key: 'status',
       render: (status: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
+          <p className={`w-[100px] rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Pending' ? 'bg-[#FFEC9F]' : 'bg-green-secondary'}`}>
             {status}
           </p>
         );
       },
-    },
-    {
-      title: 'Payment',
-      dataIndex: 'payment',
-      key: 'payment',
-      render: (payment: any) => {
-        return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
-            <Image
-              src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
-              height={20}
-              width={20}
-              alt={`calender`}
-            />
-            {payment}
-          </p>
-        );
-      },
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
     },
     {
       title: '',
@@ -242,19 +189,19 @@ const Leads = () => {
         return (
           <div className="flex justify-end gap-3 items-center action-buttons">
 
-            <Link href={`/your/edit/path/${record.key}`} className="cursor-pointer p-1">
+            {/* <Link href={`/your/edit/path/${record.key}`} className="cursor-pointer p-1"> */}
               <Image
-                src="/images/iconly/light/Edit.svg"
+                src="/images/iconly/light/call.svg"
                 alt="Edit"
                 width={0}
                 height={0}
-                className="h-[20px] w-[20px]"
+                className="h-[20px] w-[20px] cursor-pointer"
               />
-            </Link>
+            {/* </Link> */}
 
             <Popover
               placement="bottomRight"
-              content={() => threeDotPopover(record.key)}
+              content={() => threeDotPopover(record.id)}
               trigger="click"
               rootClassName="sidebar-popover"
               arrow={false}
@@ -310,7 +257,7 @@ const Leads = () => {
           <FormSelect
             label='Status'
             name='status'
-            options={selectOptions}
+            options={statusOption}
           />
 
           <FormSelect
@@ -354,23 +301,23 @@ const Leads = () => {
 
           <div className='w-full flex flex-col flex-1'>
             <Table
-              rowKey={(record) => record.key}
+              rowKey={(record) => record.id}
               columns={columns}
-              dataSource={membersData}
+              dataSource={leadssData}
               pagination={false}
               className="custom-small-table"
-              onRow={(record) => {
-                return {
-                  onClick: (e) => {
-                    const target = e.target as HTMLElement;
+              // onRow={(record) => {
+              //   return {
+              //     onClick: (e) => {
+              //       const target = e.target as HTMLElement;
 
-                    if (target.closest('.action-buttons')) return;
+              //       if (target.closest('.action-buttons')) return;
 
-                    // Otherwise, navigate
-                    router.push(`/management/members/${record.key}/member-profile`);
-                  },
-                };
-              }}
+              //       // Otherwise, navigate
+              //       router.push(`/management/members/${record.key}/member-profile`);
+              //     },
+              //   };
+              // }}
             />
           </div>
         </div>

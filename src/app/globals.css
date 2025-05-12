@@ -141,4 +141,5 @@ body {
 .branchSelect .ant-select-selector {
   border: none !important;
   border-color: transparent !important;
+  padding: 0 !important;
 }

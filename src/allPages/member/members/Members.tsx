@@ -12,6 +12,7 @@ import BranchId from '@/allPages/setting/account-detail/branchId';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
+import { paymentOption, statusOption } from '@/constant/filterData';
 
 const selectOptions = [
   {
@@ -339,11 +340,11 @@ const Memebers = () => {
           <FormSelect
             label='Status'
             name='status'
-            options={selectOptions}
+            options={statusOption}
           />
 
           <FormSelect
-            label='Subscription type'
+            label='Subscription Type'
             name='subscriptionType'
             options={selectOptions}
           />
@@ -351,7 +352,7 @@ const Memebers = () => {
           <FormSelect
             label='Payment'
             name='payment'
-            options={selectOptions}
+            options={paymentOption}
           />
         </div>
 

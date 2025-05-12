@@ -5,6 +5,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import Title from 'antd/es/typography/Title';
 import { membersBillingData, membersData } from '@/constant/membersData'
+import { paymentOption, statusOption } from '@/constant/filterData'
 
 const selectOptions = [
   {
@@ -63,7 +64,7 @@ const BillingHistory = () => {
       key: 'subscriptionType',
       render: (subscriptionType: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
+          <p className={`w-[150px] rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
             {subscriptionType}
           </p>
         );
@@ -141,11 +142,11 @@ const BillingHistory = () => {
           <FormSelect
             label='Status'
             name='status'
-            options={selectOptions}
+            options={statusOption}
           />
 
           <FormSelect
-            label='Subscription type'
+            label='Subscription Type'
             name='subscriptionType'
             options={selectOptions}
           />
@@ -153,7 +154,7 @@ const BillingHistory = () => {
           <FormSelect
             label='Payment'
             name='payment'
-            options={selectOptions}
+            options={paymentOption}
           />
         </div>
 
