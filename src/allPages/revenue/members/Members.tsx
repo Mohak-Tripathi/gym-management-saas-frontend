@@ -1,13 +1,15 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { useRouter } from 'next/navigation';
-import { Drawer, Input, Popover, Table } from 'antd'
+import { Popover, Table } from 'antd'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
-import Title from 'antd/es/typography/Title';
+import React from 'react'
 import { membersData } from '@/constant/membersData'
 import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
-import GraphChart from '@/components/chart/GraphChart';
+import { paymentOption, statusOption } from '@/constant/filterData';
+import RevenueMemberGraphChart from '@/components/revenueChart/RevenueMemberGraphChart';
+import RevenueOrderGraphChart from '@/components/revenueChart/RevenueOrderGraphChart';
+import PendingOrderGraphChart from '@/components/revenueChart/PendingOrderGraphChart';
 
 const selectOptions = [
   {
@@ -239,7 +241,7 @@ const Members = () => {
                   <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
                     Week
                   </li>
-                  <li className={`text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer p-1 bg-blue-light rounded-[8px]`}>
+                  <li className={`text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer p-1 bg-blue-secondary rounded-[8px]`}>
                     Month
                   </li>
                   <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
@@ -252,7 +254,7 @@ const Members = () => {
 
           {/* graph */}
           <div>
-            <GraphChart />
+            <RevenueMemberGraphChart />
           </div>
 
         </div>
@@ -272,7 +274,7 @@ const Members = () => {
 
           {/* graph */}
           <div>
-
+            <RevenueOrderGraphChart />
           </div>
 
         </div>
@@ -292,7 +294,7 @@ const Members = () => {
 
           {/* graph */}
           <div>
-
+            <PendingOrderGraphChart />
           </div>
 
         </div>
@@ -313,7 +315,7 @@ const Members = () => {
             <FormSelect
               label='Status'
               name='status'
-              options={selectOptions}
+              options={statusOption}
             />
 
             <FormSelect
@@ -325,7 +327,7 @@ const Members = () => {
             <FormSelect
               label='Payment'
               name='payment'
-              options={selectOptions}
+              options={paymentOption}
             />
           </div>
 

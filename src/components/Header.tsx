@@ -119,9 +119,11 @@ const Header = () => {
             alt={`logo`}
             className='xl:w-[80px] xl:h-[32px] w-[72px] h-[28px]'
           />
+          <p className='!m-0'>-</p>
           <Select
             aria-label="Select Branch"
             rootClassName='branchSelect'
+            variant='borderless'
             style={{ width: 120 }}
             onChange={handleChange}
             options={branchOptions}
