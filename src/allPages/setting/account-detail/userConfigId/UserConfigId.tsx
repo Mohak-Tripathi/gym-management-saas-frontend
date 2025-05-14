@@ -73,11 +73,12 @@ const UserConfigId = () => {
 
       try {
         const response = await postRequest("/api/auth", payload);
-        message.success("New User creared successfully")
+        toast.success("user created successfully")
         router.push("/management/settings/account-details/user-configuration")
         console.log(response, "user created");
       } catch (error) {
-        console.error("Branch creation failed:", error);
+        toast.error("user creation failed")
+        console.error("user creation failed", error);
       }
     }
     else {
