@@ -28,7 +28,7 @@ const PieCharts = () => {
               data={donutData}
               dataKey="value"
             >
-              {donutData.map((entry, index) => (
+              {donutData && donutData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
@@ -52,7 +52,7 @@ const PieCharts = () => {
 
       {/* right-side legend */}
       <div className="md:w-2/4 mb-4 md:mb-0 md:pr-4 flex flex-col justify-center gap-2">
-        {donutData.map((item, index) => (
+        {donutData && donutData.map((item, index) => (
           <div key={index} className="flex items-center text-[14px] gap-2">
             <span
               className="inline-block w-2 h-2 rounded-full"
