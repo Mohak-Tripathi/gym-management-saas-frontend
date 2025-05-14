@@ -152,7 +152,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
           {/* <FormInput label="Discounted Price" name="discountedPrice" /> */}
 
           <FormInput
-            label="Base Duration"
+            label="Duration (Month)"
             name="baseDuration"
             initialValue={subscriptionData.baseDuration}
           />

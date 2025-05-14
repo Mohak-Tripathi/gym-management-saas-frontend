@@ -33,8 +33,8 @@ const managemnet = [
   {
     'title': 'CRM',
     'src': '/management/crm/leads',
-    'activeIcon': '/images/iconly/bold/revenue.svg',
-    'inactiveIcon': '/images/iconly/light/revenue.svg'
+    'activeIcon': '/images/iconly/bold/crmWhite.svg',
+    'inactiveIcon': '/images/iconly/light/crm.svg'
   },
 ]
 

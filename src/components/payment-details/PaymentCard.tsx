@@ -10,7 +10,7 @@ interface PaymentCardProp {
 
 const PaymentCard = ({ type, cardCompany, cardHolder, cardNumber }: PaymentCardProp) => {
     return (
-        <div className='min-w-[330px] h-[180px] rounded-[20px] p-4 flex flex-col justify-between relative'
+        <div className='min-w-[330px] h-[240px] rounded-[20px] p-4 flex flex-col justify-between relative'
             style={{
                 backgroundImage:
                     cardCompany === 'masterCard'
@@ -29,9 +29,9 @@ const PaymentCard = ({ type, cardCompany, cardHolder, cardNumber }: PaymentCardP
                 />
             </div>
 
-            <div className='flex flex-col gap-1.5'>
-                <p className='text-[18px] font-normal text-white leading-[100%] !m-0'>{cardHolder}</p>
-                <p className='text-[18px] font-normal text-white leading-[100%] !m-0'>{cardNumber.replace(/(\d{4})(?=\d)/g, '$1-')}</p>
+            <div className='flex flex-col gap-4'>
+                <p className='text-[20px] font-normal text-white leading-[100%] !m-0'>{cardHolder}</p>
+                <p className='text-[22px] font-bold text-white leading-[100%] !m-0'>{cardNumber.replace(/(\d{4})(?=\d)/g, '$1-')}</p>
             </div>
 
             <div className='h-[48px] w-[48px] bg-[#0000004D] rounded-[20px] flex justify-center items-center absolute right-0 bottom-0 cursor-pointer hover:opacity-80 transition-all duration-200'>

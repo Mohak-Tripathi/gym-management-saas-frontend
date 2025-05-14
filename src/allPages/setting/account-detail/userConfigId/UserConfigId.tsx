@@ -65,7 +65,7 @@ const UserConfigId = () => {
       const payload = {
         fullName: values.fullName,
         email: values.email,
-        password: values.password,
+        // password: values.password,
         role: values.role,
         phone: values.phone,
         gymBranchId: values.gymBranchId,
@@ -165,13 +165,13 @@ const UserConfigId = () => {
                 initialValue={userData && userData?.email}
               />
 
-              {params.userConfigId === 'add' && (
+              {/* {params.userConfigId === 'add' && (
                 <FormInput
                   label="Password"
                   name="password"
                   initialValue={userData && userData?.email}
                 />
-              )}
+              )} */}
 
               <FormSelect
                 label="Role"

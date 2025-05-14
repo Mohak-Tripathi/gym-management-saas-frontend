@@ -8,6 +8,7 @@ import Link from "next/link";
 import { deleteRequest, getRequest } from "@/lib/services/request";
 import { useDispatch } from "react-redux";
 import { setBranches } from "../../../../lib/store/slices/branchSlice"
+import { toast } from "sonner";
 
 const Branch = () => {
 
@@ -51,7 +52,7 @@ const Branch = () => {
   const handleDeleteBranch = async () => {
     try {
       const response = await deleteRequest(`/api/gym-branch/${deleteBranchId}`);
-      message.success("Branch data updated successfully")
+      toast.success("Branch data updated successfully")
       console.log(response, "branch updated");
       await fetchBranches();
     } catch (error) {
