@@ -1,5 +1,4 @@
 'use client'
-import Header from '@/components/Header'
 import Tabs from '@/components/Tabs';
 import { settingTabs } from '@/constant/tabsData';
 import React from 'react'
