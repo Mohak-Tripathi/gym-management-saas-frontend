@@ -33,7 +33,7 @@ const RevenueMemberGraphChart = () => {
             <ResponsiveContainer width="70%" height={250}>
                 <AreaChart data={data}>
                     <defs>
-                        <linearGradient id="colorFillRevenue" x1="0" y1="0" x2="0" y2="1">
+                        <linearGradient id="colorFillRevenueMember" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#30A5FF" stopOpacity={0.4} />
                             <stop offset="95%" stopColor="#30A5FF" stopOpacity={0} />
                         </linearGradient>
@@ -89,7 +89,7 @@ const RevenueMemberGraphChart = () => {
                         type="monotone"
                         dataKey="revenue"
                         stroke="#30A5FF"
-                        fill="url(#colorFillRevenue)"
+                        fill="url(#colorFillRevenueMember)"
                         strokeWidth={2}
                         dot={{ r: 3 }}
                     />

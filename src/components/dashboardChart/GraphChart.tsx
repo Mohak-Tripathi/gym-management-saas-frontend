@@ -28,12 +28,12 @@ const GraphChart = () => {
                 <AreaChart data={data}>
                     <defs>
                         <linearGradient id="colorFillRevenue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#facc15" stopOpacity={0.4} />
-                            <stop offset="95%" stopColor="#facc15" stopOpacity={0} />
+                            <stop offset="5%" stopColor="#FFC130" stopOpacity={0.4} />
+                            <stop offset="95%" stopColor="#FFC130" stopOpacity={0} />
                         </linearGradient>
                         <linearGradient id="colorFillSubscriptions" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                            <stop offset="5%" stopColor="#8C25FC" stopOpacity={0.4} />
+                            <stop offset="95%" stopColor="#8C25FC" stopOpacity={0} />
                         </linearGradient>
                     </defs>
 
@@ -82,7 +82,7 @@ const GraphChart = () => {
                     <Area
                         type="monotone"
                         dataKey="revenue"
-                        stroke="#8b5cf6"
+                        stroke="#FFC130"
                         fill="url(#colorFillRevenue)"
                         strokeWidth={2}
                         dot={{ r: 3 }}
@@ -99,7 +99,7 @@ const GraphChart = () => {
                     <Area
                         type="monotone"
                         dataKey="subscriptions"
-                        stroke="#10b981"
+                        stroke="#8C25FC"
                         fill="url(#colorFillSubscriptions)"
                         strokeWidth={2}
                         dot={{ r: 3 }}
