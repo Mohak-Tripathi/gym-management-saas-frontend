@@ -137,7 +137,7 @@ const Header = () => {
                 alt="down Arrow"
               />
             }
-            defaultValue={branchOptions[0].value}
+            defaultValue={branchOptions && branchOptions[0].value}
             className='flex flex-1 max-w-[200px]'
           />
         </div>

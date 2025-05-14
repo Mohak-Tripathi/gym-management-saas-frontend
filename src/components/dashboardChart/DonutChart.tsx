@@ -40,9 +40,14 @@ const DonutChart = () => {
                 if (active && payload && payload.length) {
                   return (
                     <div className="bg-white border border-gray-200 rounded-md px-2 py-1 text-[12px] shadow-sm">
-                      <p className="text-gray-700 !m-0">
+                      {/* <p className="text-gray-700 !m-0">
                         {payload[0].name}: <strong>{payload[0].value}</strong>
-                      </p>
+                      </p> */}
+                      {payload?.length > 0 && (
+                        <p className="text-gray-700 !m-0">
+                          {payload[0].name}: <strong>{payload[0].value}</strong>
+                        </p>
+                      )}
                     </div>
                   );
                 }
