@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const url = request.nextUrl
-  const token = request.cookies.get('token')?.value
+  // const token = request.cookies.get('token')?.value
+  const token = request?.cookies?.get?.('token')?.value ?? null;
 
   // 🔐 Protect management routes: if no token, redirect to sign-in
   if (url.pathname.startsWith('/management') && !token) {

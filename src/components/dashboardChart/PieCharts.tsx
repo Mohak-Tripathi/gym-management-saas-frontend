@@ -19,7 +19,7 @@ const donutData = [
 const PieCharts = () => {
 
   return (
-    <div className="w-full h-56 flex flex-col gap-4 md:flex-row"> 
+    <div className="w-full h-56 flex flex-col gap-4 md:flex-row">
       {/* Donut chart */}
       <div className="md:w-2/4 relative h-auto">
         <ResponsiveContainer width="100%" height="100%">
@@ -38,7 +38,13 @@ const PieCharts = () => {
                   return (
                     <div className="bg-white border border-gray-200 rounded-md px-2 py-1 text-[12px] shadow-sm">
                       <p className="text-gray-700 !m-0">
-                        {payload[0].name}: <strong>{payload[0].value}</strong>
+
+                        {payload && payload.length > 0 && payload[0]?.name && payload[0]?.value !== undefined && (
+                          <>
+                            {payload[0].name}: <strong>{payload[0].value}</strong>
+                          </>
+                        )}
+                        {/* {payload[0].name}: <strong>{payload[0].value}</strong> */}
                       </p>
                     </div>
                   );
