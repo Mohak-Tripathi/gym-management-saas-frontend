@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from 'sonner';
 
 const BranchId = () => {
   const [form] = Form.useForm();
@@ -48,10 +49,11 @@ const BranchId = () => {
       try {
         const response = await putRequest(`/api/gym-branch/${params.branchId}`, payload);
 
-        message.success("Branch data updated successfully")
+        toast.success("Branch data updated successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch updated");
       } catch (error) {
+        toast.error("Branch creation failed")
         console.error("Branch creation failed:", error);
       }
     } else {
@@ -64,11 +66,13 @@ const BranchId = () => {
         // }
         const response = await postRequest("/api/gym-branch", values);
 
-        message.success("New Branch creared successfully")
+
+        toast.success("Branch created successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch created");
       } catch (error) {
-        console.error("Branch creation failed:", error);
+        toast.success("Branch updation failed successfully")
+        console.error("Branch updation failed:", error);
       }
     }
   };
