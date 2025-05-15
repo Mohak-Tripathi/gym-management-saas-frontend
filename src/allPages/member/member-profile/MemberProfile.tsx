@@ -1,5 +1,5 @@
 'use client'
-import { Switch } from 'antd'
+import { Skeleton, Switch } from 'antd'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -44,7 +44,9 @@ const MemberProfile = () => {
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
       }}
     >
-      Loading...
+      <div>
+        <Skeleton active />
+      </div>
     </main>
   ) : (
     <main className={`h-[clac(100%-200px)] flex flex-col gap-4 flex-1 bg-white rounded-xl p-3 `}

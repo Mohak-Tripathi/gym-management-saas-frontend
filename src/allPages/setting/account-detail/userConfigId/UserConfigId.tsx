@@ -1,6 +1,6 @@
 "use client";
 
-import { Image, message} from "antd";
+import { Image, message, Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form } from "antd";
@@ -93,7 +93,7 @@ const UserConfigId = () => {
       try {
         const response = await putRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, payload);
 
- 
+
         toast.success("User data updated successfully")
         // message.success("User data updated successfully")
         router.push("/management/settings/account-details/user-configuration")
@@ -113,7 +113,9 @@ const UserConfigId = () => {
         boxShadow: "0px 4px 8px rgba(193, 224, 255, 0.25)",
       }}
     >
-      Loading...
+      <div>
+        <Skeleton active />
+      </div>
     </main>
   ) : (
     <main

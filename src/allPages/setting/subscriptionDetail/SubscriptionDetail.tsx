@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { deleteRequest, getRequest } from "@/lib/services/request";
 import { usePathname } from "next/navigation";
-import { message, Modal } from "antd";
+import { message, Modal, Skeleton } from "antd";
 
 const SubscriptionDetail = () => {
 
@@ -69,7 +69,9 @@ const SubscriptionDetail = () => {
   ];
 
   return loading ? (
-    <div>Loading...</div>
+    <div>
+      <Skeleton active />
+    </div>
   ) : (
     <div className="w-full grid grid-cols-3 gap-6">
       {subscriptionDetailsData.map((planDetail: any, index: number) => {

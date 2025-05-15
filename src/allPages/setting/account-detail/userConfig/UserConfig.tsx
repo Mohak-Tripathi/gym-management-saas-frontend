@@ -1,6 +1,6 @@
 "use client";
 
-import { message, Modal, Table, notification } from "antd";
+import { message, Modal, Table, notification, Skeleton } from "antd";
 
 import React, { useEffect, useState } from "react";
 import { userConfig } from "@/constant/userConfig";
@@ -168,7 +168,9 @@ const UserConfig = () => {
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
       }}
     >
-      Loading...
+      <div>
+        <Skeleton active />
+      </div>
     </div>
   ) : (
     <div className="flex flex-col w-full gap-6 p-3 bg-white rounded-xl"

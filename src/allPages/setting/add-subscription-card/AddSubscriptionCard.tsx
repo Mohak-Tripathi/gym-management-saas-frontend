@@ -3,7 +3,7 @@ import FormInput from "@/components/formComponents/FormInput";
 import FormMultiselect from "@/components/formComponents/FormMultiselect";
 import FormSelect from "@/components/formComponents/FormSelect";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
-import { Form, message } from "antd";
+import { Form, message, Skeleton } from "antd";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -30,8 +30,8 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
   useEffect(() => {
-    if(params.subscriptionId === 'add') return;
- 
+    if (params.subscriptionId === 'add') return;
+
     const fetchSubscriptionById = async () => {
       setLoading(true);
       try {
@@ -69,12 +69,12 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
       }
     } else {
       console.log('post request');
-      
+
       const payload = {
         name: values.name,
         actualPrice: values.actualPrice,
         baseDuration: Number(values.baseDuration),
-        membershipDiscountedPrice: Number(values.membershipDiscountedPrice) ,
+        membershipDiscountedPrice: Number(values.membershipDiscountedPrice),
         benefits: values.benefits,
         gymBranchId: 'aa2ec403-de84-43eb-913a-9c63455f26ca'
       }
@@ -98,7 +98,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
 
   return loading ? (
     <div>
-      Loading...
+      <Skeleton active />
     </div>
   ) : (
     <main className="w-full h-full">

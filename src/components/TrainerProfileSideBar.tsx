@@ -1,7 +1,7 @@
 'use client'
 import { trainersData } from '@/constant/trainerData'
 import { getRequest } from '@/lib/services/request'
-import { Divider } from 'antd'
+import { Divider, Skeleton } from 'antd'
 import Image from 'next/image'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -35,7 +35,7 @@ const TrainerProfileSideBar = () => {
   const handleProfileClick = (key: string) => {
     router.push(`/management/trainer/${key}/trainer-profile`);
   }
-  
+
   return (
     <main className={`w-[330px] min-h-[100%] h-full flex flex-col gap-3 bg-white rounded-xl p-3 `}
       style={{
@@ -43,7 +43,9 @@ const TrainerProfileSideBar = () => {
       }}
     >
       {loading ? (
-        <div>Loading...</div>
+        <div>
+          <Skeleton active />
+        </div>
       ) : (
         <div className='flex flex-col flex-1 gap-3'>
           <div className='flex flex-col gap-4 w-full'>

@@ -1,14 +1,11 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { usePathname, useRouter } from 'next/navigation';
-import { Drawer, Input, message, Modal, Popover, Table } from 'antd'
+import { Modal, Popover, Skeleton, Table } from 'antd'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import Title from 'antd/es/typography/Title';
-// import { membersData } from '@/constant/membersData'
 import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
 import { deleteRequest, getRequest } from '@/lib/services/request';
-import BranchId from '@/allPages/setting/account-detail/branchId';
 import Link from 'next/link';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
@@ -36,22 +33,21 @@ const Memebers = () => {
   const [loading, setLoading] = useState(false);
   const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
-
-
   const fetchMembers = async () => {
     setLoading(true);
     try {
       const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
+      console.log('memberdata', data.data);
+
       setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
     } catch (error) {
       // Optionally handle error
+      console.log(error, "error");
       setMembers([]);
     } finally {
       setLoading(false);
     }
   };
-
-
 
   useEffect(() => {
     fetchMembers();
@@ -212,9 +208,17 @@ const Memebers = () => {
       dataIndex: 'endDate',
       key: 'endDate',
       render: (_: any, record: any) => {
-
         const rawDate = record?.traineeMemberships?.[0]?.endDate;
         return rawDate ? dayjs(rawDate).format('DD-MM-YYYY') : '-';
+      }
+    },
+    {
+      title: 'Subscription',
+      dataIndex: 'subscriptionType',
+      key: 'subscriptionType',
+      render: (_: any, record: any) => {
+        const rawDate = record?.traineeMemberships?.[0]?.membership?.name;
+        return rawDate ? rawDate : '-';
       }
     },
     {
@@ -305,13 +309,13 @@ const Memebers = () => {
             </Popover>
 
             {/* <Link href={`/management/members/members/${record.id}`} className="cursor-pointer p-1"> */}
-              <Image
-                src="/images/iconly/light/arrowBlack.svg"
-                alt="arrowBlack"
-                width={0}
-                height={0}
-                className="h-[20px] w-[20px] cursor-pointer"
-              />
+            <Image
+              src="/images/iconly/light/arrowBlack.svg"
+              alt="arrowBlack"
+              width={0}
+              height={0}
+              className="h-[20px] w-[20px] cursor-pointer"
+            />
             {/* </Link> */}
           </div>
         )
@@ -323,9 +327,7 @@ const Memebers = () => {
     router.push('/management/members/members/add');
   }
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
+  return (
     <main className='w-full h-full flex flex-col gap-4'>
       {/* filters */}
       <div className='w-full flex justify-between items-end gap-4'>
@@ -371,49 +373,58 @@ const Memebers = () => {
           </p>
         </button>
       </div>
-
-      {/* table */}
-      <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
-        style={{
-          boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
-        }}
-      >
-        <div className='flex flex-col flex-1 gap-4 w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
-            <p className='!m-0  '>
-              Total Members
-            </p>
-            <p className='!m-0 px-2 py-1 rounded-full bg-count '>
-              {members && members.length} count
-            </p>
-          </div>
-
-          <div className='w-full flex flex-col flex-1'>
-            <Table
-              columns={columns}
-              dataSource={members}
-              pagination={false}
-              rowKey={(record) => record.user.email}
-              scroll={{ y: 'calc(100vh - 370px)' }}
-
-              className="custom-small-table"
-              onRow={(record) => {
-                return {
-                  onClick: (e) => {
-                    const target = e.target as HTMLElement;
-
-                    if (target.closest('.action-buttons')) return;
-
-                    // Otherwise, navigate
-                    router.push(`/management/members/${record.id}/member-profile`);
-                  },
-                };
-              }}
-            />
-          </div>
+      {loading ? (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
+          <Skeleton active />
         </div>
+      ) : (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
+          <div className='flex flex-col flex-1 gap-4 w-full'>
+            <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
+              <p className='!m-0  '>
+                Total Members
+              </p>
+              <p className='!m-0 px-2 py-1 rounded-full bg-count '>
+                {members && members.length} count
+              </p>
+            </div>
 
-      </div>
+            <div className='w-full flex flex-col flex-1'>
+              <Table
+                columns={columns}
+                dataSource={members}
+                pagination={false}
+                rowKey={(record) => record.user.email}
+                scroll={{ y: 'calc(100vh - 370px)' }}
+
+                className="custom-small-table"
+                onRow={(record) => {
+                  return {
+                    onClick: (e) => {
+                      const target = e.target as HTMLElement;
+
+                      if (target.closest('.action-buttons')) return;
+
+                      // Otherwise, navigate
+                      router.push(`/management/members/${record.id}/member-profile`);
+                    },
+                  };
+                }}
+              />
+            </div>
+          </div>
+
+        </div>
+      )
+      }
 
 
       {/* Confirmation Modal */}
@@ -427,7 +438,7 @@ const Memebers = () => {
       >
         <p>Are you sure you want to delete this trainer?</p>
       </Modal>
-    </main>
+    </main >
   );
 }
 

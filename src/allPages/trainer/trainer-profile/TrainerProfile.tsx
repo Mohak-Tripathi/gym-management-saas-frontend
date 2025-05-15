@@ -1,5 +1,5 @@
 'use client'
-import { Switch } from 'antd'
+import { Skeleton, Switch } from 'antd'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -44,7 +44,9 @@ const TrainerProfile = () => {
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
       }}
     >
-      Loading...
+      <div>
+        <Skeleton active />
+      </div>
     </main>
   ) : (
 
@@ -131,7 +133,7 @@ const TrainerProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Specialization</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.specialization?.length ? trainerData.specialization.join(', ') : '-'}</p> 
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.specialization?.length ? trainerData.specialization.join(', ') : '-'}</p>
           </div>
 
         </div>

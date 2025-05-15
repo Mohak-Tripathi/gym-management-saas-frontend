@@ -5,7 +5,7 @@ import FormMultiselect from '@/components/formComponents/FormMultiselect';
 import FormSelect from '@/components/formComponents/FormSelect';
 import { membersData } from '@/constant/membersData';
 import { getRequest, postRequest, putRequest } from '@/lib/services/request';
-import { Form, message } from 'antd'
+import { Form, message, Skeleton } from 'antd'
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -215,7 +215,9 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
 
 
     return loading ? (
-        <div>Loading...</div>
+        <div>
+            <Skeleton active />
+        </div>
     ) : (
 
         <main className='w-full h-full'>
@@ -366,7 +368,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                         type='submit'
                         className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                     >
-                       {params?.editMemberId === 'add' ? 'Add Member' : 'Edit Member'}
+                        {params?.editMemberId === 'add' ? 'Add Member' : 'Edit Member'}
                     </button>
                 </div>
             </Form>

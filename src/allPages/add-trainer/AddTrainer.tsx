@@ -4,7 +4,7 @@ import FormInput from '@/components/formComponents/FormInput';
 import FormMultiselect from '@/components/formComponents/FormMultiselect';
 import FormSelect from '@/components/formComponents/FormSelect';
 import { getRequest, postRequest, putRequest } from '@/lib/services/request';
-import { Form, message } from 'antd'
+import { Form, message, Skeleton } from 'antd'
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
@@ -136,7 +136,9 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
     return (
         <main className='w-full h-full'>
             {loading ? (
-                <div>Loading...</div>
+                <div>
+                    <Skeleton active />
+                </div>
             ) : (
                 <Form
                     form={form}
