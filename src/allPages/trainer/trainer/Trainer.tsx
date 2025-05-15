@@ -2,7 +2,7 @@
 import FormInput from '@/components/filterComponents/FilterInput'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { deleteRequest, getRequest } from '@/lib/services/request'
-import { message, Modal, Popover, Table } from 'antd'
+import { message, Modal, Popover, Skeleton, Table } from 'antd'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -330,15 +330,20 @@ const Trainer = () => {
         </button>
       </div>
 
-      {/* table */}
-      <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
-        style={{
-          boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
-        }}
-      >
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
+      {loading ? (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
+          <Skeleton active />
+        </div>
+      ) : (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
           <div className='flex flex-col flex-1 gap-4 w-full'>
             <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
               <p className='!m-0  '>
@@ -368,9 +373,9 @@ const Trainer = () => {
               />
             </div>
           </div>
-        )}
-
-      </div>
+        </div>
+      )
+      }
 
       {/* Confirmation Modal */}
       <Modal
@@ -384,7 +389,7 @@ const Trainer = () => {
         <p>Are you sure you want to delete this trainer?</p>
       </Modal>
 
-    </main>
+    </main >
   )
 }
 

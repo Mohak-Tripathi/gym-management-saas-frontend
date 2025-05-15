@@ -1,7 +1,7 @@
 'use client'
 import { membersData } from '@/constant/membersData'
 import { getRequest } from '@/lib/services/request'
-import { Divider } from 'antd'
+import { Divider, Skeleton } from 'antd'
 import Image from 'next/image'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -41,7 +41,9 @@ const MemberProfileSideBar = () => {
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
       }}
     >
-      Loading...
+      <div>
+        <Skeleton active />
+      </div>
     </main>
   ) : (
     <main className={`w-[330px] h-[100%] flex flex-col gap-3 bg-white rounded-xl p-3 `}

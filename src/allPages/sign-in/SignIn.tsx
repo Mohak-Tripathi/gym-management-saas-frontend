@@ -3,13 +3,13 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import backgroundImage from "@/public/images/Add New Member.svg";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Checkbox } from "antd";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/store/slices/userSlice";
 import { useRouter } from "next/navigation";
 import { setCookie } from "cookies-next";
+import { fetchAllBranches } from "@/constant/reuseableFunction/branchFunction";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -45,6 +45,7 @@ const SignIn = () => {
       });
 
       dispatch(setUser(response.data.data));
+      fetchAllBranches(dispatch);
       router.push("/management/dashboard");
     } catch (error: any) {
       if (error.response) {

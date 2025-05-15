@@ -1,6 +1,6 @@
 "use client";
 
-import { message, Modal, Table } from "antd";
+import { message, Modal, Skeleton, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { gymBranchData } from "@/constant/GymBranchData";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { deleteRequest, getRequest } from "@/lib/services/request";
 import { useDispatch } from "react-redux";
 import { setBranches } from "../../../../lib/store/slices/branchSlice"
 import { toast } from "sonner";
+import { fetchAllBranches } from "@/constant/reuseableFunction/branchFunction";
 
 const Branch = () => {
 
@@ -55,6 +56,7 @@ const Branch = () => {
       toast.success("Branch data updated successfully")
       console.log(response, "branch updated");
       await fetchBranches();
+      fetchAllBranches(dispatch);
     } catch (error) {
       console.error("Branch creation failed:", error);
     }
@@ -143,7 +145,9 @@ const Branch = () => {
         boxShadow: "0px 4px 8px rgba(193, 224, 255, 0.25)",
       }}
     >
-      Loading...
+      <div>
+        <Skeleton active />
+      </div>
     </div>
   ) : (
     <div

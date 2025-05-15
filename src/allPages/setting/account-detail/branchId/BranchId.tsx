@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Radio } from "antd";
+import { Radio, Skeleton } from "antd";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form, message } from "antd";
 import Image from "next/image";
@@ -8,6 +8,8 @@ import Link from "next/link";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from 'sonner';
+import { fetchAllBranches } from "@/constant/reuseableFunction/branchFunction";
+import { useDispatch } from "react-redux";
 
 const BranchId = () => {
   const [form] = Form.useForm();
@@ -15,6 +17,7 @@ const BranchId = () => {
   const params = useParams()
   const [loading, setLoading] = useState(false);
   const [branchData, setBranchData] = useState<any>({});
+  const dispatch = useDispatch();
 
   useEffect(() => {
 
@@ -52,6 +55,7 @@ const BranchId = () => {
         toast.success("Branch data updated successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch updated");
+        fetchAllBranches(dispatch);
       } catch (error) {
         toast.error("Branch creation failed")
         console.error("Branch creation failed:", error);
@@ -70,6 +74,7 @@ const BranchId = () => {
         toast.success("Branch created successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch created");
+        fetchAllBranches(dispatch);
       } catch (error) {
         toast.success("Branch updation failed successfully")
         console.error("Branch updation failed:", error);
@@ -78,7 +83,9 @@ const BranchId = () => {
   };
 
   return loading ? (
-    <div>Loading...</div>
+    <div>
+      <Skeleton active />
+    </div>
   ) : (
     <main
       className="flex flex-col w-full h-full gap-6 p-3 bg-white rounded-xl"
@@ -104,7 +111,7 @@ const BranchId = () => {
               </div>
               <div className="text-[20px] font-bold text-black-primary">
                 {params.branchId === 'new' ? 'Create New Branch' : 'Edit Branch'}
-                
+
               </div>
             </div>
           </div>
@@ -132,8 +139,8 @@ const BranchId = () => {
               />
               <div className="w-full col-span-2">
                 <FormInput label="Description" name="description"
-                 initialValue={branchData && branchData?.description} />
-               
+                  initialValue={branchData && branchData?.description} />
+
               </div>
             </div>
           </div>
@@ -187,7 +194,7 @@ const BranchId = () => {
             type="submit"
             className=" w-[147px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
-                  {params.branchId === 'new' ? 'Add Branch' : 'Edit Branch'}
+            {params.branchId === 'new' ? 'Add Branch' : 'Edit Branch'}
           </button>
         </div>
       </Form>
