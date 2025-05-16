@@ -1,7 +1,7 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { usePathname, useRouter } from 'next/navigation';
-import { Drawer, Input, message, Popover, Table } from 'antd'
+import { Drawer, Input, message, Modal, Popover, Skeleton, Table } from 'antd'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import Title from 'antd/es/typography/Title';
@@ -12,6 +12,8 @@ import BranchId from '@/allPages/setting/account-detail/branchId';
 import Link from 'next/link';
 import { statusOption } from '@/constant/filterData';
 import { leadssData } from '@/constant/leadsData';
+import dayjs from 'dayjs';
+import { toast } from 'sonner';
 
 const selectOptions = [
   {
@@ -27,69 +29,63 @@ const selectOptions = [
 const Leads = () => {
   const router = useRouter();
   const pathname = usePathname()
-  // const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
-  // const [deleteMemberId, setDeleteMemberId] = useState('')
-  // const [deleteBranchId, setDeleteBranchId] = useState('')
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteLeadId, setDeleteLeadId] = useState('')
+  const [deleteBranchId, setDeleteBranchId] = useState('')
 
-  // const [members, setMembers] = useState([]);
-  // const [loading, setLoading] = useState(false);
-  // const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const [leads, setLeads] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
 
+  const fetchLeads = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest(`api/crm-lead?gymBranchId=${currentGymBranchId}`);
+      console.log(data, "leadsdata");
+      setLeads(data); // Adjust if your API response is wrapped (e.g., data.items)
+    } catch (error) {
+      // Optionally handle error
+      setLeads([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
+    fetchLeads();
+  }, []);
 
-
-
-
-  // const fetchMembers = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
-  //     console.log(data, "membersdata");
-  //     setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
-  //   } catch (error) {
-  //     // Optionally handle error
-  //     setMembers([]);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-
-
-  // useEffect(() => {
-  //   fetchMembers();
-  // }, []);
-
-  // useEffect(() => {
-  //   fetchMembers()
-  // }, [pathname])
+  useEffect(() => {
+    fetchLeads()
+  }, [pathname])
 
 
-  // const deleteIconClick = (memberId: any, branchId: any) => {
-  //   setDeleteMemberId(memberId)
-  //   setDeleteBranchId(branchId)
-  //   setConfirmDeleteVisible(true)
-  // }
+  const deleteIconClick = (editLeadId: any, branchId: any) => {
+    setDeleteLeadId(editLeadId)
+    setDeleteBranchId(branchId)
+    setConfirmDeleteVisible(true)
+  }
 
-  // const handleDeleteSubscriptionPlan = async () => {
-  //   try {
-  //     const response = await deleteRequest(`/api/memberships/${deleteMemberId}?gymBranchId=${deleteBranchId}`);
-  //     message.success(`Member ${response.message}`)
-  //     fetchMembers();
-  //     console.log(response, "branch updated");
-  //   } catch (error) {
-  //     console.error("Branch creation failed:", error);
-  //   }
-  //   setDeleteBranchId('')
-  //   setConfirmDeleteVisible(false)
-  // }
+  const handleDeleteLead = async () => {
+    try {
+      const response = await deleteRequest(`/api/crm-lead/${deleteLeadId}?gymBranchId=${deleteBranchId}`);
+      toast.success("Lead deleted successfully");
+      fetchLeads();
+      console.log(response, "lead deleted");
+    } catch (error) {
+      console.error("Lead deletion failed:", error);
+      toast.error("Failed to delete lead. Please try again.");
+    }
+    setDeleteBranchId('')
+    setConfirmDeleteVisible(false)
+  }
 
-  // const handleCancel = () => {
-  //   setConfirmDeleteVisible(false)
-  // }
+  const handleCancel = () => {
+    setConfirmDeleteVisible(false)
+  }
 
 
-  const threeDotPopover = (recordId: any) => {
+  const threeDotPopover = (recordId: any, leadBranchId: string) => {
     return (
       <>
         <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
@@ -106,6 +102,20 @@ const Leads = () => {
           </div>
 
           <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+            <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
+              <div>Call</div>
+              <Image
+                src="/images/iconly/light/call.svg"
+                alt="call"
+                width={20}
+                height={20}
+              />
+            </div>
+          </div>
+
+          <div
+            onClick={() => deleteIconClick(recordId, leadBranchId)}
+            className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Delete</div>
               <Image
@@ -150,32 +160,41 @@ const Leads = () => {
       )
     },
     {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
-    },
-    {
       title: 'Mobile Number',
-      dataIndex: 'mobileNumber',
-      key: 'mobileNumber',
+      dataIndex: 'contactNumber',
+      key: 'contactNumber',
+      render: (value: any) => `+91 ${value}`,
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Date',
+      dataIndex: 'createdAt',
+      key: 'createdAt',
+      render: (date: string) => dayjs(date).format('DD-MM-YYYY'),
     },
     {
-      title: 'Goal',
-      dataIndex: 'goal',
-      key: 'goal',
+      title: 'Probability of Conversation',
+      dataIndex: 'probabilityPercent',
+      key: 'probabilityPercent',
+      render: (value: number) => `${value}%`,
     },
     {
-      title: 'Status',
+      title: 'Lead Source',
+      dataIndex: 'leadSource',
+      key: 'leadSource',
+    },
+    {
+      title: 'Follow Update',
+      dataIndex: 'followUpDate',
+      key: 'followUpDate',
+      render: (date: string) => dayjs(date).format('DD-MM-YYYY'),
+    },
+    {
+      title: 'Lead Status',
       dataIndex: 'status',
       key: 'status',
       render: (status: any) => {
         return (
-          <p className={`w-[100px] rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Pending' ? 'bg-[#FFEC9F]' : 'bg-green-secondary'}`}>
+          <p className={`w-[100px] rounded-xl !m-0 !p-1.5 !text-[12px] leading-[100%] !font-[500] !text-black-primary flex justify-center items-center ${status === 'NEW' ? 'bg-[#FFEC9F]' : status === 'CONTACTED' ? 'bg-[#DDEF7B]' : status === 'FOLLOW_UP' ? 'bg-[#E3D5F4]' : status === 'CONVERTED' ? 'bg-green-secondary' : 'bg-[#FFC8CD]'}`}>
             {status}
           </p>
         );
@@ -189,19 +208,21 @@ const Leads = () => {
         return (
           <div className="flex justify-end gap-3 items-center action-buttons">
 
-            {/* <Link href={`/your/edit/path/${record.key}`} className="cursor-pointer p-1"> */}
+            <Link
+              href={`/management/crm/leads/${record.id}`}
+              className="cursor-pointer p-1">
               <Image
-                src="/images/iconly/light/call.svg"
+                src="/images/iconly/light/Edit.svg"
                 alt="Edit"
                 width={0}
                 height={0}
                 className="h-[20px] w-[20px] cursor-pointer"
               />
-            {/* </Link> */}
+            </Link>
 
             <Popover
               placement="bottomRight"
-              content={() => threeDotPopover(record.id)}
+              content={() => threeDotPopover(record.id, record.gymBranchId)}
               trigger="click"
               rootClassName="sidebar-popover"
               arrow={false}
@@ -212,7 +233,7 @@ const Leads = () => {
                   alt="more menu"
                   width={0}
                   height={0}
-                  className="h-[20px] w-[20px]"
+                  className="h-[20px] w-[20px] cursor-pointer"
                 />
               </div>
             </Popover>
@@ -221,22 +242,6 @@ const Leads = () => {
       },
     },
   ];
-
-  const [open, setOpen] = useState(false);
-
-  const showDrawer = () => {
-    setOpen(true);
-  };
-
-  const onClose = () => {
-    setOpen(false);
-  };
-
-  const [selectedMemberData, setSelectedMemberData] = useState<any>(null);
-
-  const handleEdit = (memberId: string) => {
-    router.push(`/management/members/members/${memberId}`);
-  }
 
   const handleAddMemberClick = () => {
     router.push('/management/crm/leads/add');
@@ -250,7 +255,7 @@ const Leads = () => {
         <div className='flex gap-6'>
 
           <FilterSearchInput
-            label='Search for members'
+            label='Search for leads'
             name='searchMember'
           />
 
@@ -283,47 +288,69 @@ const Leads = () => {
         </button>
       </div>
 
-      {/* table */}
-      <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
-        style={{
-          boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
-        }}
-      >
-        <div className='flex flex-col flex-1 gap-4 w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
-            <p className='!m-0  '>
-              New Leads
-            </p>
-            <p className='!m-0 px-2 py-1 rounded-full bg-count '>
-              56 count
-            </p>
-          </div>
-
-          <div className='w-full flex flex-col flex-1'>
-            <Table
-              rowKey={(record) => record.id}
-              columns={columns}
-              dataSource={leadssData}
-              pagination={false}
-              className="custom-small-table"
-              // onRow={(record) => {
-              //   return {
-              //     onClick: (e) => {
-              //       const target = e.target as HTMLElement;
-
-              //       if (target.closest('.action-buttons')) return;
-
-              //       // Otherwise, navigate
-              //       router.push(`/management/members/${record.key}/member-profile`);
-              //     },
-              //   };
-              // }}
-            />
-          </div>
+      {loading ? (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
+          <Skeleton active />
         </div>
+      ) : (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
+          <div className='flex flex-col flex-1 gap-4 w-full'>
+            <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
+              <p className='!m-0  '>
+                New Leads
+              </p>
+              <p className='!m-0 px-2 py-1 rounded-full bg-count '>
+                {leads.length} count
+              </p>
+            </div>
 
-      </div>
-    </main>
+            <div className='w-full flex flex-col flex-1'>
+              <Table
+                rowKey={(record) => record.id}
+                columns={columns}
+                dataSource={leads}
+                pagination={false}
+                className="custom-small-table"
+                onRow={(record) => {
+                  return {
+                    onClick: (e) => {
+                      const target = e.target as HTMLElement;
+
+                      if (target.closest('.action-buttons')) return;
+
+                      // Otherwise, navigate
+                      router.push(`/management/crm/${record.id}/lead-profile`);
+                    },
+                  };
+                }}
+              />
+            </div>
+          </div>
+
+        </div>
+      )
+      }
+
+      {/* Confirmation Modal */}
+      <Modal
+        title="Confirm Delete"
+        open={confirmDeleteVisible}
+        onOk={handleDeleteLead}
+        onCancel={() => handleCancel()}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this lead?</p>
+      </Modal>
+    </main >
   );
 }
 

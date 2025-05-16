@@ -16,7 +16,7 @@ const page = () => {
 
     return (
         <Drawer
-            title={params?.leadId === 'add' ? 'Add New Lead' : 'Edit Lead'}
+            title={params?.editLeadId === 'add' ? 'Add New Lead' : 'Edit Lead'}
             placement='right'
             width={700}
             onClose={onClose}

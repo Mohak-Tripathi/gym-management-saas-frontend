@@ -11,8 +11,10 @@ export default function RootLayout({
 }) {
     const params = useParams();
     return (
-        <main className={`w-full flex flex-col gap-2 ${params?.memberId ? 'h-[calc(100%-80px)]' : 'flex-1'} `}>
-            <Tabs tabs={crmTabs} />
+        <main className={`w-full flex flex-col gap-2 ${params?.leadId ? 'h-[calc(100%-80px)]' : 'flex-1'} `}>
+            {!params?.leadId && (
+                <Tabs tabs={crmTabs} />
+            )}
             {children}
         </main>
     )

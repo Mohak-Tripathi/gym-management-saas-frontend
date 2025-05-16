@@ -29,7 +29,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
     const [loading, setLoading] = useState(false);
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
 
-
     const { branches } = useSelector((state: any) => state.branch);
 
     const branchOptions = branches?.map((branch: any) => ({
@@ -118,10 +117,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         { value: 'SportsPerformance', label: 'Sports Performance' },
         { value: 'PostPregnancyFitness', label: 'Post-Pregnancy Fitness' },
     ];
-
-
-
-
 
 
     const handleFinish = async (values: any) => {
