@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Select, Tooltip } from 'antd';
+import { Form, Select } from 'antd';
 import Title from 'antd/es/typography/Title';
 import Image from 'next/image';
 import { Rule } from 'antd/es/form';
@@ -39,7 +39,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 }) => {
     return (
         <div className='flex flex-col gap-1.5'>
-            <Title className="!text-black-primary !text-[14px] !font-normal !mb-0">
+            <Title className="!text-black-primary !text-[14px] !font-semibold !mb-0">
                 {label}
             </Title>
             <Form.Item
@@ -53,6 +53,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
                     placeholder={placeholder}
                     options={options}
                     defaultValue={initialValue}
+                    onChange={onChange}
                     optionFilterProp="label"
                     rootClassName='customFormSelect'
                     suffixIcon={

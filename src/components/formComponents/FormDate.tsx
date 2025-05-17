@@ -27,7 +27,7 @@ const FormDate = ({
   return (
     <div className={`!flex !flex-col !gap-[6px] !items-start !justify-start w-full ${customClass}`}>
       <div className='flex items-center gap-2'>
-      <Title className="!text-black-primary !text-[14px] !font-normal !mb-0">
+      <Title className="!text-black-primary !text-[14px] !font-semibold !mb-0">
           {label}
         </Title>
         {toolTip && (
