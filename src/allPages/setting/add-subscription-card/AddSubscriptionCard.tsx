@@ -134,7 +134,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
               label="Benefits "
               name="benefits"
               options={benifitsOptions}
-              initialValue={subscriptionData?.benefits?.length > 0 && subscriptionData?.benefits[0]}
+              initialValue={subscriptionData && subscriptionData?.benefits?.length > 0 ? subscriptionData.benefits : []}
             />
           </div>
 

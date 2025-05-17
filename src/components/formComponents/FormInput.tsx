@@ -1,6 +1,7 @@
 import { Form, Input } from 'antd'
 import Title from 'antd/es/typography/Title'
 import React from 'react'
+import { ChangeEvent } from 'react';
 
 interface FormInputProps {
     label: string;
@@ -11,7 +12,7 @@ interface FormInputProps {
     disable?: boolean;
     options?: { label: string; value: string | number; img?: string }[];
     initialValue?: string | number;
-    onChange?: (value: string | number) => void;
+    onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
     value?: any;
     toolTip?: string
     dropDownMode?: 'multiple' | 'tags' | undefined;
@@ -43,8 +44,10 @@ const FormInput: React.FC<FormInputProps> = ({
                 <Input
                     placeholder={placeholder}
                     defaultValue={initialValue}
+                    disabled={disable}
+                    onChange={onChange}
                     style={{ height: 40 }}
-                    className=' !rounded-[12px] !bg-transparent !text-[14px] !text-black-primary !font-[400] cursor-pointer'
+                    className=' !rounded-[12px] bg-transparent !text-[14px] !text-black-primary !font-[400] cursor-pointer'
                 />
             </Form.Item>
         </div>

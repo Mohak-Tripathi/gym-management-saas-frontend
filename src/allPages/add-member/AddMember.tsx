@@ -3,15 +3,13 @@ import FormDate from '@/components/formComponents/FormDate';
 import FormInput from '@/components/formComponents/FormInput';
 import FormMultiselect from '@/components/formComponents/FormMultiselect';
 import FormSelect from '@/components/formComponents/FormSelect';
-import { membersData } from '@/constant/membersData';
 import { getRequest, postRequest, putRequest } from '@/lib/services/request';
-import { Form, message, Skeleton } from 'antd'
+import { Form, Skeleton } from 'antd'
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
-
 
 interface AddMemberProps {
     onClose: () => void;
@@ -19,15 +17,16 @@ interface AddMemberProps {
     selectedMemberData?: any;
 }
 
-const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData }) => {
+const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
     const [form] = Form.useForm();
     const router = useRouter()
     const params = useParams()
     const [memberData, setMemberData] = useState<any>({});
-    // const [currentGymBranchId, setCurrentGymBranchId] = useState<string | null>(null);
     const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
     const [loading, setLoading] = useState(false);
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
+    const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
+    const [discountedPrice, setDiscounbtedPrice] = useState(0)
 
     const { branches } = useSelector((state: any) => state.branch);
 
@@ -45,8 +44,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         label: "Female",
     }]
 
-
-
     const fetchAllSubscriptionPlan = async () => {
         setLoading(true);
         try {
@@ -55,6 +52,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
             const filteredData = data.map((plan: any) => ({
                 value: plan.id,
                 label: plan.name,
+                price: plan.actualPrice,
             }));
 
             setSubscriptionDetailsData(filteredData);
@@ -141,13 +139,12 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                 },
                 "traineeMembershipData": {
                     "membershipId": values.membershipId || memberData?.traineeMemberships[0]?.membershipId,
-                    "discountedPrice": Number(values.discountedPrice) || memberData?.traineeMemberships[0]?.discountPrice,
+                    "discountedPrice": discountedPrice,
                     "discountPercentage": Number(values.discountPercentage) || memberData?.traineeMemberships[0]?.discountPercentage,
                     "reasonOfDiscount": values.reasonOfDiscount || memberData?.traineeMemberships[0]?.reasonOfDiscount,
                     "extraMonths": Number(values.extraMonths) || memberData?.traineeMemberships[0]?.extraMonths,
                     "startDate": values.startDate || memberData?.traineeMemberships[0]?.startDate,
                     "endDate": values.endDate || memberData?.traineeMemberships[0]?.endDate,
-                    // gymId and gymBranchId will be added by the backend
                 }
             }
 
@@ -181,7 +178,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                 },
                 "traineeMembershipData": {
                     "membershipId": values.membershipId,
-                    "discountedPrice": Number(values.discountedPrice),
+                    "discountedPrice": discountedPrice,
                     "discountPercentage": Number(values.discountPercentage),
                     "reasonOfDiscount": values.reasonOfDiscount,
                     "extraMonths": Number(values.extraMonths),
@@ -208,6 +205,29 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
         onClose()
     }
 
+    const handleSelectChange = (value: string | number) => {
+        const selected = subscriptionDetailsData.find((option) => option.value === value);
+        if (selected) {
+            setSelectedPrice(selected.price);
+            const discount = form.getFieldValue('discountPercentage') || 0;
+            const discountedPrice = selected.price * (1 - discount / 100);
+            form.setFieldsValue({
+                discountedPrice: Math.round(discountedPrice),
+            });
+            setDiscounbtedPrice(discountedPrice);
+        }
+    };
+
+    const handleDiscountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const discount = parseFloat(e.target.value);
+        if (selectedPrice != null && !isNaN(discount)) {
+            const discountedPrice = selectedPrice * (1 - discount / 100);
+            form.setFieldsValue({
+                discountedPrice: Math.round(discountedPrice),
+            });
+            setDiscounbtedPrice(discountedPrice);
+        }
+    };
 
     return loading ? (
         <div>
@@ -269,7 +289,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                             initialValue={memberData && memberData?.image}
                         />
 
-
                     </div>
 
                     <FormInput
@@ -297,21 +316,24 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                             options={subscriptionDetailsData}
                             label='Subscription Plan'
                             name='membershipId'
+                            onChange={handleSelectChange}
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.membershipId}
+                        />
+
+                        <FormInput
+                            label='Discount %'
+                            name='discountPercentage'
+                            onChange={handleDiscountChange}
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.discountPercentage}
                         />
 
                         <FormInput
                             label='Discounted Price'
                             name="discountedPrice"
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.discountedPrice}
-
+                            disable={true}
                         />
-                        <FormInput
-                            label='Discount %'
-                            name='discountPercentage'
-                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.discountPercentage}
 
-                        />
                         <FormInput
                             label='Reason of Discount'
                             name='reasonOfDiscount'
@@ -322,7 +344,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                             label='Extra Months'
                             name='extraMonths'
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && memberData?.traineeMemberships[0]?.extraMonths}
-                        //initialValue={memberData && memberData.traineeData.extraMonths}
 
                         />
                         <FormSelect
@@ -330,20 +351,18 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose, open, selectedMemberData
                             label='Branch Name'
                             name='gymBranchId'
                             initialValue={memberData && memberData?.gymBranchId}
+                        />
 
+                        <FormDate
+                            label='Subscription start date'
+                            name='endDate'
+                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.endDate)}
                         />
 
                         <FormDate
                             label='Subscription end date'
                             name='startDate'
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.startDate)}
-                        //initialValue={memberData && memberData.traineeData.startDate}
-                        />
-                        <FormDate
-                            label='Subscription start date'
-                            name='endDate'
-                            initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.endDate)}
-                        //initialValue={memberData && memberData.traineeData.endDate}
                         />
 
                     </div>
