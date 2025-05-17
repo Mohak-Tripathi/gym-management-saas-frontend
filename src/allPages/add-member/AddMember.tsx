@@ -214,7 +214,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
             form.setFieldsValue({
                 discountedPrice: Math.round(discountedPrice),
             });
-            setDiscounbtedPrice(discountedPrice);
+            setDiscounbtedPrice(Math.round(discountedPrice));
         }
     };
 
@@ -225,7 +225,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
             form.setFieldsValue({
                 discountedPrice: Math.round(discountedPrice),
             });
-            setDiscounbtedPrice(discountedPrice);
+            setDiscounbtedPrice(Math.round(discountedPrice));
         }
     };
 
@@ -355,13 +355,13 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
 
                         <FormDate
                             label='Subscription start date'
-                            name='endDate'
+                            name='startDate'
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.endDate)}
-                        />
+                            />
 
                         <FormDate
                             label='Subscription end date'
-                            name='startDate'
+                            name='endDate'
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.startDate)}
                         />
 
