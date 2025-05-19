@@ -46,7 +46,7 @@ const BranchId = () => {
       const payload = {
         name: values.name || branchData?.name,
         address: values.address || branchData?.address,
-        isMainBranch: values.isMainBranch || branchData?.isMainBranch,
+        isMainBranch: values.isMainBranch,
         description: values.description || branchData?.description,
       }
       try {

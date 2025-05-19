@@ -38,7 +38,8 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
 
     const [loading, setLoading] = useState(false);
     const [trainerData, setTrainerData] = useState<any>({});
-    const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+    const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+    const currentGymBranchId = selectedBranch.id;
 
     const { branches } = useSelector((state: any) => state.branch);
 

@@ -5,6 +5,7 @@ import { Divider, Skeleton } from 'antd'
 import Image from 'next/image'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const MemberProfileSideBar = () => {
   const params = useParams();
@@ -13,7 +14,8 @@ const MemberProfileSideBar = () => {
   const [membersData, setMembersData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const pathname = usePathname()
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   const fetchAllMembersData = async () => {
     setLoading(true);
@@ -30,7 +32,7 @@ const MemberProfileSideBar = () => {
 
   useEffect(() => {
     fetchAllMembersData()
-  }, [])
+  }, [selectedBranch, pathname]);
 
   const handleProfileClick = (key: string) => {
     router.push(`/management/members/${key}/member-profile`);

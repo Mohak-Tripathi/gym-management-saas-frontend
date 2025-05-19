@@ -23,12 +23,8 @@ const UserConfig = () => {
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState('')
   const [deleteBranchId, setDeleteBranchId] = useState('')
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
-
-
-
-
-
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   const fetchAllUsersData = async () => {
     setLoading(true);
@@ -50,7 +46,7 @@ const UserConfig = () => {
 
   useEffect(() => {
     fetchAllUsersData();
-  }, []);
+  }, [selectedBranch]);
 
   const deleteIconClick = (userId: string, branchId: string) => {
     setDeleteBranchId(branchId)

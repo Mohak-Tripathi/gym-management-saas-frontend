@@ -20,7 +20,8 @@ const UserConfigId = () => {
 
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>({});
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   const branchOptions = branches?.map((branch: any) => ({
     value: branch.id,
@@ -58,7 +59,7 @@ const UserConfigId = () => {
     if (params.userConfigId === 'add') return;
 
     fetchUserById();
-  }, [])
+  }, [currentGymBranchId, params.userConfigId]);
 
   const handleFinish = async (values: any) => {
     if (params.userConfigId === 'add') {
@@ -92,8 +93,6 @@ const UserConfigId = () => {
 
       try {
         const response = await putRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, payload);
-
-
         toast.success("User data updated successfully")
         // message.success("User data updated successfully")
         router.push("/management/settings/account-details/user-configuration")

@@ -7,6 +7,7 @@ import { Form, message, Skeleton } from "antd";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
 
 interface AddSubscriptionCardProps {
@@ -27,7 +28,15 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
   const params = useParams()
   const [loading, setLoading] = useState(false);
   const [subscriptionData, setSubscriptionData] = useState<any>({});
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
+  console.log(currentGymBranchId, "currentGymBranchId");
+  
+
+  useEffect(() => {
+    console.log('currentGymBranchId', currentGymBranchId);
+  }, [selectedBranch])
+  
 
   useEffect(() => {
     if (params.subscriptionId === 'add') return;
@@ -76,7 +85,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
         baseDuration: Number(values.baseDuration),
         membershipDiscountedPrice: Number(values.membershipDiscountedPrice),
         benefits: values.benefits,
-        gymBranchId: 'aa2ec403-de84-43eb-913a-9c63455f26ca'
+        gymBranchId: currentGymBranchId
       }
       try {
         const response = await postRequest(`/api/memberships`, payload);

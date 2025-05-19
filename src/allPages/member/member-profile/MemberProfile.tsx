@@ -3,9 +3,9 @@ import { Skeleton, Switch } from 'antd'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
-import { membersData } from '@/constant/membersData'
 import { getRequest } from '@/lib/services/request'
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux'
 
 const MemberProfile = () => {
 
@@ -13,9 +13,8 @@ const MemberProfile = () => {
 
   const [loading, setLoading] = useState(false);
   const [memberData, setMemberData] = useState<any>({});
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
-
-  const member = membersData.find((member) => member.key === params.memberId);
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   useEffect(() => {
     const fetchMemberById = async () => {
@@ -32,7 +31,7 @@ const MemberProfile = () => {
     };
 
     fetchMemberById();
-  }, [])
+  }, [selectedBranch, params.memberId])
 
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
@@ -87,7 +86,7 @@ const MemberProfile = () => {
             {member?.payment}
           </p> */}
 
-          <div className='flex gap-3 items-center'>
+          {/* <div className='flex gap-3 items-center'>
             <Image
               src="/images/iconly/light/Edit.svg"
               alt="Edit"
@@ -96,14 +95,14 @@ const MemberProfile = () => {
               className='h-[20px] w-[20px] cursor-pointer'
             />
 
-            {/* <Image
+            <Image
               src="/images/iconly/light/moreCircle.svg"
               alt="more menu"
               width={0}
               height={0}
               className='h-[20px] w-[20px] cursor-pointer'
-            /> */}
-          </div>
+            />
+          </div> */}
 
         </div>
       </div>

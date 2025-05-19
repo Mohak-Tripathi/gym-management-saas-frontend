@@ -5,6 +5,7 @@ import createWebStorage from 'redux-persist/lib/storage/createWebStorage';
 
 import userReducer from './slices/userSlice';
 import branchReducer from './slices/branchSlice';
+import selectedBranchReducer from './slices/selectedBranchSlice';
 
 // 👇 THIS PART CHANGES
 const createNoopStorage = () => {
@@ -28,12 +29,13 @@ const storage = typeof window !== 'undefined'
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['user', 'branch'], // only persist the user slice
+  whitelist: ['user', 'branch', 'selectedBranch'], // only persist the user slice
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
   branch: branchReducer,
+  selectedBranch: selectedBranchReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
