@@ -8,32 +8,30 @@ import { getRequest } from '@/lib/services/request'
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux'
 
-const LeadProfile = () => {
+const DealProfile = () => {
 
   const params = useParams()
 
   const [loading, setLoading] = useState(false);
-  const [leadData, setLeadData] = useState<any>({});
+  const [dealData, setDealData] = useState<any>({});
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
   const currentGymBranchId = selectedBranch.id; 
 
   useEffect(() => {
-    const fetchLeadById = async () => {
+    const fetchDealById = async () => {
       setLoading(true);
       try {
-        const data = await getRequest(`/api/crm-lead/${params.leadId}?gymBranchId=${currentGymBranchId}`);
-        console.log('Leaddata', data);
-
-        setLeadData(data);
+        const data = await getRequest(`/api/crm-lead/${params.dealId}?gymBranchId=${currentGymBranchId}`);
+        setDealData(data);
       } catch (error) {
         // Optionally handle error
-        setLeadData([]);
+        setDealData([]);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLeadById();
+    fetchDealById();
   }, [])
 
   const onChange = (checked: boolean) => {
@@ -66,8 +64,8 @@ const LeadProfile = () => {
             className='w-20 h-20'
           />
           <div className='flex flex-col gap-2'>
-            <h2 className={`text-[20px] text-black-primary font-semibold !m-0`}>{leadData?.name}</h2>
-            <p className={`flex justify-center items-center w-auto h-[24px] rounded-lg text-[14px] leading-[100%] px-1 ${leadData?.status === 'NEW' ? 'bg-[#FFEC9F]' : leadData?.status === 'CONTACTED' ? 'bg-[#DDEF7B]' : leadData?.status === 'FOLLOW_UP' ? 'bg-[#E3D5F4]' : leadData?.status === 'CONVERTED' ? 'bg-green-secondary' : 'bg-[#FFC8CD]'} text-black-primary font-medium !m-0`}>{leadData?.status}</p>
+            <h2 className={`text-[20px] text-black-primary font-semibold !m-0`}>{dealData?.name}</h2>
+            <p className={`flex justify-center items-center w-auto h-[24px] rounded-lg text-[14px] leading-[100%] px-1 ${dealData?.status === 'NEW' ? 'bg-[#FFEC9F]' : dealData?.status === 'CONTACTED' ? 'bg-[#DDEF7B]' : dealData?.status === 'FOLLOW_UP' ? 'bg-[#E3D5F4]' : dealData?.status === 'CONVERTED' ? 'bg-green-secondary' : 'bg-[#FFC8CD]'} text-black-primary font-medium !m-0`}>{dealData?.status}</p>
           </div>
         </div>
 
@@ -92,23 +90,23 @@ const LeadProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Contact Number</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.contactNumber}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.contactNumber}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Whatsapp Number</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.whatsappNumber}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.whatsappNumber}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Email Address</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.email}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.email}</p>
           </div>
 
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Expected Membership</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.expectedMembership?.name}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.expectedMembership?.name}</p>
           </div>
 
         </div>
@@ -125,37 +123,37 @@ const LeadProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Branch</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.gymBranch?.address}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.gymBranch?.address}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Date</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.createdAt ? dayjs(leadData?.createdAt).format('DD-MM-YY') : '--'}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.createdAt ? dayjs(dealData?.createdAt).format('DD-MM-YY') : '--'}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Follow Update</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.followUpDate ? dayjs(leadData?.followUpDate).format('DD-MM-YY') : '--'}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.followUpDate ? dayjs(dealData?.followUpDate).format('DD-MM-YY') : '--'}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Conversion Date</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.conversionDate ? dayjs(leadData?.conversionDate).format('DD-MM-YY') : '--'}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.conversionDate ? dayjs(dealData?.conversionDate).format('DD-MM-YY') : '--'}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Lead Source</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.leadSource}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.leadSource}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Probability Percent</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.probabilityPercent}%</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.probabilityPercent}%</p>
           </div>  
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Notes</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{leadData?.notes ? leadData.notes : '--'}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dealData?.notes ? dealData.notes : '--'}</p>
           </div>  
 
         </div>
@@ -166,4 +164,4 @@ const LeadProfile = () => {
   )
 }
 
-export default LeadProfile
+export default DealProfile

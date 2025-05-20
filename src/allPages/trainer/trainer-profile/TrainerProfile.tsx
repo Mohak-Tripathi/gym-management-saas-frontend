@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { trainersData } from '@/constant/trainerData'
 import { getRequest } from '@/lib/services/request'
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux'
 
 const TrainerProfile = () => {
 
@@ -13,7 +14,8 @@ const TrainerProfile = () => {
 
   const [loading, setLoading] = useState(false);
   const [trainerData, setTrainerData] = useState<any>({});
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   const trainer = trainersData.find((trainer) => trainer.key === params.trainerId);
 
@@ -32,7 +34,7 @@ const TrainerProfile = () => {
     };
 
     fetchTrainerById();
-  }, [])
+  }, [selectedBranch, params.trainerId]);
 
   const onChange = (checked: boolean) => {
     console.log(`switch to ${checked}`);
@@ -84,7 +86,7 @@ const TrainerProfile = () => {
             {trainer?.payment}
           </p> */}
 
-          <div className='flex gap-3 items-center'>
+          {/* <div className='flex gap-3 items-center'>
             <Image
               src="/images/iconly/light/Edit.svg"
               alt="Edit"
@@ -93,14 +95,14 @@ const TrainerProfile = () => {
               className='h-[20px] w-[20px] cursor-pointer'
             />
 
-            {/* <Image
+            <Image
               src="/images/iconly/light/moreCircle.svg"
               alt="more menu"
               width={0}
               height={0}
               className='h-[20px] w-[20px] cursor-pointer'
-            /> */}
-          </div>
+            />
+          </div> */}
 
         </div>
       </div>

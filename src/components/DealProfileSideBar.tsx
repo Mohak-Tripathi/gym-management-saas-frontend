@@ -6,35 +6,38 @@ import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-const LeadProfileSideBar = () => {
+const DealProfileSideBar = () => {
   const params = useParams();
   const router = useRouter();
 
-  const [leadsData, setLeadsData] = useState<any[]>([]);
+  const [dealsData, setdealsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const pathname = usePathname();
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
   const currentGymBranchId = selectedBranch.id;
 
-  const fetchAllLeadsData = async () => {
+  const fetchAllDealsData = async () => {
     setLoading(true);
     try {
       const data = await getRequest(`/api/crm-lead?gymBranchId=${currentGymBranchId}`);
-      setLeadsData(data);
+      const convertedDeals = Array.isArray(data)
+        ? data.filter((item) => item.status === 'CONVERTED')
+        : (data?.status === 'CONVERTED' ? [data] : []);
+      setdealsData(convertedDeals);
     } catch (error) {
-      console.log('Leads data error', error);
-      setLeadsData([]);
+      console.log('Deals data error', error);
+      setdealsData([]);
     } finally {
       setLoading(false);
     }
   };
- 
+
   useEffect(() => {
-    fetchAllLeadsData()
+    fetchAllDealsData()
   }, [selectedBranch, pathname]);
 
   const handleProfileClick = (key: string) => {
-    router.push(`/management/crm/lead/${key}/lead-profile`);
+    router.push(`/management/crm/deal/${key}/deal-profile`);
   }
 
   return loading ? (
@@ -54,7 +57,7 @@ const LeadProfileSideBar = () => {
       }}
     >
       <div className='flex flex-col gap-4 w-full'>
-        <h2 className='text-[14px] text-black-primary font-[600] '>All Leads</h2>
+        <h2 className='text-[14px] text-black-primary font-[600] '>All Deals</h2>
 
         <div className='flex gap-2 border-1 border-solid border-[#0000001A] rounded-2xl px-1.5 py-2'>
           <Image
@@ -74,31 +77,31 @@ const LeadProfileSideBar = () => {
 
       <div className='flex flex-1 flex-col w-full overflow-y-scroll'>
 
-        {leadsData.map((lead, index) => {
+        {dealsData.map((deal, index) => {
           return (
             <div
               key={index}
-              onClick={() => handleProfileClick(lead.id)}
+              onClick={() => handleProfileClick(deal.id)}
               className='w-full cursor-pointer'>
-              <div className={`w-full flex justify-between items-center ${params?.leadId == lead.id ? 'bg-black-primary' : ''}  rounded-2xl p-1`}>
+              <div className={`w-full flex justify-between items-center ${params?.dealId == deal.id ? 'bg-black-primary' : ''}  rounded-2xl p-1`}>
                 <div className={`w-full flex gap-2 items-center`}>
                   <Image
-                    src={params?.leadId == lead.id ? `/images/iconly/light/user.svg` : `/images/iconly/light/user.svg`}
+                    src={params?.dealId == deal.id ? `/images/iconly/light/user.svg` : `/images/iconly/light/user.svg`}
                     height={0}
                     width={0}
                     alt={`profile`}
                     className='w-[24px] h-[24px] bg-white rounded-full'
                   />
                   <div className='flex flex-col gap-1'>
-                    <h2 className={`${params?.leadId == lead.id ? 'text-white' : 'text-black-primary'} !text-[14px] leading-[100%] !font-[600] !mb-0`}>
-                      {lead?.name}
+                    <h2 className={`${params?.dealId == deal.id ? 'text-white' : 'text-black-primary'} !text-[14px] leading-[100%] !font-[600] !mb-0`}>
+                      {deal?.name}
                     </h2>
-                    <p className={`${params?.leadId == lead.id ? 'text-white' : 'text-black-primary'} !text-[10px] leading-[100%] !font-normal !mb-0`}>
-                      {lead.status}
+                    <p className={`${params?.dealId == deal.id ? 'text-white' : 'text-black-primary'} !text-[10px] leading-[100%] !font-normal !mb-0`}>
+                      {deal.status}
                     </p>
                   </div>
                 </div>
-                {params?.leadId == lead.id && (
+                {params?.dealId == deal.id && (
                   <Image
                     src={`/images/iconly/bold/arrowWhite.svg`}
                     height={0}
@@ -120,4 +123,4 @@ const LeadProfileSideBar = () => {
   )
 }
 
-export default LeadProfileSideBar
+export default DealProfileSideBar

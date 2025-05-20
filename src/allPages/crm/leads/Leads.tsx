@@ -14,6 +14,7 @@ import { statusOption } from '@/constant/filterData';
 import { leadssData } from '@/constant/leadsData';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
+import { useSelector } from 'react-redux';
 
 const selectOptions = [
   {
@@ -35,7 +36,8 @@ const Leads = () => {
 
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(false);
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -45,6 +47,7 @@ const Leads = () => {
       setLeads(data); // Adjust if your API response is wrapped (e.g., data.items)
     } catch (error) {
       // Optionally handle error
+      console.log(error, "leadsdata error");
       setLeads([]);
     } finally {
       setLoading(false);
@@ -53,11 +56,7 @@ const Leads = () => {
 
   useEffect(() => {
     fetchLeads();
-  }, []);
-
-  useEffect(() => {
-    fetchLeads()
-  }, [pathname])
+  }, [selectedBranch, pathname]);
 
 
   const deleteIconClick = (editLeadId: any, branchId: any) => {
@@ -83,7 +82,6 @@ const Leads = () => {
   const handleCancel = () => {
     setConfirmDeleteVisible(false)
   }
-
 
   const threeDotPopover = (recordId: any, leadBranchId: string) => {
     return (
@@ -327,7 +325,7 @@ const Leads = () => {
                       if (target.closest('.action-buttons')) return;
 
                       // Otherwise, navigate
-                      router.push(`/management/crm/${record.id}/lead-profile`);
+                      router.push(`/management/crm/lead/${record.id}/lead-profile`);
                     },
                   };
                 }}

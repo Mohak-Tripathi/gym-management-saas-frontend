@@ -64,11 +64,7 @@ export const crmTabs = [
         'src': '/management/crm/leads'
     },
     {
-        'title': 'Open Deals',
-        'src': '/management/crm/open-deals'
-    },
-    {
-        'title': 'Leads Summary',
-        'src': '/management/crm/leads-summary'
+        'title': 'Deals',
+        'src': '/management/crm/deals'
     },
 ]

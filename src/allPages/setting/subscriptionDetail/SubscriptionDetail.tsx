@@ -6,13 +6,15 @@ import Link from "next/link";
 import { deleteRequest, getRequest } from "@/lib/services/request";
 import { usePathname } from "next/navigation";
 import { message, Modal, Skeleton } from "antd";
+import { useSelector } from "react-redux";
 
 const SubscriptionDetail = () => {
 
   const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const pathname = usePathname()
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   const fetchAllSubscriptionPlan = async () => {
     setLoading(true);
@@ -30,11 +32,7 @@ const SubscriptionDetail = () => {
 
   useEffect(() => {
     fetchAllSubscriptionPlan();
-  }, []);
-
-  useEffect(() => {
-    fetchAllSubscriptionPlan()
-  }, [pathname])
+  }, [selectedBranch, pathname]);
 
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [deleteBranchId, setDeleteBranchId] = useState('')

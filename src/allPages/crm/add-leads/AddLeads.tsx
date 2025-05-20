@@ -4,7 +4,7 @@ import FormInput from '@/components/formComponents/FormInput';
 import FormSelect from '@/components/formComponents/FormSelect';
 import { getRequest, postRequest, putRequest } from '@/lib/services/request';
 import { Form, Skeleton } from 'antd'
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
@@ -21,11 +21,14 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
     const [form] = Form.useForm();
     const router = useRouter()
     const params = useParams()
+    const pathname = usePathname()
+    const currentPath = pathname.split('/')[3]
 
     const [loading, setLoading] = useState(false);
-    const [leadData, setLeadData] = useState<any>({});
+    const [dealData, setdealData] = useState<any>({});
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
-    const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+    const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+    const currentGymBranchId = selectedBranch.id;
 
     const { branches } = useSelector((state: any) => state.branch);
 
@@ -56,21 +59,20 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
 
     useEffect(() => {
         fetchAllSubscriptionPlan();
-    }, []);
+    }, [selectedBranch]);
 
     useEffect(() => {
-        if (params.editTrainerId === 'add') return;
+        if (params.editLeadId === 'add') return;
 
         const fetchLeadById = async () => {
             setLoading(true);
             try {
                 const data = await getRequest(`/api/crm-lead/${params.editLeadId}?gymBranchId=${currentGymBranchId}`);
-                setLeadData(data);
-                console.log(data, "lead data");
-
+                setdealData(data);
             } catch (error) {
                 // Optionally handle error
-                setLeadData([]);
+                console.error("Lead data error:", error);
+                setdealData([]);
             } finally {
                 setLoading(false);
             }
@@ -80,7 +82,9 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
     }, [])
 
     const handleFinish = async (values: any) => {
-        if (params.editLeadId === 'add') {
+        console.log(values, "values");
+        
+        if (params.editLeadId === 'add' || params.editDealId === 'add') {
             const payload = {
                 name: values.name,
                 email: values.email,
@@ -99,7 +103,11 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
             try {
                 const response = await postRequest("/api/crm-lead", payload);
                 toast.success("New lead created successfully.")
-                router.push("/management/crm/leads")
+                if (currentPath === "leads") {
+                    router.push("/management/crm/leads")
+                } else {
+                    router.push("/management/crm/deals")
+                }
                 console.log(response, "lead created");
             } catch (error) {
                 console.error("Lead creation failed:", error);
@@ -108,24 +116,28 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
 
         } else {
             const payload = {
-                name: values.name || leadData.name,
-                email: values.email || leadData.email,
-                contactNumber: values.contactNumber || leadData.contactNumber,
-                whatsappNumber: values.whatsappNumber || leadData.whatsappNumber,
-                probabilityPercent: Number(values.probabilityPercent) || leadData.probabilityPercent,
-                leadSource: values.leadSource || leadData.leadSource,
-                status: values.status || leadData.status,
-                expectedMembershipId: values.expectedMembershipId || leadData.expectedMembershipId,
-                followUpDate: values.followUpDate || leadData.followUpDate,
-                conversionDate: values.conversionDate || leadData.conversionDate,
-                notes: values.notes || leadData.notes,
-                gymBranchId: values.gymBranchId || leadData.gymBranchId,
+                name: values.name || dealData.name,
+                email: values.email || dealData.email,
+                contactNumber: values.contactNumber || dealData.contactNumber,
+                whatsappNumber: values.whatsappNumber || dealData.whatsappNumber,
+                probabilityPercent: Number(values.probabilityPercent) || dealData.probabilityPercent,
+                leadSource: values.leadSource || dealData.leadSource,
+                status: values.status || dealData.status,
+                expectedMembershipId: values.expectedMembershipId || dealData.expectedMembershipId,
+                followUpDate: values.followUpDate || dealData.followUpDate,
+                conversionDate: values.conversionDate || dealData.conversionDate,
+                notes: values.notes || dealData.notes,
+                gymBranchId: values.gymBranchId || dealData.gymBranchId,
             };
 
             try {
-                const response = await putRequest(`/api/crm-lead/${params.editLeadId}?gymBranchId=${leadData.gymBranchId}`, payload);
+                const response = await putRequest(`/api/crm-lead/${params.editLeadId}?gymBranchId=${dealData.gymBranchId}`, payload);
                 toast.success("Lead updated successfully.")
-                router.push("/management/crm/leads")
+                if (currentPath === "leads") {
+                    router.push("/management/crm/leads")
+                } else {
+                    router.push("/management/crm/deals")
+                }
                 console.log(response, "Lead updated");
             } catch (error) {
                 console.error("Lead update failed:", error);
@@ -158,76 +170,76 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
                         <FormInput
                             label='Full Name'
                             name='name'
-                            initialValue={leadData && leadData?.name}
+                            initialValue={dealData && dealData?.name}
                         />
                         <div className='w-full grid grid-cols-2 gap-4'>
                             <FormInput
                                 label='Email'
                                 name='email'
-                                initialValue={leadData && leadData?.email}
+                                initialValue={dealData && dealData?.email}
                             />
 
                             <FormInput
                                 label='Contact Number'
                                 name='contactNumber'
-                                initialValue={leadData && leadData?.contactNumber}
+                                initialValue={dealData && dealData?.contactNumber}
                             />
 
                             <FormInput
                                 label='Whatsapp Number'
                                 name='whatsappNumber'
-                                initialValue={leadData && leadData?.whatsappNumber}
+                                initialValue={dealData && dealData?.whatsappNumber}
                             />
 
                             <FormInput
                                 label='Probability %'
                                 name='probabilityPercent'
-                                initialValue={leadData && leadData?.probabilityPercent}
+                                initialValue={dealData && dealData?.probabilityPercent}
                             />
 
                             <FormInput
                                 label='Lead Source'
                                 name='leadSource'
-                                initialValue={leadData && leadData?.leadSource}
+                                initialValue={dealData && dealData?.leadSource}
                             />
 
                             <FormSelect
                                 label='Status'
                                 name='status'
                                 options={leadStatusData}
-                                initialValue={leadData && leadData?.status}
+                                initialValue={dealData && dealData?.status}
                             />
 
                             <FormSelect
                                 label='Expected Subscription'
                                 name='expectedMembershipId'
                                 options={subscriptionDetailsData}
-                                initialValue={leadData && leadData?.expectedMembershipId}
+                                initialValue={dealData && dealData?.expectedMembershipId}
                             />
 
                             <FormDate
                                 label='Follow Up Date'
                                 name='followUpDate'
-                                initialValue={leadData?.followUpDate && dayjs(leadData.followUpDate)}
+                                initialValue={dealData?.followUpDate && dayjs(dealData.followUpDate)}
                             />
 
                             <FormDate
                                 label='Conversion Date'
                                 name='conversionDate'
-                                initialValue={leadData?.conversionDate && dayjs(leadData.conversionDate)}
+                                initialValue={dealData?.conversionDate && dayjs(dealData.conversionDate)}
                             />
 
                             <FormSelect
                                 label='Branch'
                                 name='gymBranchId'
                                 options={branchOptions}
-                                initialValue={leadData && leadData?.gymBranchId}
+                                initialValue={dealData && dealData?.gymBranchId}
                             />
 
                             <FormInput
                                 label='Notes'
                                 name='notes'
-                                initialValue={leadData && leadData?.notes}
+                                initialValue={dealData && dealData?.notes}
                             />
                         </div>
                     </div>
@@ -245,7 +257,7 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
                             type='submit'
                             className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                         >
-                            {params?.editLeadId === 'add' ? 'Add New Lead' : 'Update Lead'}
+                            {params?.editLeadId === 'add' || params.editDealId === 'add' ? 'Add New Lead' : 'Update Lead'}
                         </button>
                     </div>
                 </Form>

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
 import { paymentOption, statusOption } from '@/constant/filterData';
+import { useSelector } from 'react-redux';
 
 const selectOptions = [
   {
@@ -25,18 +26,46 @@ const selectOptions = [
 const Memebers = () => {
   const router = useRouter();
   const pathname = usePathname()
-  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
-  const [deleteMemberId, setDeleteMemberId] = useState('')
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false); 
+  const [deleteMemberId, setDeleteMemberId] = useState('') 
   const [deleteBranchId, setDeleteBranchId] = useState('')
+  const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
 
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  // const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+
+  const fetchAllSubscriptionPlan = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest(`/api/memberships?gymBranchId=${selectedBranch.id}`);
+      // Extract only id and name
+      const filteredData = data.map((plan: any) => ({
+        value: plan.id,
+        label: plan.name,
+        price: plan.actualPrice,
+      }));
+
+      setSubscriptionDetailsData(filteredData);
+
+    } catch (error) {
+      // Optionally handle error
+      setSubscriptionDetailsData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllSubscriptionPlan();
+  }, [selectedBranch]);
 
   const fetchMembers = async () => {
     setLoading(true);
     try {
-      const data = await getRequest(`api/trainees?gymBranchId=${currentGymBranchId}`);
+      const data = await getRequest(`api/trainees?gymBranchId=${selectedBranch.id}`);
       console.log('memberdata', data.data);
 
       setMembers(data.data); // Adjust if your API response is wrapped (e.g., data.items)
@@ -51,11 +80,11 @@ const Memebers = () => {
 
   useEffect(() => {
     fetchMembers();
-  }, []);
+  }, [selectedBranch]);
 
   useEffect(() => {
     fetchMembers()
-  }, [pathname])
+  }, [pathname, selectedBranch])
 
 
   const deleteIconClick = (traineeId: any, branchId: any) => {
@@ -348,7 +377,7 @@ const Memebers = () => {
           <FormSelect
             label='Subscription Type'
             name='subscriptionType'
-            options={selectOptions}
+            options={subscriptionDetailsData}
           />
 
           <FormSelect

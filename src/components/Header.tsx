@@ -1,9 +1,11 @@
+import { setSelectedBranch } from '@/lib/store/slices/selectedBranchSlice';
 import { Avatar, Popover, Select } from 'antd'
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
 
 const managemnet = [
   {
@@ -54,8 +56,9 @@ const moreMenu = [
 ]
 
 const Header = () => {
-
+  const dispatch = useDispatch();
   const { branches } = useSelector((state: any) => state.branch);
+    const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
 
   const branchOptions = branches?.map((branch: any) => ({
     value: branch.id,
@@ -63,6 +66,8 @@ const Header = () => {
   }));
 
   const handleChange = (value: string) => {
+    const selectedBranch = branches.find((branch: any) => branch.id === value);
+    dispatch(setSelectedBranch(selectedBranch));
   };
 
   const pathname = usePathname();
@@ -137,7 +142,7 @@ const Header = () => {
                 alt="down Arrow"
               />
             }
-            defaultValue={branchOptions && branchOptions.length> 0 && branchOptions[0].value}
+            defaultValue={selectedBranch && selectedBranch.id}
             className='flex flex-1 max-w-[200px]'
           />
         </div>

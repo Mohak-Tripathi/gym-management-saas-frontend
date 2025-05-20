@@ -22,7 +22,8 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
     const router = useRouter()
     const params = useParams()
     const [memberData, setMemberData] = useState<any>({});
-    const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+    const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+    const currentGymBranchId = selectedBranch.id;
     const [loading, setLoading] = useState(false);
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
     const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
@@ -67,7 +68,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
 
     useEffect(() => {
         fetchAllSubscriptionPlan();
-    }, []);
+    }, [selectedBranch]);
 
     useEffect(() => {
 
@@ -357,7 +358,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                             label='Subscription start date'
                             name='startDate'
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.endDate)}
-                            />
+                        />
 
                         <FormDate
                             label='Subscription end date'

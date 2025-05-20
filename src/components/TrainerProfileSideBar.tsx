@@ -5,6 +5,7 @@ import { Divider, Skeleton } from 'antd'
 import Image from 'next/image'
 import { useParams, usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 const TrainerProfileSideBar = () => {
   const params = useParams();
@@ -12,8 +13,9 @@ const TrainerProfileSideBar = () => {
 
   const [trainersData, setTrainersData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const pathname = usePathname()
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const pathname = usePathname();
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
   const fetchAllTrainersData = async () => {
     setLoading(true);
@@ -30,7 +32,7 @@ const TrainerProfileSideBar = () => {
 
   useEffect(() => {
     fetchAllTrainersData()
-  }, [])
+  }, [selectedBranch, pathname]);
 
   const handleProfileClick = (key: string) => {
     router.push(`/management/trainer/${key}/trainer-profile`);
