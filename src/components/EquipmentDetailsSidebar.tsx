@@ -1,18 +1,18 @@
-import { SidebarDetails } from "@/constant/sidebarData";
+import { EquipmentDetailSidebarDetails } from "@/constant/sidebarData";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 
-const Sidebar = () => {
-
+const EquipmentDetailsSidebar = () => {
+  
   const pathName = usePathname();
   const currentTab = pathName.split('/')[4];
 
   return (
     <div className="flex flex-col gap-6">
 
-      {SidebarDetails.map((sidebar, index) => {
+      {EquipmentDetailSidebarDetails.map((sidebar, index) => {
         return (
           <Link
             href={sidebar.link}
@@ -59,4 +59,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar;
+export default EquipmentDetailsSidebar;
