@@ -143,3 +143,8 @@ body {
   border-color: transparent !important;
   padding: 0 !important;
 }
+
+/* multiselect */
+.customFormMultiSelect .ant-select-selector {
+  padding: 4px !important;
+}

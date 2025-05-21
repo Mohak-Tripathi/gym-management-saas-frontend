@@ -153,7 +153,7 @@ const ScheduleEquipmentId = () => {
                 />
               </div>
               <div className="text-[20px] font-bold text-black-primary">
-                {params.scheduleEquipmentId === 'add' ? 'Add New Equipment' : 'Edit Equipment'}
+                {params.scheduleEquipmentId === 'add' ? 'Schedule Equipment' : 'Edit Schedule Equipment'}
 
               </div>
             </div>
@@ -212,16 +212,16 @@ const ScheduleEquipmentId = () => {
           <Link href="/management/settings/equipment-details/schedule-equipment">
             <button
               type="button"
-              className=" w-[147px] h-[40px] !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
+              className=" w-[170px] h-[40px] !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
             >
               Cancel
             </button>
           </Link>
           <button
             type="submit"
-            className=" w-[147px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
+            className=" w-[170px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
-            {params.scheduleEquipmentId === 'add' ? 'Add Equipment' : 'Edit Equipment'}
+            {params.scheduleEquipmentId === 'add' ? 'Schedule Equipment' : 'Update Schedule'}
           </button>
         </div>
       </Form>
