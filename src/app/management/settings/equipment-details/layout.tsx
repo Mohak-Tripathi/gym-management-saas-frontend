@@ -1,5 +1,6 @@
 "use client";
 
+import EquipmentDetailsSidebar from "@/components/EquipmentDetailsSidebar";
 import Sidebar from "@/components/Sidebar";
 import React from "react";
 
@@ -12,7 +13,7 @@ export default function RootLayout({
     <main className="w-full h-full ">
       <div className="h-full w-full flex gap-4">
         <div className="w-[35%] min-w-[310px] max-w-[400px] ">
-          <Sidebar />
+          <EquipmentDetailsSidebar />
         </div>
         {children}
       </div>
