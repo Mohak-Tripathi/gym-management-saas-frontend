@@ -11,7 +11,7 @@ import { deleteRequest, getRequest } from '@/lib/services/request';
 import BranchId from '@/allPages/setting/account-detail/branchId';
 import Link from 'next/link';
 import { statusOption } from '@/constant/filterData';
-import { leadssData } from '@/constant/leadsData';
+import { leadssData, leadStatusData } from '@/constant/leadsData';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
@@ -260,14 +260,14 @@ const Leads = () => {
           <FormSelect
             label='Status'
             name='status'
-            options={statusOption}
+            options={leadStatusData}
           />
 
-          <FormSelect
+          {/* <FormSelect
             label='Date'
             name='date'
             options={selectOptions}
-          />
+          /> */}
         </div>
 
         {/* add member btn */}

@@ -182,7 +182,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) =>
             type="submit"
             className="min-w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
-            Add Subcription Plan
+            {params.subscriptionId === 'add' ? 'Add Subscription Plan' : 'Update Subscription Plan'}
           </button>
         </div>
       </Form>
