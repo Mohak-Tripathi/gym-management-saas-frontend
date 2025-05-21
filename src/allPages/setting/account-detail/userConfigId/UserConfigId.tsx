@@ -245,7 +245,7 @@ const UserConfigId = () => {
             type="submit"
             className=" w-[147px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
-            Add Branch
+            {params.userConfigId === 'add' ? 'Create User' : 'Update User'}
           </button>
         </div>
       </Form>

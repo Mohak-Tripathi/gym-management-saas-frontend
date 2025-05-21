@@ -5,13 +5,11 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { deleteRequest, getRequest } from "@/lib/services/request";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
-import { fetchAllBranches } from "@/constant/reuseableFunction/branchFunction";
 
 const Equipments = () => {
 
-  const dispatch = useDispatch();
   const [equipmentsData, setEquipmentsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
@@ -44,9 +42,7 @@ const Equipments = () => {
     try {
       const response = await deleteRequest(`/api/gym-equipments/${deleteEquipmentId}?gymBranchId=${selectedBranch.id}`);
       toast.success("Branch data updated successfully")
-      console.log(response, "branch updated");
       await fetchEquipments();
-      fetchAllBranches(dispatch);
     } catch (error) {
       console.error("Branch creation failed:", error);
     }

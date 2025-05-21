@@ -102,7 +102,7 @@ const ScheduleEquipmentId = () => {
         gymBranchId: values.gymBranchId || scheduleEquipmentData?.gymBranchId,
       }
       try {
-        const response = await putRequest(`/api/gym-equipments/${params.scheduleEquipmentId}?gymBranchId=${selectedBranch.id}`, payload);
+        const response = await putRequest(`/api/maintenance-schedule/${params.scheduleEquipmentId}?gymBranchId=${selectedBranch.id}`, payload);
 
         toast.success("Equipment data updated successfully")
         router.push("/management/settings/equipment-details/schedule-equipment")
@@ -187,13 +187,13 @@ const ScheduleEquipmentId = () => {
               <FormDate
                 label="Last Serviced At"
                 name="lastServicedAt"
-                initialValue={scheduleEquipmentData && dayjs(scheduleEquipmentData?.lastServicedAt)}
+                initialValue={scheduleEquipmentData && scheduleEquipmentData?.lastServicedAt && dayjs(scheduleEquipmentData?.lastServicedAt)}
               />
 
               <FormDate
                 label="Next Due Date"
                 name="nextDueDate"
-                initialValue={scheduleEquipmentData && dayjs(scheduleEquipmentData?.nextDueDate)}
+                initialValue={scheduleEquipmentData && scheduleEquipmentData?.nextDueDate && dayjs(scheduleEquipmentData?.nextDueDate)}
               />
 
               <FormSelect

@@ -169,7 +169,7 @@ const EquipmentId = () => {
               <FormDate
                 label="Purchase Date"
                 name="purchaseDate"
-                initialValue={equipmentData && dayjs(equipmentData?.purchaseDate)}
+                initialValue={equipmentData && equipmentData?.purchaseDate && dayjs(equipmentData?.purchaseDate)}
               />
               {/* </div> */}
               <FormSelect
