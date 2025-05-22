@@ -5,14 +5,12 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { deleteRequest, getRequest } from "@/lib/services/request";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "sonner";
-import { fetchAllBranches } from "@/constant/reuseableFunction/branchFunction";
 import dayjs from 'dayjs';
 
 const ScheduleEquipment = () => {
 
-  const dispatch = useDispatch();
   const [scheduleEquipmentsData, setScheduleEquipmentsData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
@@ -23,8 +21,6 @@ const ScheduleEquipment = () => {
     setLoading(true);
     try {
       const data = await getRequest(`/api/maintenance-schedule?gymBranchId=${selectedBranch.id}`);
-      console.log('sdata', data.data);
-
       setScheduleEquipmentsData(data.data);
     } catch (error) {
       setScheduleEquipmentsData([]);
@@ -45,11 +41,10 @@ const ScheduleEquipment = () => {
   const handleDeleteScheduleEquipment = async () => {
     try {
       const response = await deleteRequest(`/api/maintenance-schedule/${deleteScheduleEquipmentId}?gymBranchId=${selectedBranch.id}`);
-      toast.success("Schedule equipment deleted successfully")
-      console.log(response, "schedule equipment deleted");
+      toast.success("Schedule equipment deleted successfully.")
       await fetchScheduleEquipments();
-      fetchAllBranches(dispatch);
     } catch (error) {
+      toast.error("Failed to delete schedule equipment.")
       console.error("schedule equipment deletion failed:", error);
     }
     setDeleteScheduleEquipmentId('')

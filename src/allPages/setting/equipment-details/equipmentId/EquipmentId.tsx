@@ -8,8 +8,7 @@ import Link from "next/link";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
 import { useParams, useRouter } from "next/navigation";
 import { toast } from 'sonner';
-import { fetchAllBranches } from "@/constant/reuseableFunction/branchFunction";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import FormDate from "@/components/formComponents/FormDate";
 import FormSelect from "@/components/formComponents/FormSelect";
 import dayjs from 'dayjs';
@@ -20,7 +19,6 @@ const EquipmentId = () => {
   const params = useParams()
   const [loading, setLoading] = useState(false);
   const [equipmentData, setEquipmentData] = useState<any>({});
-  const dispatch = useDispatch();
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
 
   const { branches } = useSelector((state: any) => state.branch);
@@ -78,8 +76,6 @@ const EquipmentId = () => {
         const response = await putRequest(`/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`, payload);
         toast.success("Equipment data updated successfully")
         router.push("/management/settings/equipment-details/equipments")
-        console.log(response, "equipment updated");
-        fetchAllBranches(dispatch);
       } catch (error) {
         toast.error("Equipment update failed")
         console.error("Equipment update failed:", error);
@@ -91,7 +87,6 @@ const EquipmentId = () => {
         purchaseDate: values.purchaseDate,
         gymBranchId: values.gymBranchId,
         status: values.status,
-        // gymId: "37226149-8bb8-4169-831e-6194661ef8c5",
       }
       try {
         const response = await postRequest("/api/gym-equipments", payload);
@@ -193,16 +188,16 @@ const EquipmentId = () => {
           <Link href="/management/settings/equipment-details/equipments">
             <button
               type="button"
-              className=" w-[147px] h-[40px] !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
+              className=" w-[160px] h-[40px] !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
             >
               Cancel
             </button>
           </Link>
           <button
             type="submit"
-            className=" w-[147px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
+            className=" w-[160px] h-[40px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
-            {params.equipmentId === 'add' ? 'Add Equipment' : 'Edit Equipment'}
+            {params.equipmentId === 'add' ? 'Add Equipment' : 'Update Equipment'}
           </button>
         </div>
       </Form>

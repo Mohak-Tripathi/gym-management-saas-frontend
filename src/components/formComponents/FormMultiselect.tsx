@@ -54,7 +54,7 @@ const FormMultiselect: React.FC<FormMultiselectProps> = ({
                     options={options}
                     defaultValue={initialValue}
                     optionFilterProp="label"
-                    rootClassName='customFormSelect'
+                    rootClassName='customFormSelect customFormMultiSelect'
                     suffixIcon={
                         <Image
                             loading="lazy"
@@ -65,7 +65,7 @@ const FormMultiselect: React.FC<FormMultiselectProps> = ({
                             alt="down Arrow"
                         />
                     }
-                    className='!rounded-xl h-[40px] !border-none !text-[14px] !text-gray-primary !font-[400] cursor-pointer'
+                    className='!rounded-xl min-h-[40px] !border-none !text-[14px] !text-gray-primary !font-[400] cursor-pointer'
                 />
             </Form.Item>
         </div>
