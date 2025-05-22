@@ -56,7 +56,7 @@ const MemberProfile = () => {
       <div className='w-full flex justify-between items-center gap-4'>
         <div className='flex flex-row items-center gap-1'>
           <Image
-            src={`/images/iconly/light/user.svg`}
+            src={memberData?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             height={0}
             width={0}
             alt={`profile`}
@@ -125,17 +125,22 @@ const MemberProfile = () => {
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Mobile No.</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{memberData?.user?.phone}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>+91 {memberData?.user?.phone}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Reference Mobile No.</h2>
-            <p className='text-[14px] text-black-primary font-[400] !m-0'>{memberData?.referenceMobileNo}</p>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>+91 {memberData?.referenceMobileNo}</p>
           </div>
 
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Age</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>{memberData?.age}</p>
+          </div>
+
+          <div className='flex flex-col gap-1'>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Date of Birth</h2>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{dayjs(memberData?.user?.birthDate).format('DD-MM-YY')}</p>
           </div>
 
           <div className='flex flex-col gap-1'>

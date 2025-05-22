@@ -168,7 +168,7 @@ const Memebers = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/user.svg`}
+            src={record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
