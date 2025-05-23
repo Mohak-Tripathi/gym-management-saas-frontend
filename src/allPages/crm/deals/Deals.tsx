@@ -261,11 +261,11 @@ const Deals = () => {
             options={statusOption}
           />
 
-          <FormSelect
+          {/* <FormSelect
             label='Date'
             name='date'
             options={selectOptions}
-          />
+          /> */}
         </div>
 
         {/* add member btn */}
