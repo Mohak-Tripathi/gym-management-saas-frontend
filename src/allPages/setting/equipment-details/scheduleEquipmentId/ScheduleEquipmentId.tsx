@@ -29,22 +29,27 @@ const ScheduleEquipmentId = () => {
     label: branch.name,
   }));
 
-  const frequencyOptions = [{
-    value: "MONTHLY",
-    label: "Monthly",
-  },
-  {
-    value: "QUARTERLY",
-    label: "Quarterly",
-  },
-  {
-    value: "HALF_YEARLY",
-    label: "Half Yearly",
-  },
-  {
-    value: "YEARLY",
-    label: "Yearly",
-  }
+  const frequencyOptions = [
+    {
+      value: "DAILY",
+      label: "Daily",
+    },
+    {
+      value: "WEEKLY",
+      label: "Weekly",
+    },
+    {
+      value: "MONTHLY",
+      label: "Monthly",
+    },
+    {
+      value: "QUARTERLY",
+      label: "Quarterly",
+    },
+    {
+      value: "YEARLY",
+      label: "Yearly",
+    }
   ]
 
   const fetchEquipments = async () => {
