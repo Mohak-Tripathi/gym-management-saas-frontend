@@ -24,6 +24,8 @@ const TrainerProfile = () => {
       setLoading(true);
       try {
         const data = await getRequest(`/api/trainers/${params.trainerId}?gymBranchId=${currentGymBranchId}`);
+        console.log('Trainer data', data.data);
+        
         setTrainerData(data.data);
       } catch (error) {
         // Optionally handle error
@@ -60,7 +62,7 @@ const TrainerProfile = () => {
       <div className='w-full flex justify-between items-center gap-4'>
         <div className='flex flex-row items-center gap-1'>
           <Image
-            src={`/images/iconly/light/user.svg`}
+            src={trainerData?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             height={0}
             width={0}
             alt={`profile`}
@@ -126,6 +128,21 @@ const TrainerProfile = () => {
           <div className='flex flex-col gap-1'>
             <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Mobile No.</h2>
             <p className='text-[14px] text-black-primary font-[400] !m-0'>+91 {trainerData?.user?.phone}</p>
+          </div>
+
+          <div className='flex flex-col gap-1'>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Reference Mobile No.</h2>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>+91 {trainerData?.referenceMobileNo}</p>
+          </div>
+
+          <div className='flex flex-col gap-1'>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Date Of Birth</h2>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.user?.birthDate ? dayjs(trainerData?.user?.birthDate).format('DD-MM-YYYY') : '-'}</p>
+          </div>
+
+          <div className='flex flex-col gap-1'>
+            <h2 className='text-[12px] text-black-60 font-[600] !m-0'>Age</h2>
+            <p className='text-[14px] text-black-primary font-[400] !m-0'>{trainerData?.user?.birthDate ? dayjs().diff(dayjs(trainerData?.user?.birthDate), 'year') : '-'}</p>
           </div>
 
           <div className='flex flex-col gap-1'>

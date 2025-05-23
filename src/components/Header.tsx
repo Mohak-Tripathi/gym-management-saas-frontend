@@ -2,10 +2,12 @@ import { setSelectedBranch } from '@/lib/store/slices/selectedBranchSlice';
 import { Avatar, Popover, Select } from 'antd'
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux';
 import { useDispatch } from "react-redux";
+import { deleteCookie } from "cookies-next";
+import { clearUser } from '@/lib/store/slices/userSlice';
 
 const managemnet = [
   {
@@ -57,8 +59,9 @@ const moreMenu = [
 
 const Header = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { branches } = useSelector((state: any) => state.branch);
-    const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
 
   const branchOptions = branches?.map((branch: any) => ({
     value: branch.id,
@@ -73,12 +76,33 @@ const Header = () => {
   const pathname = usePathname();
   const currentPath = pathname.split('/')[2];
 
+  const logout = () => {
+    // Clear localStorage
+    localStorage.removeItem("token");
+
+    // Remove cookie
+    deleteCookie("token");
+
+    // Clear user data in Redux store
+    dispatch(clearUser());
+
+    // Redirect to sign-in
+    router.push("/sign-in");
+  };
+
+  const changePasswordClick = () => {
+    router.push("/change-password");
+  }
+
   const avatarPopover = () => {
     return (
       <>
-        <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border">
+        <div className="flex flex-col gap-1 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border">
           {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+          <div
+            onClick={changePasswordClick}
+            className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border transition-all duration-200"
+          >
             <div className="flex items-center gap-2 text-[14px] leading-[20px]">
               <Image
                 src="/images/iconly/light/lock.svg"
@@ -91,11 +115,37 @@ const Header = () => {
           </div>
           {/* </Link> */}
 
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border transition-all duration-200">
+            <div className="flex items-center gap-2 text-[14px] leading-[20px]">
+              <Image
+                src="/images/iconly/light/notes.svg"
+                alt="Feedback"
+                width={20}
+                height={20}
+              />
+              <div>Feedback</div>
+            </div>
+          </div>
+
+          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border transition-all duration-200">
+            <div className="flex items-center gap-2 text-[14px] leading-[20px]">
+              <Image
+                src="/images/iconly/light/call.svg"
+                alt="Contact Us"
+                width={20}
+                height={20}
+              />
+              <div>Contact Us</div>
+            </div>
+          </div>
+
+          <div
+            onClick={() => logout()}
+            className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-red-50 cursor-pointer box-border transition-all duration-200">
             <div className="flex items-center gap-2 text-[14px] leading-[20px]">
               <Image
                 src="/images/iconly/light/logout.svg"
-                alt="Email"
+                alt="Logout"
                 width={20}
                 height={20}
               />

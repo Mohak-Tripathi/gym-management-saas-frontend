@@ -75,6 +75,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                     email: values.email,
                     role: 'TRAINER',
                     phone: values.phone,
+                    birthDate: values.birthDate,
                 },
                 trainerData: {
                     referenceMobileNo: values.referenceMobileNo,
@@ -105,6 +106,7 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                     email: values.email || trainerData && trainerData?.user?.email,
                     role: 'TRAINER',
                     phone: values.phone || trainerData && trainerData?.user?.phone,
+                    birthDate: values.birthDate || trainerData && trainerData?.user?.birthDate,
                 },
                 trainerData: {
                     referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
@@ -161,12 +163,6 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                                 initialValue={trainerData && trainerData?.user?.email}
                             />
 
-                            {/* <FormInput
-                                label='Role'
-                                name='role'
-                                initialValue={trainerData && trainerData?.user?.role}
-                            /> */}
-
                             <FormInput
                                 label='Mobile No.'
                                 name='phone'
@@ -177,6 +173,12 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                                 label='Reference Mobile No.'
                                 name='referenceMobileNo'
                                 initialValue={trainerData && trainerData?.referenceMobileNo}
+                            />
+
+                            <FormDate
+                                label='Date of Birth'
+                                name='birthDate'
+                                initialValue={trainerData && trainerData?.user?.birthDate && dayjs(trainerData?.user?.birthDate)}
                             />
 
                             <FormMultiselect

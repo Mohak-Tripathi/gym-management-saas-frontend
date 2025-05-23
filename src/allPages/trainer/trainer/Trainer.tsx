@@ -2,7 +2,7 @@
 import FormInput from '@/components/filterComponents/FilterInput'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { deleteRequest, getRequest } from '@/lib/services/request'
-import { message, Modal, Popover, Skeleton, Table } from 'antd'
+import { Modal, Popover, Skeleton, Table } from 'antd'
 import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
@@ -11,18 +11,6 @@ import { toast } from "sonner";
 import { statusOption, workTypeOption } from '@/constant/filterData'
 import { useSelector } from 'react-redux'
 
-const selectOptions = [
-  {
-    value: '1',
-    label: 'Not Identified',
-  },
-  {
-    value: '2',
-    label: 'Closed',
-  },
-]
-
-
 const Trainer = () => {
   const router = useRouter();
 
@@ -30,7 +18,7 @@ const Trainer = () => {
   const [loading, setLoading] = useState(false);
   const pathname = usePathname()
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
-  const currentGymBranchId = selectedBranch.id; // Updated to use selectedBranch
+  const currentGymBranchId = selectedBranch.id;
 
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [deleteTrainerId, setDeleteTrainerId] = useState('')
@@ -134,7 +122,7 @@ const Trainer = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/user.svg`}
+            src={record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"

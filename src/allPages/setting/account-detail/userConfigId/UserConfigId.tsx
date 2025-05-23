@@ -1,6 +1,6 @@
 "use client";
 
-import { Image, message, Skeleton } from "antd";
+import { Image, Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form } from "antd";
@@ -10,6 +10,8 @@ import FormSelect from "@/components/formComponents/FormSelect";
 import { useParams, useRouter } from "next/navigation";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
 import { toast } from "sonner";
+import FormDate from "@/components/formComponents/FormDate";
+import dayjs from 'dayjs';
 
 const UserConfigId = () => {
   const { branches } = useSelector((state: any) => state.branch);
@@ -70,6 +72,7 @@ const UserConfigId = () => {
         role: values.role,
         phone: values.phone,
         gymBranchId: values.gymBranchId,
+        birthDate: values.birthDate,
       };
 
       try {
@@ -89,6 +92,7 @@ const UserConfigId = () => {
         role: values.role || userData && userData?.role,
         phone: values.phone || userData && userData?.phone,
         gymBranchId: values.gymBranchId || userData && userData?.gymBranchId,
+        birthDate: values.birthDate || userData && userData?.birthDate,
       };
 
       try {
@@ -186,6 +190,12 @@ const UserConfigId = () => {
                 label="Phone"
                 name="phone"
                 initialValue={userData && userData?.phone}
+              />
+
+              <FormDate
+                label='Date of Birth'
+                name='birthDate'
+                initialValue={userData && userData?.birthDate && dayjs(userData?.birthDate)}
               />
 
               <FormSelect

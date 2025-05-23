@@ -117,9 +117,24 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
         { value: 'PostPregnancyFitness', label: 'Post-Pregnancy Fitness' },
     ];
 
+    // Utility to calculate age from date of birth
+    const calculateAge = (birthDate: string | Date): number => {
+        const dob = new Date(birthDate);
+        const today = new Date();
+        let age = today.getFullYear() - dob.getFullYear();
+        const monthDiff = today.getMonth() - dob.getMonth();
+
+        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+            age--;
+        }
+
+        return age;
+    };
+
 
     const handleFinish = async (values: any) => {
         if (params.editMemberId != 'add') {
+            const birthDate = values.birthDate || memberData?.user?.birthDate;
 
             const payload = {
                 "userData": {
@@ -127,12 +142,13 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                     "fullName": values.fullName || memberData?.user?.fullName,
                     "role": "TRAINEE",
                     "phone": values.phone || memberData?.user?.phone,
+                    birthDate,
                 },
                 "traineeData": {
                     "referenceMobileNo": values.referenceMobileNo || memberData?.referenceMobileNo,
                     "gender": values.gender || memberData?.gender,
                     "image": values.image || memberData?.image,
-                    "age": Number(values.age) || memberData?.age,
+                    "age": birthDate ? calculateAge(birthDate) : memberData?.age,
                     "address": values.address || memberData?.address,
                     "personalizedGoal": values.personalizedGoal || memberData?.personalizedGoal,
                     "healthIssues": values.healthIssues || memberData?.healthIssues,
@@ -160,21 +176,23 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                 toast.error("Failed to update member")
             }
         } else {
+            const birthDate = values.birthDate
             const payload = {
                 "userData": {
                     "email": values.email,
                     "fullName": values.fullName,
                     "role": "TRAINEE",
                     "phone": values.phone,
+                    birthDate
                 },
                 "traineeData": {
                     "referenceMobileNo": values.referenceMobileNo,
                     "gender": values.gender,
                     "image": values.image,
-                    "age": Number(values.age),
+                    "age": birthDate ? calculateAge(birthDate) : undefined,
                     "address": values.address,
                     "personalizedGoal": values.personalizedGoal,
-                    "healthIssues": values.healthIssues,
+                    "healthIssues": values.healthIssues || [],
                     "gymBranchId": values.gymBranchId,
                 },
                 "traineeMembershipData": {
@@ -278,10 +296,16 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                             initialValue={memberData && memberData?.gender}
                         />
 
-                        <FormInput
+                        {/* <FormInput
                             label='Age'
                             name='age'
                             initialValue={memberData && memberData?.age}
+                        /> */}
+
+                        <FormDate
+                            label='Date of Birth'
+                            name='birthDate'
+                            initialValue={memberData && memberData?.user?.birthDate && dayjs(memberData?.user?.birthDate)}
                         />
 
                         <FormInput
