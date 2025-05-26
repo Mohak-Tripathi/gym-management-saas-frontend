@@ -15,6 +15,14 @@ export const SidebarDetails = [
 
     },
     {
+        "imgSrc": "/images/iconly/light/notes.svg",
+        'title': "Review",
+        'tabName': 'user-configuration',
+        "description": "Ratings and feedbacks",
+        'link': '/management/settings/account-details/user-configuration'
+
+    },
+    {
         "imgSrc": "/images/iconly/light/TimeCircle.svg",
         'title': "Send Payment Remainders",
         'tabName': 'payment',
@@ -47,14 +55,14 @@ export const SidebarDetails = [
 
 export const EquipmentDetailSidebarDetails = [
     {
-        "imgSrc": "/images/iconly/light/buildings.svg",
+        "imgSrc": "/images/iconly/light/equipments.svg",
         'title': "Equipments",
         'tabName': 'equipments',
         "description": "Track your equipments",
         'link': '/management/settings/equipment-details/equipments'
     },
     {
-        "imgSrc": "/images/iconly/light/3User.svg",
+        "imgSrc": "/images/iconly/light/scheduleEquipments.svg",
         'title': "Schedule Equipment",
         'tabName': 'schedule-equipment',
         "description": "Manage your equipment schedules",

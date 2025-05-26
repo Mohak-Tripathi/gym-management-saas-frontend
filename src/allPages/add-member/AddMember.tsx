@@ -4,12 +4,13 @@ import FormInput from '@/components/formComponents/FormInput';
 import FormMultiselect from '@/components/formComponents/FormMultiselect';
 import FormSelect from '@/components/formComponents/FormSelect';
 import { getRequest, postRequest, putRequest } from '@/lib/services/request';
-import { Form, Skeleton } from 'antd'
+import { Form, Input, Skeleton } from 'antd'
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { toast } from 'sonner';
+import WebcamCapture from '@/components/WebcamCapture';
 
 interface AddMemberProps {
     onClose: () => void;
@@ -28,6 +29,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
     const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
     const [discountedPrice, setDiscounbtedPrice] = useState(0)
+    const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
     const { branches } = useSelector((state: any) => state.branch);
 
@@ -264,6 +266,23 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
             >
                 {/* user data */}
                 <div className='flex flex-col gap-4 h-[calc(100%-40px)]  overflow-y-scroll pr-2'>
+                    <div className="px-4 max-w-md mx-auto flex flex-col items-center">
+                        <h2 className="text-lg font-bold mb-3">Profile Image</h2>
+
+                        <WebcamCapture onCapture={setCapturedImage} />
+
+                        {capturedImage && (
+                            <div className="mt-2">
+                                <p className="!mb-1 ">Captured Image:</p>
+                                <img
+                                    src={capturedImage}
+                                    alt="Captured"
+                                    className="w-40 h-40 object-cover border rounded"
+                                />
+                            </div>
+                        )}
+                    </div>
+
                     <FormInput
                         label='Member name'
                         name='fullName'
@@ -295,12 +314,6 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
 
                             initialValue={memberData && memberData?.gender}
                         />
-
-                        {/* <FormInput
-                            label='Age'
-                            name='age'
-                            initialValue={memberData && memberData?.age}
-                        /> */}
 
                         <FormDate
                             label='Date of Birth'
