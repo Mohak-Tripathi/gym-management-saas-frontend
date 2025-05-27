@@ -1,10 +1,16 @@
 'use client'
+import FormDate from '@/components/formComponents/FormDate';
 import FormInput from '@/components/formComponents/FormInput';
+import FormMultiselect from '@/components/formComponents/FormMultiselect';
 import FormSelect from '@/components/formComponents/FormSelect';
-import { postRequest } from '@/lib/services/request';
-import { Form, message } from 'antd'
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { getRequest, postRequest, putRequest } from '@/lib/services/request';
+import { Form, message, Skeleton } from 'antd'
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { toast } from "sonner";
+import { workTypeOption } from '@/constant/filterData';
 
 interface AddTrainerProps {
     onClose: () => void;
@@ -20,143 +26,228 @@ const expertiseOptions = [
     { value: 'HIIT', label: 'HIIT' },
 ]
 
-const workTypeOption = [
-    {label: 'Part Time', value: 'PART_TIME'},
-    {label: 'Full Time', value: 'FULL_TIME'},
+const genderOption = [
+    { label: 'Male', value: 'MALE' },
+    { label: 'Female', value: 'FEMALE' },
 ]
 
 const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerData }) => {
     const [form] = Form.useForm();
     const router = useRouter()
+    const params = useParams()
+
+    const [loading, setLoading] = useState(false);
+    const [trainerData, setTrainerData] = useState<any>({});
+    const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+    const currentGymBranchId = selectedBranch.id;
+
+    const { branches } = useSelector((state: any) => state.branch);
+
+    const branchOptions = branches?.map((branch: any) => ({
+        value: branch.id,
+        label: branch.name,
+    }));
+
+    useEffect(() => {
+        if (params.editTrainerId === 'add') return;
+
+        const fetchTrainerById = async () => {
+            setLoading(true);
+            try {
+                const data = await getRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`);
+                setTrainerData(data.data);
+            } catch (error) {
+                // Optionally handle error
+                setTrainerData([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTrainerById();
+    }, [])
 
     const handleFinish = async (values: any) => {
-        console.log(values, "trainer values");
+        if (params.editTrainerId === 'add') {
+            const payload = {
+                userData: {
+                    fullName: values.fullName,
+                    email: values.email,
+                    role: 'TRAINER',
+                    phone: values.phone,
+                    birthDate: values.birthDate,
+                },
+                trainerData: {
+                    referenceMobileNo: values.referenceMobileNo,
+                    gender: values.gender || "MALE",
+                    specialization: values.specialization,
+                    workType: values.workType,
+                    joiningDate: values.joiningDate || new Date().toISOString(),
+                    experienceYears: Number(values.experienceYears),
+                    gymBranchId: values.gymBranchId,
+                },
+            };
 
-        const payload = {
-            userData: {
-              fullName: values.fullName,
-              email: values.email,
-              role: values.role,
-              phone: values.phone,
-            },
-            trainerData: {
-              referenceMobileNo: values.referenceMobileNo,
-            //   gender: values.gender || "MALE", // defaulting if gender not present
-              specialization: values.expertise ? [values.expertise] : [], // wrap in array
-              workType: values.workType,
-            //   joiningDate: values.joiningDate || new Date().toISOString(), // default to now if not given
-              experienceYears: Number(values.experienceYears), // ensure it's a number
-              gymBranchId: "284bb49b-e9e3-41c2-8531-0653876aff13",
-            },
-          };
+            try {
+                const response = await postRequest("/api/trainers", payload);
+                message.success("New Branch creared successfully")
+                toast.success("Trainer created successfully")
+                router.push("/management/trainer/trainer")
+                console.log(response, "branch created");
+            } catch (error) {
+                console.error("Branch creation failed:", error);
+                toast.error("Failed to create trainer")
+            }
 
-        try {
-            const response = await postRequest("/api/trainers", payload);
-            message.success("New Branch creared successfully")
-            // router.push("/management/trainer/trainer")
-            console.log(response, "branch created");
-        } catch (error) {
-            console.error("Branch creation failed:", error);
+        } else {
+            const payload = {
+                userData: {
+                    fullName: values.fullName || trainerData && trainerData?.user?.fullName,
+                    email: values.email || trainerData && trainerData?.user?.email,
+                    role: 'TRAINER',
+                    phone: values.phone || trainerData && trainerData?.user?.phone,
+                    birthDate: values.birthDate || trainerData && trainerData?.user?.birthDate,
+                },
+                trainerData: {
+                    referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
+                    specialization: values.specialization || trainerData && trainerData?.specialization,
+                    experienceYears: Number(values.experienceYears) || Number(trainerData && trainerData?.experienceYears),
+                    workType: values.workType || trainerData && trainerData?.workType,
+                    gender: values.gender || trainerData && trainerData?.gender || "MALE",
+                    joiningDate: values.joiningDate || trainerData?.joiningDate || new Date().toISOString(),
+                    gymBranchId: values.gymBranchId,
+                }
+            };
+
+            try {
+                const response = await putRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`, payload);
+                message.success("New Branch creared successfully")
+                router.push("/management/trainer/trainer")
+                console.log(response, "branch created");
+            } catch (error) {
+                console.error("Branch creation failed:", error);
+            }
         }
-        // onClose()
+
+        onClose()
     };
 
     const handleCancel = () => {
         onClose()
     }
 
-    useEffect(() => {
-        if (selectedTrainerData) {
-            form.setFieldsValue({
-                trainerName: selectedTrainerData.name,
-                mobileNumber: selectedTrainerData.mobileNumber,
-                workType: selectedTrainerData.workType,
-                email: selectedTrainerData.email,
-                address: selectedTrainerData.address,
-            });
-        } else {
-            form.resetFields();
-        }
-    }, [selectedTrainerData, form]);
-
     return (
         <main className='w-full h-full'>
-            <Form
-                form={form}
-                onFinish={handleFinish}
-                layout="vertical"
-                className='h-full flex flex-col justify-between gap-4'
-            >
-                {/* user data */}
-                <div className='flex flex-col gap-4'>
-                    <FormInput
-                        label='Trainer name'
-                        name='fullName'
-                    />
-                    <div className='w-full grid grid-cols-2 gap-4'>
+            {loading ? (
+                <div>
+                    <Skeleton active />
+                </div>
+            ) : (
+                <Form
+                    form={form}
+                    onFinish={handleFinish}
+                    layout="vertical"
+                    className='h-full flex flex-col justify-between gap-4'
+                >
+                    {/* user data */}
+                    <div className='flex flex-col gap-4'>
                         <FormInput
-                            label='Email'
-                            name='email'
+                            label='Trainer name'
+                            name='fullName'
+                            initialValue={trainerData && trainerData?.user?.fullName}
                         />
+                        <div className='w-full grid grid-cols-2 gap-4'>
+                            <FormInput
+                                label='Email'
+                                name='email'
+                                initialValue={trainerData && trainerData?.user?.email}
+                            />
 
-                        <FormInput
-                            label='Role'
-                            name='role'
-                        />
+                            <FormInput
+                                label='Mobile No.'
+                                name='phone'
+                                initialValue={trainerData && trainerData?.user?.phone}
+                            />
 
-                        <FormInput
-                            label='Mobile No.'
-                            name='phone'
-                        />
+                            <FormInput
+                                label='Reference Mobile No.'
+                                name='referenceMobileNo'
+                                initialValue={trainerData && trainerData?.referenceMobileNo}
+                            />
 
-                        <FormInput
-                            label='Reference Mobile No.'
-                            name='referenceMobileNo'
-                        />
+                            <FormDate
+                                label='Date of Birth'
+                                name='birthDate'
+                                initialValue={trainerData && trainerData?.user?.birthDate && dayjs(trainerData?.user?.birthDate)}
+                            />
 
-                        <FormSelect
-                            label='Expertise'
-                            name='expertise'
-                            options={expertiseOptions}
-                        />
+                            <FormMultiselect
+                                label='Expertise'
+                                name='specialization'
+                                options={expertiseOptions}
+                                initialValue={trainerData && trainerData?.specialization}
+                            />
 
-                        <FormInput
-                            label='Experience (Years)'
-                            name='experienceYears'
-                        />
+                            <FormInput
+                                label='Experience (Years)'
+                                name='experienceYears'
+                                initialValue={trainerData && trainerData?.experienceYears}
+                            />
 
-                        <FormSelect
-                            label='Work Type'
-                            name='workType'
-                            options={workTypeOption}
-                        />
+                            <FormSelect
+                                label='Work Type'
+                                name='workType'
+                                options={workTypeOption}
+                                initialValue={trainerData && trainerData?.workType}
+                            />
+
+                            <FormSelect
+                                label='Gender'
+                                name='gender'
+                                options={genderOption}
+                                initialValue={trainerData && trainerData?.gender}
+                            />
+
+                            <FormDate
+                                label='Joining Date'
+                                name='joiningDate'
+                                initialValue={trainerData?.joiningDate && dayjs(trainerData.joiningDate)}
+                            />
+
+                            <FormSelect
+                                label='Branch Name'
+                                name='gymBranchId'
+                                options={branchOptions}
+                                initialValue={trainerData && trainerData?.gymBranchId}
+                            />
+
+                        </div>
+
+                        {/* <FormInput
+                        label='Address'
+                        name='address'
+                    /> */}
 
                     </div>
 
-                    <FormInput
-                        label='Address'
-                        name='address'
-                    />
-
-                </div>
-
-                {/* buttons */}
-                <div className='flex justify-center gap-4'>
-                    <button
-                        type='button'
-                        onClick={() => handleCancel()}
-                        className=' w-[147px] h-10 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type='submit'
-                        className=' w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
-                    >
-                        Add Trainer
-                    </button>
-                </div>
-            </Form>
+                    {/* buttons */}
+                    <div className='flex justify-start gap-4'>
+                        <button
+                            type='button'
+                            onClick={() => handleCancel()}
+                            className=' w-[147px] h-8 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type='submit'
+                            className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
+                        >
+                            Add Trainer
+                        </button>
+                    </div>
+                </Form>
+            )}
         </main>
     )
 }

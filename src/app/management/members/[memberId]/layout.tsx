@@ -35,7 +35,7 @@ export default function RootLayout({
           </span>
         </p>
       </div>
-      <div className="w-full max-h-[calc(100%-40px)] flex gap-4">
+      <div className="w-full max-h-[calc(100%-40px)] h-[calc(100%-40px)] min-h-[calc(100%-40px)] flex gap-4">
         <MemberProfileSideBar />
         {children}
       </div>

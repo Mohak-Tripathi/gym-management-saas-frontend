@@ -1,29 +1,71 @@
 'use client'
-import AddTrainer from '@/allPages/add-trainer'
 import FormInput from '@/components/filterComponents/FilterInput'
 import FormSelect from '@/components/filterComponents/FilterSelect'
-import { trainersData } from '@/constant/trainerData'
-import { Drawer, Popover, Table } from 'antd'
+import { deleteRequest, getRequest } from '@/lib/services/request'
+import { Modal, Popover, Skeleton, Table } from 'antd'
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-
-const selectOptions = [
-  {
-    value: '1',
-    label: 'Not Identified',
-  },
-  {
-    value: '2',
-    label: 'Closed',
-  },
-]
-
+import { usePathname, useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import dayjs from 'dayjs';
+import { toast } from "sonner";
+import { statusOption, workTypeOption } from '@/constant/filterData'
+import { useSelector } from 'react-redux'
 
 const Trainer = () => {
   const router = useRouter();
 
-  const threeDotPopover = (recordId: any) => {
+  const [trainersData, setTrainersData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const pathname = usePathname()
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
+
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteTrainerId, setDeleteTrainerId] = useState('')
+  const [deleteBranchId, setDeleteBranchId] = useState('')
+
+  const fetchAllTrainersData = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest(`/api/trainers?gymBranchId=${currentGymBranchId}`);
+      setTrainersData(data.data);
+    } catch (error) {
+      console.log('trainer data error', error);
+      setTrainersData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const deleteIconClick = (trainerId: any, branchId: any) => {
+    setDeleteBranchId(branchId)
+    setDeleteTrainerId(trainerId)
+    setConfirmDeleteVisible(true)
+  }
+
+  const handleDeleteTrainer = async () => {
+    try {
+      const response = await deleteRequest(`/api/trainers/${deleteTrainerId}?gymBranchId=${deleteBranchId}`);
+      toast.success("Trainer deleted successfully")
+      fetchAllTrainersData();
+      console.log(response, "branch updated");
+    } catch (error) {
+      console.error("trainer deletion failed:", error);
+      toast.error("Failed to delete trainer")
+    }
+    setDeleteTrainerId('')
+    setConfirmDeleteVisible(false)
+  }
+
+  const handleCancel = () => {
+    setConfirmDeleteVisible(false)
+  }
+
+  useEffect(() => {
+    fetchAllTrainersData();
+  }, [selectedBranch, pathname]);
+
+  const threeDotPopover = (trainerId: string, branchId: string) => {
     return (
       <>
         <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
@@ -32,7 +74,7 @@ const Trainer = () => {
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Invoice</div>
               <Image
-                src="/images/Invoice.svg"
+                src="/images/invoice.svg"
                 alt="Invoice"
                 width={20}
                 height={20}
@@ -53,7 +95,9 @@ const Trainer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+          <div
+            onClick={() => deleteIconClick(trainerId, branchId)}
+            className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
             <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
               <div>Delete</div>
               <Image
@@ -72,13 +116,13 @@ const Trainer = () => {
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'user',
+      key: 'user',
       render: (_: any, record: any) => (
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/trainer.svg`}
+            src={record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
@@ -88,10 +132,10 @@ const Trainer = () => {
           {/* Name and Email */}
           <div className="flex flex-col">
             <p className="text-[14px] font-semibold text-black-primary !m-0">
-              {record.name}
+              {record.user.fullName}
             </p>
             <p className="text-[12px] text-gray-500 !m-0">
-              {record.email}
+              {record.user.email}
             </p>
           </div>
         </div>
@@ -106,107 +150,108 @@ const Trainer = () => {
       title: 'Mobile Number',
       dataIndex: 'mobileNumber',
       key: 'mobileNumber',
-    },
-
-    {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
+      render: (_: any, record: any) => (
+        <div>+91 {record.user.phone}</div>
+      )
     },
     {
       title: 'Work Type',
       dataIndex: 'workType',
       key: 'workType',
       render: (workType: any) => {
+        const workTypeLabels: Record<string, string> = {
+          FULL_TIME: 'Full Time',
+          PART_TIME: 'Part Time',
+        };
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${workType === 'Full Time' ? 'bg-yellow-primary' : 'bg-silver'}`}>
-            {workType}
+          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${workType === 'FULL_TIME' ? 'bg-yellow-primary' : 'bg-silver'}`}>
+            {workTypeLabels[workType] || workType}
           </p>
         );
       },
     },
     {
       title: 'Joined Date',
-      dataIndex: 'joinedDate',
-      key: 'joinedDate',
+      dataIndex: 'joiningDate',
+      key: 'joiningDate',
+      render: (date: string) => dayjs(date).format('DD-MM-YYYY'),
     },
-    {
-      title: 'Log in Time',
-      dataIndex: 'logInTime',
-      key: 'logInTime',
-    },
+    // {
+    //   title: 'Log in Time',
+    //   dataIndex: 'logInTime',
+    //   key: 'logInTime',
+    // },
+
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
       render: (status: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'Active' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
+          <p className={`w-[100px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${status === 'ACTIVE' ? 'bg-green-secondary' : 'bg-pink-pastel'}`}>
             {status}
           </p>
         );
       },
     },
-    {
-      title: 'Payment/Salary',
-      dataIndex: 'payment',
-      key: 'payment',
-      render: (payment: any) => {
-        return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
-            <Image
-              src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
-              height={20}
-              width={20}
-              alt={`calender`}
-            />
-            {payment}
-          </p>
-        );
-      },
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
-    },
+    // {
+    //   title: 'Payment/Salary',
+    //   dataIndex: 'payment',
+    //   key: 'payment',
+    //   width: "200px",
+    //   render: (payment: any) => {
+    //     return (
+    //       <p className={`w-[120px] rounded-xl !m-0 !px-1.5 py-1 !text-[12px] !font-[500] !text-black-primary flex gap-2 justify-center items-center ${payment === 'Paid' ? 'bg-green-pastel' : payment === 'Overdue' ? 'bg-pink-secondary' : 'bg-yellow-pastel'}`}>
+    //         <Image
+    //           src={payment === 'Paid' ? `/images/Right.svg` : payment === 'Overdue' ? `/images/Overdue.svg` : `/images/iconly/light/TimeCircle.svg`}
+    //           height={20}
+    //           width={20}
+    //           alt={`calender`}
+    //         />
+    //         {payment}
+    //       </p>
+    //     );
+    //   },
+    // },
     {
       title: '',
       dataIndex: '',
       key: 'action',
-      render: (_: any, record: any, index: number) => (
-        <div className="flex justify-end gap-4 items-center action-buttons">
+      render: (_: any, record: any, index: number) => {
+        return (
+          <div className="flex justify-end gap-4 items-center action-buttons">
 
-          <div className="cursor-pointer p-1">
-            <Image
-              src="/images/iconly/light/Edit.svg"
-              alt="Edit"
-              width={0}
-              height={0}
-              className='h-[20px] w-[20px] cursor-pointer'
-              onClick={() => handleEdit(record.key)}
-            />
-          </div>
-
-          <Popover
-            placement="bottomRight"
-            content={() => threeDotPopover(record.key)}
-            trigger="click"
-            rootClassName="sidebar-popover"
-            arrow={false}
-          >
             <div className="cursor-pointer p-1">
               <Image
-                src="/images/iconly/light/moreCircle.svg"
-                alt="more menu"
+                src="/images/iconly/light/Edit.svg"
+                alt="Edit"
                 width={0}
                 height={0}
                 className='h-[20px] w-[20px] cursor-pointer'
+                onClick={() => handleEdit(record.id)}
               />
             </div>
-          </Popover>
-        </div>
-      ),
+
+            <Popover
+              placement="bottomRight"
+              content={() => threeDotPopover(record.id, record.gymBranchId)}
+              trigger="click"
+              rootClassName="sidebar-popover"
+              arrow={false}
+            >
+              <div className="cursor-pointer p-1">
+                <Image
+                  src="/images/iconly/light/moreCircle.svg"
+                  alt="more menu"
+                  width={0}
+                  height={0}
+                  className='h-[20px] w-[20px] cursor-pointer'
+                />
+              </div>
+            </Popover>
+          </div>
+        )
+      },
     },
   ];
 
@@ -232,97 +277,105 @@ const Trainer = () => {
           <FormSelect
             label='Status'
             name='status'
-          // options={selectOptions}
+            options={statusOption}
           />
 
           <FormSelect
             label='Work Type'
             name='workType'
-          // options={selectOptions}
+            options={workTypeOption}
           />
 
-          <FormSelect
+          {/* <FormSelect
             label='Working'
             name='working'
           // options={selectOptions}
-          />
+          /> */}
 
-          <FormSelect
+          {/* <FormSelect
             label='Payment'
             name='payment'
           // options={selectOptions}
-          />
+          /> */}
         </div>
 
         {/* add member btn */}
         <button
           onClick={() => handleAddTrainerClick()}
-          className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+          className='w-[171px] h-[32px] rounded-xl border-[0.5px] border-solid border-black-10 bg-blue-secondary cursor-pointer flex justify-center items-center gap-2'
+        >
           <Image
             src={`/images/addNewMember.svg`}
             height={20}
             width={20}
             alt={`calender`}
           />
-          Add New Trainer
+          <p className='!text-[12px] leading-[100%] text-black-primary font-[600] !m-0'>
+            Add New Trainer
+          </p>
         </button>
       </div>
 
-      {/* table */}
-      <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
-        style={{
-          boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
-        }}
-      >
-        <div className='flex flex-col flex-1 gap-4 w-full'>
-          <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
-            <p className='!m-0  '>
-              Total Trainer
-            </p>
-            <p className='!m-0 px-2 py-1 rounded-full bg-count '>
-              105 count
-            </p>
-          </div>
-
-          <div className='w-full flex flex-col flex-1'>
-            <Table
-              columns={columns}
-              dataSource={trainersData}
-              pagination={false}
-              scroll={{ y: 'calc(100vh - 370px)' }}
-              className="custom-small-table"
-              onRow={(record) => {
-                return {
-                  onClick: (e) => {
-                    const target = e.target as HTMLElement;
-
-                    if (target.closest('.action-buttons')) return;
-
-                    // Otherwise, navigate
-                    router.push(`/management/trainer/${record.key}/trainer-profile`);
-                  },
-                };
-              }}
-            />
-          </div>
-
-          {/* <Drawer
-            title={selectedTrainerData?.length > 0 ? "Edit Trainer" : 'Add New Trainer'}
-            placement='right'
-            width={700}
-            onClose={onClose}
-            open={open}
-          >
-            <AddTrainer
-              onClose={onClose}
-              open={open}
-              selectedTrainerData={selectedTrainerData}
-            />
-          </Drawer> */}
+      {loading ? (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
+          <Skeleton active />
         </div>
+      ) : (
+        <div className='w-full bg-white rounded-xl flex flex-col flex-1 items-start p-3'
+          style={{
+            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
+          }}
+        >
+          <div className='flex flex-col flex-1 gap-4 w-full'>
+            <div className='flex gap-3 items-center !font-[600] text-[14px] text-black-primary'>
+              <p className='!m-0  '>
+                Total Trainer
+              </p>
+              <p className='!m-0 px-2 py-1 rounded-full bg-count '>
+                {trainersData && trainersData.length} count
+              </p>
+            </div>
 
-      </div>
-    </main>
+            <div className='w-full flex flex-col flex-1'>
+              <Table
+                rowKey={(record) => record.id}
+                columns={columns}
+                dataSource={trainersData}
+                pagination={false}
+                className="custom-small-table"
+                onRow={(record) => {
+                  return {
+                    onClick: (e) => {
+                      const target = e.target as HTMLElement;
+                      if (target.closest('.action-buttons')) return;
+                      router.push(`/management/trainer/${record.id}/trainer-profile`);
+                    },
+                  };
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      )
+      }
+
+      {/* Confirmation Modal */}
+      <Modal
+        title="Confirm Delete"
+        open={confirmDeleteVisible}
+        onOk={handleDeleteTrainer}
+        onCancel={() => handleCancel()}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this trainer?</p>
+      </Modal>
+
+    </main >
   )
 }
 

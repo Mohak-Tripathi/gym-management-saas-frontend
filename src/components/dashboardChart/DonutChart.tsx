@@ -9,22 +9,19 @@ import {
 } from 'recharts';
 
 const donutData = [
-  { name: 'New Visitors Per Week', value: 45, color: '#facc15' },
-  { name: 'Visitors Per Week', value: 25, color: '#60a5fa' },
+  { name: 'New Visitors', value: 45, color: '#facc15' },
+  { name: 'Visitors', value: 25, color: '#60a5fa' },
   { name: 'On Hold', value: 10, color: '#ef4444' },
   { name: 'Not Visiting', value: 15, color: '#ec4899' },
-  { name: 'Visitors per week', value: 5, color: '#10b981' },
+  { name: 'Visitors', value: 5, color: '#10b981' },
 ];
 
 const DonutChart = () => {
 
-  const total = donutData.reduce((acc, cur) => acc + cur.value, 0);
-  const centerPercentage = Math.round((total / 100) * 85); // mimic "85% April"
-
   return (
     <div className="w-full h-56 flex flex-col gap-4 md:flex-row">
       {/* Donut chart */}
-      <div className="md:w-2/4 relative h-auto">
+      <div className="md:w-3/5 relative h-auto">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
@@ -34,7 +31,7 @@ const DonutChart = () => {
               paddingAngle={2}
               dataKey="value"
             >
-              {donutData.map((entry, index) => (
+              {donutData && donutData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
@@ -43,9 +40,14 @@ const DonutChart = () => {
                 if (active && payload && payload.length) {
                   return (
                     <div className="bg-white border border-gray-200 rounded-md px-2 py-1 text-[12px] shadow-sm">
-                      <p className="text-gray-700 !m-0">
+                      {/* <p className="text-gray-700 !m-0">
                         {payload[0].name}: <strong>{payload[0].value}</strong>
-                      </p>
+                      </p> */}
+                      {payload?.length > 0 && (
+                        <p className="text-gray-700 !m-0">
+                          {payload[0].name}: <strong>{payload[0].value}</strong>
+                        </p>
+                      )}
                     </div>
                   );
                 }
@@ -62,8 +64,8 @@ const DonutChart = () => {
       </div>
 
       {/* right-side legend */}
-      <div className="md:w-2/4 mb-4 md:mb-0 md:pr-4 flex flex-col justify-center gap-2">
-        {donutData.map((item, index) => (
+      <div className="md:w-2/5 mb-4 md:mb-0 md:pr-4 flex flex-col justify-center gap-2">
+        {donutData && donutData.map((item, index) => (
           <div key={index} className="flex items-center text-[14px] gap-2">
             <span
               className="inline-block w-2 h-2 rounded-full"

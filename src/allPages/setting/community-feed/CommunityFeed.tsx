@@ -1,8 +1,44 @@
-import { Avatar, Divider, Tooltip } from 'antd'
-import Image from 'next/image'
-import React from 'react'
+'use client';
+import { Avatar, Divider, Form, Tooltip } from 'antd'
+import React, { useRef, useState } from 'react';
+import Image from 'next/image';
+import { CloseOutlined } from '@ant-design/icons';
+import FormInput from '@/components/formComponents/FormInput';
+import FormSelect from '@/components/formComponents/FormSelect';
 
 const CommunityFeed = () => {
+  const [form] = Form.useForm();
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newPreviews: string[] = [];
+      Array.from(files).forEach((file) => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (reader.result) {
+            setImagePreviews((prev) => [...prev, reader.result as string]);
+          }
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  const handlePost = (values: any) => {
+
+  }
+
   return (
     <main className='w-full flex gap-6 flex-1'>
 
@@ -170,17 +206,20 @@ const CommunityFeed = () => {
       {/* feed */}
       <div className='flex flex-col flex-1 overflow-y-scroll'>
 
-        <div className='flex flex-col gap-6 bg-white rounded-xl h-auto p-4'
-          style={{
-            boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
-          }}
+        <div
+          className='flex flex-col gap-6 bg-white rounded-xl h-auto p-4'
+          style={{ boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)' }}
         >
-          {/* heading */}
           <div className='w-full flex items-center justify-between'>
             <div className='flex flex-col gap-2'>
-              <h2 className='text-[20px] font-semibold leading-[100%] text-black-primary !m-0'>Welcome Back, Alex Mason 👋</h2>
-              <p className='text-[14px] font-normal leading-[100%] text-black-60 !m-0 '>What you want to share.</p>
+              <h2 className='text-[20px] font-semibold leading-[100%] text-black-primary !m-0'>
+                Welcome Back 👋
+              </h2>
+              <p className='text-[14px] font-normal leading-[100%] text-black-60 !m-0 '>
+                What you want to share.
+              </p>
             </div>
+
             <div className='flex items-center gap-3'>
               <Tooltip title='Attachment' placement='top' color='#071726' mouseEnterDelay={0.5}>
                 <Image
@@ -189,13 +228,23 @@ const CommunityFeed = () => {
                   height={24}
                   width={24}
                   className='cursor-pointer'
+                  onClick={handleImageClick}
                 />
               </Tooltip>
+
+              <input
+                type='file'
+                accept='image/*'
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                style={{ display: 'none' }}
+                multiple
+              />
 
               <Tooltip title='Voice' placement='top' color='#071726' mouseEnterDelay={0.5}>
                 <Image
                   src='/images/iconly/light/micBlack.svg'
-                  alt='plus'
+                  alt='mic'
                   height={24}
                   width={24}
                   className='cursor-pointer'
@@ -205,7 +254,7 @@ const CommunityFeed = () => {
               <Tooltip title='Emoji' placement='top' color='#071726' mouseEnterDelay={0.5}>
                 <Image
                   src='/images/iconly/light/emojiBlack.svg'
-                  alt='plus'
+                  alt='emoji'
                   height={24}
                   width={24}
                   className='cursor-pointer'
@@ -215,37 +264,92 @@ const CommunityFeed = () => {
               <Tooltip title='Schedule' placement='top' color='#071726' mouseEnterDelay={0.5}>
                 <Image
                   src='/images/iconly/light/TimeCircle.svg'
-                  alt='plus'
+                  alt='time'
                   height={24}
                   width={24}
                   className='cursor-pointer'
                 />
               </Tooltip>
-
             </div>
           </div>
 
-          {/* input */}
-          <div className='w-full flex items-end gap-1'>
-            <Avatar className='cursor-pointer' style={{ backgroundColor: '#071726', verticalAlign: 'middle' }} size="default">
-              U
-            </Avatar>
-            <textarea
-              className='w-full h-full p-3 rounded-lg border border-[#0000001A] !resize-none !text-[14px] !font-normal text-black-primary outline-none'
-              placeholder='What’s on your mind?'
-              rows={3}
-            />
-            <button className='flex gap-1.5 items-center w-24 justify-center !bg-black-primary !text-[12px] font-semibold !text-[#fff] rounded-lg px-2 py-1.5 cursor-pointer'>
-              <Image
-                src='/images/iconly/bold/send.svg'
-                alt='plus'
-                height={24}
-                width={24}
-                className='cursor-pointer'
+          {/* Image Previews Section */}
+          {imagePreviews.length > 0 && (
+            <div className='flex flex-wrap gap-4'>
+              {imagePreviews.map((src, index) => (
+                <div key={index} className='relative flex justify-center items-center w-[150px] h-[150px] rounded-lg overflow-hidden border border-gray-200'>
+                  <Image
+                    src={src}
+                    alt={`preview-${index}`}
+                    height={150}
+                    width={150}
+                  />
+                  <button
+                    onClick={() => handleRemoveImage(index)}
+                    className='absolute top-0 left-0 bg-opacity-50 bg-amber-50 rounded-full text-white px-1 z-10 hover:bg-opacity-80 cursor-pointer'
+                  >
+                    <CloseOutlined style={{ fontSize: '12px' }} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Input Section */}
+          <Form
+            form={form}
+            onFinish={handlePost}
+            className='flex flex-col gap-2'>
+            {/* <div className='grid grid-cols-5 gap-3'>
+              <div className='col-span-2'>
+                <FormInput
+                  label='Title'
+                  name='title'
+                />
+              </div>
+
+              <FormSelect
+                label='Category'
+                name='category'
               />
-              Post
-            </button>
-          </div>
+
+              <FormSelect
+                label='Visible To'
+                name='visibleTo'
+              />
+
+              <FormSelect
+                label='Pinned'
+                name='isPinned'
+              />
+            </div> */}
+            <div className='w-full flex items-end gap-1'>
+              {/* <Avatar
+              className='cursor-pointer'
+              style={{ backgroundColor: '#071726', verticalAlign: 'middle' }}
+              size='default'
+            >
+              U
+            </Avatar> */}
+              <textarea
+                className='w-full h-full p-3 rounded-lg border border-[#0000001A] !resize-none !text-[14px] !font-normal text-black-primary outline-none'
+                placeholder='What’s on your mind?'
+                rows={3}
+              />
+              <button
+                // onClick={() => handlePost()}
+                className='flex gap-1.5 items-center w-24 justify-center !bg-black-primary !text-[12px] font-semibold !text-[#fff] rounded-lg px-2 py-1.5 cursor-pointer'>
+                <Image
+                  src='/images/iconly/bold/send.svg'
+                  alt='send'
+                  height={24}
+                  width={24}
+                  className='cursor-pointer'
+                />
+                Post
+              </button>
+            </div>
+          </Form>
         </div>
 
       </div>

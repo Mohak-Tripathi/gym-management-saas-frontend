@@ -5,6 +5,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import Title from 'antd/es/typography/Title';
 import { membersBillingData, membersData } from '@/constant/membersData'
+import { paymentOption, statusOption } from '@/constant/filterData'
 
 const selectOptions = [
   {
@@ -28,7 +29,7 @@ const BillingHistory = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={`/images/iconly/light/profile.svg`}
+            src={`/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
@@ -63,7 +64,7 @@ const BillingHistory = () => {
       key: 'subscriptionType',
       render: (subscriptionType: any) => {
         return (
-          <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
+          <p className={`w-[150px] rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
             {subscriptionType}
           </p>
         );
@@ -141,11 +142,11 @@ const BillingHistory = () => {
           <FormSelect
             label='Status'
             name='status'
-            options={selectOptions}
+            options={statusOption}
           />
 
           <FormSelect
-            label='Subscription type'
+            label='Subscription Type'
             name='subscriptionType'
             options={selectOptions}
           />
@@ -153,19 +154,23 @@ const BillingHistory = () => {
           <FormSelect
             label='Payment'
             name='payment'
-            options={selectOptions}
+            options={paymentOption}
           />
         </div>
 
         {/* add member btn */}
-        <button className='w-[171px] h-[32px] rounded-xl bg-blue-secondary border-none !text-[12px] text-black-primary font-[600] cursor-pointer flex justify-center items-center gap-2'>
+        <button
+          className='w-[171px] h-[32px] rounded-xl border-[0.5px] border-solid border-black-10 bg-blue-secondary cursor-pointer flex justify-center items-center gap-2'
+        >
           <Image
             src={`/images/download.svg`}
             height={20}
             width={20}
             alt={`download`}
           />
-          Download
+          <p className='!text-[12px] leading-[100%] text-black-primary font-[600] !m-0'>
+            Download
+          </p>
         </button>
       </div>
 
@@ -187,11 +192,11 @@ const BillingHistory = () => {
 
           <div className='w-full flex flex-col flex-1'>
             <Table
+              rowKey={(record) => record.key}
               columns={columns}
               dataSource={membersBillingData}
               pagination={false}
               rowSelection={rowSelection}
-              scroll={{ y: 'calc(100vh - 370px)' }}
               className="custom-small-table"
             />
           </div>

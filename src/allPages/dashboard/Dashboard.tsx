@@ -1,17 +1,20 @@
 "use client";
-import BubbleChart from '@/components/chart/BubbleChart'
-import DonutChart from '@/components/chart/DonutChart'
-import GraphChart from '@/components/chart/GraphChart';
+import BubbleChart from '@/components/dashboardChart/BubbleChart'
+import DonutChart from '@/components/dashboardChart/DonutChart'
+import GraphChart from '@/components/dashboardChart/GraphChart';
+import PieCharts from '@/components/dashboardChart/PieCharts';
+import { communityFeedData } from '@/constant/communityFeedData';
+import { newMemberData } from '@/constant/newMemberData';
+import { soldProductData } from '@/constant/soldProductData';
+import { Divider } from 'antd';
 import Image from 'next/image'
 import React from 'react'
 import { useSelector } from "react-redux";
 
 const Dashboard = () => {
   const { user, token } = useSelector((state: any) => state.user.loggedinUserData);
-  console.log(user, token, "myuser");
-
   return (
-    <main className="w-full flex-1 flex flex-col gap-4">
+    <main className="w-full flex-1 flex flex-col gap-4 h-[calc(100%-52px)] max-h-[calc(100%-52px)]">
       {/* matrix panel */}
       <div className="w-full grid grid-cols-4 gap-4">
         {/* Members */}
@@ -38,7 +41,7 @@ const Dashboard = () => {
                 <p className="font-semibold text-[32px] text-black-primary leading-[100%] !-mb-1 ">
                   125
                 </p>
-                <p className="font-normal text-[12px] text-green-primary leading-[100%] !m-0"> 
+                <p className="font-normal text-[12px] text-green-primary leading-[100%] !m-0">
                   ▲ +2.3%
                 </p>
               </div>
@@ -190,6 +193,22 @@ const Dashboard = () => {
               <p className="font-semibold text-[14px] text-black-primary">
                 Revenue
               </p>
+              <div className='p-1 border-[0.5px] border-solid border-black-10 rounded-[8px]'>
+                <ul className='flex items-center gap-1 !m-0'>
+                  <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
+                    Today
+                  </li>
+                  <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
+                    Week
+                  </li>
+                  <li className={`text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer p-1 bg-yellow-secondary rounded-[8px]`}>
+                    Month
+                  </li>
+                  <li className='text-[14px] text-black-primary leading-[100%] !m-0 font-normal cursor-pointer '>
+                    Year
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
@@ -217,7 +236,7 @@ const Dashboard = () => {
 
           {/* graph */}
           <div>
-            <BubbleChart />
+            <PieCharts />
           </div>
         </div>
 
@@ -249,13 +268,13 @@ const Dashboard = () => {
       <div className="w-full grid grid-cols-4 gap-4">
         {/* Community Feed */}
         <div
-          className="bg-white rounded-xl p-3"
+          className="bg-white rounded-xl p-3 flex flex-col flex-1"
           style={{
             boxShadow: "0px 4px 8px rgba(193, 224, 255, 0.25)",
           }}
         >
           {/* heading */}
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-4 h-10">
             <div className="flex justify-between items-start gap-2">
               <p className="font-semibold text-[14px] text-black-primary">
                 Community Feed
@@ -267,7 +286,31 @@ const Dashboard = () => {
           </div>
 
           {/* graph */}
-          <div></div>
+          <div className='flex flex-1 flex-col gap-2 h-36 max-h-40 pr-2 overflow-y-scroll'>
+            {communityFeedData.map((post, index) => {
+              return (
+                <div key={index}>
+                  <div className='flex gap-2'>
+                    <Image
+                      src={post.userSrc}
+                      height={0}
+                      width={0}
+                      alt={``}
+                      className="h-[36px] w-[36px] rounded object-cover"
+                    />
+                    <div className='flex flex-col gap-1 w-full'>
+                      <div className='flex justify-between gap-1 items-center'>
+                        <p className='text-[14px] font-semibold leading-[100%] text-black-primary !m-0'>{post.title}</p>
+                        <p className='text-[12px] font-normal leading-[100%] text-black-primary !m-0'>{post.time}, {post.date}</p>
+                      </div>
+                      <p className='text-[14px] font-normal leading-[100%] text-black-primary !m-0'>{post.description}.</p>
+                    </div>
+                  </div>
+                  <Divider className='!my-3' />
+                </div>
+              )
+            })}
+          </div>
         </div>
 
         {/* Trainers Time Schedule */}
@@ -311,8 +354,30 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* graph */}
-            <div></div>
+            {/* sold product picture */}
+            <div className='flex gap-2'>
+              {soldProductData.slice(0, 7).map((product, index) => {
+                const isLastVisible = index === 6;
+                const remaining = soldProductData.length - 7;
+
+                return (
+                  <div key={index} className="relative">
+                    <Image
+                      src={product.productSrc}
+                      height={0}
+                      width={0}
+                      alt={product.productName}
+                      className="h-[45px] w-[45px] rounded object-cover"
+                    />
+                    {isLastVisible && remaining > 0 && (
+                      <div className="absolute inset-0 bg-black-primary bg-opacity-60 flex items-center justify-center text-white text-sm font-semibold rounded cursor-pointer">
+                        +{remaining}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
 
           {/* New Members */}
@@ -331,8 +396,30 @@ const Dashboard = () => {
               </div>
             </div>
 
-            {/* graph */}
-            <div></div>
+            {/* New Members picture */}
+            <div className='flex gap-2'>
+              {newMemberData.slice(0, 7).map((member, index) => {
+                const isLastVisible = index === 6;
+                const remaining = newMemberData.length - 7;
+
+                return (
+                  <div key={index} className="relative">
+                    <Image
+                      src={member.memberSrc}
+                      height={0}
+                      width={0}
+                      alt={member.memberName}
+                      className="h-[45px] w-[45px] rounded object-cover"
+                    />
+                    {isLastVisible && remaining > 0 && (
+                      <div className="absolute inset-0 bg-black-primary bg-opacity-60 flex items-center justify-center text-white text-sm font-semibold rounded cursor-pointer">
+                        +{remaining}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
       </div>

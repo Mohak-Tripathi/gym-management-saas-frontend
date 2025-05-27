@@ -1,3 +1,4 @@
+import { SidebarDetails } from "@/constant/sidebarData";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -5,58 +6,11 @@ import React from "react";
 
 const Sidebar = () => {
 
-  const SidebarDetails = [
-    {
-      "imgSrc": "/images/iconly/light/buildings.svg",
-      'title': "Branch Space",
-      'tabName': 'branch',
-      "description": "multiple branches as you need",
-      'link': '/managemnet/settings/account-details/branch'
-    },
-    {
-      "imgSrc": "/images/iconly/light/3User.svg",
-      'title': "User Configurations",
-      'tabName': 'user-configuration',
-      "description": "User Information",
-      'link': '/management/settings/account-details/user-configuration'
-     
-    },
-    {
-      "imgSrc": "/images/iconly/light/TimeCircle.svg",
-      'title': "Send Payment Remainders",
-      'tabName': 'payment',
-      "description": "At customisable Intervals",
-      'link': '/management/settings/account-details/payment'
-    },
-    {
-      "imgSrc": "/images/iconly/light/coins.svg",
-      'title': "Change Late Fees",
-      'tabName': 'fees',
-      "description": "Percentage or Flat Rate Fees",
-      'link': '/management/settings/account-details/fees'
-    },
-    {
-      "imgSrc": "/images/iconly/light/language.svg",
-      'title': "Currency & Language",
-      'tabName': 'language',
-      "description": "INR. English",
-      'link': '/management/settings/account-details/language'
-    },
-    {
-      "imgSrc": "/images/iconly/light/notes.svg",
-      'title': "Invoice Attachments",
-      'tabName': 'invoice',
-      "description": "Attach PDF Copy to Emails",
-      'link': '/management/settings/account-details/invoice'
-    }
-
-  ]
-
   const pathName = usePathname();
   const currentTab = pathName.split('/')[4];
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
 
       {SidebarDetails.map((sidebar, index) => {
         return (

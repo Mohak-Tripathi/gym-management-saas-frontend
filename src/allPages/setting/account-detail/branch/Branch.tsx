@@ -1,14 +1,19 @@
 "use client";
 
-import { message, Modal, Table } from "antd";
+import { Modal, Skeleton, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { gymBranchData } from "@/constant/GymBranchData";
 import Image from "next/image";
 import Link from "next/link";
 import { deleteRequest, getRequest } from "@/lib/services/request";
+import { useDispatch } from "react-redux";
+import { setBranches } from "../../../../lib/store/slices/branchSlice"
+import { toast } from "sonner";
+import { fetchAllBranches } from "@/constant/reuseableFunction/branchFunction";
 
 const Branch = () => {
-  const [branches, setBranches] = useState([]);
+
+  const dispatch = useDispatch();
+  const [branchesData, setBranchesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
   const [deleteBranchId, setDeleteBranchId] = useState('')
@@ -17,10 +22,19 @@ const Branch = () => {
     setLoading(true);
     try {
       const data = await getRequest("/api/gym-branch");
-      console.log(data, "gymbranchdata");
-      setBranches(data);
+      setBranchesData(data);
+      // Only keep required fields
+      const simplifiedBranches = data.map((branch: any) => ({
+        id: branch.id,
+        name: branch.name,
+        address: branch.address
+      }));
+
+      // Dispatch to Redux
+      dispatch(setBranches(simplifiedBranches));
+
     } catch (error) {
-      setBranches([]);
+      setBranchesData([]);
     } finally {
       setLoading(false);
     }
@@ -38,9 +52,10 @@ const Branch = () => {
   const handleDeleteBranch = async () => {
     try {
       const response = await deleteRequest(`/api/gym-branch/${deleteBranchId}`);
-      message.success("Branch data updated successfully")
+      toast.success("Branch data updated successfully")
       console.log(response, "branch updated");
       await fetchBranches();
+      fetchAllBranches(dispatch);
     } catch (error) {
       console.error("Branch creation failed:", error);
     }
@@ -49,7 +64,6 @@ const Branch = () => {
   }
 
   const handleCancel = () => {
-    console.log('cancel delete request');
     setDeleteBranchId('')
     setConfirmDeleteVisible(false)
   }
@@ -69,6 +83,11 @@ const Branch = () => {
       title: "Location",
       dataIndex: "address",
       key: "address",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
     },
     {
       title: "Status",
@@ -119,52 +138,62 @@ const Branch = () => {
   ];
 
   return loading ? (
-    <div>Loading...</div>
-  ) : (
     <div
       className="flex flex-col w-full gap-6 p-3 bg-white rounded-xl"
       style={{
         boxShadow: "0px 4px 8px rgba(193, 224, 255, 0.25)",
       }}
     >
-      <div className="bg-[#F4F7FC] rounded-lg px-2 py-1 flex items-center justify-between">
-        <div className="flex gap-2.5 items-center justify-between">
-          <div className="h-[36px] w-[36px] bg-white border border-[#000]/10 rounded-full flex items-center justify-center">
-            <Image
-              src={`/images/iconly/light/buildings.svg`}
-              alt="Arrow"
-              width={20}
-              height={20}
-            />
-          </div>
-          <div className="text-[20px] font-bold text-black-primary">
-            Branch Space
-          </div>
-        </div>
-        <Link href="/management/settings/account-details/branch/new">
-          <div className="w-[168px] h-[28px] rounded-[66px] bg-white py-1.5 pl-3 pr-2 flex gap-2.5 items-center justify-center">
-            <Image
-              src={`/images/Add Circle.svg`}
-              alt="Arrow"
-              width={16}
-              height={16}
-            />
-            <div className="text-[12px] font-semibold text-black-primary leading-[100%]">
-              Add New Branch
+      <div>
+        <Skeleton active />
+      </div>
+    </div>
+  ) : (
+    <div
+      className="flex flex-1  p-3 bg-white rounded-xl"
+      style={{
+        boxShadow: "0px 4px 8px rgba(193, 224, 255, 0.25)",
+      }}
+    >
+      <div className=" flex flex-col flex-1 gap-6 ">
+        <div className="bg-blue-secondary rounded-lg px-2 py-1 flex items-center justify-between">
+          <div className="flex gap-2.5 items-center justify-between">
+            <div className="h-[36px] w-[36px] bg-white border border-black-10 rounded-full flex items-center justify-center">
+              <Image
+                src={`/images/iconly/light/buildings.svg`}
+                alt="Arrow"
+                width={20}
+                height={20}
+              />
+            </div>
+            <div className="text-[20px] font-bold text-black-primary">
+              Branch Space
             </div>
           </div>
-        </Link>
-      </div>
-
-      <div className="w-full flex flex-col flex-1">
-        <Table
-          columns={columns}
-          dataSource={branches}
-          pagination={false}
-          rowKey="id"
-          scroll={{ y: "calc(100vh - 370px)" }}
-          className="custom-small-table"
-        />
+          <Link href="/management/settings/account-details/branch/new">
+            <div className="w-[168px] h-[28px] rounded-[66px] border border-solid border-black-10 bg-white py-1.5 pl-3 pr-2 flex gap-2.5 items-center justify-center">
+              <Image
+                src={`/images/Add Circle.svg`}
+                alt="Arrow"
+                width={16}
+                height={16}
+              />
+              <div className="text-[12px] font-semibold text-black-primary leading-[100%]">
+                Add New Branch
+              </div>
+            </div>
+          </Link>
+        </div>
+        <div className="w-full overflow-auto">
+          <Table
+            columns={columns}
+            dataSource={branchesData}
+            pagination={false}
+            rowKey="id"
+            scroll={{ x: 'max-content' }}
+            className="custom-small-table"
+          />
+        </div>
       </div>
 
       {/* Confirmation Modal */}

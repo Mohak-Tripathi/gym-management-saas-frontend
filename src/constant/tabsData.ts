@@ -56,4 +56,19 @@ export const settingTabs = [
         'title': 'Community Feed',
         'src': '/management/settings/community-feed'
     },
+    {
+        'title': 'Equipment Details',
+        'src': '/management/settings/equipment-details/equipments'
+    },
+]
+
+export const crmTabs = [
+    {
+        'title': 'Leads',
+        'src': '/management/crm/leads'
+    },
+    {
+        'title': 'Deals',
+        'src': '/management/crm/deals'
+    },
 ]

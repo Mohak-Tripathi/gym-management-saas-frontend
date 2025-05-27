@@ -1,11 +1,14 @@
 "use client";
 import FormInput from "@/components/formComponents/FormInput";
+import FormMultiselect from "@/components/formComponents/FormMultiselect";
 import FormSelect from "@/components/formComponents/FormSelect";
 import { getRequest, postRequest, putRequest } from "@/lib/services/request";
-import { Form, message } from "antd";
+import { Form, message, Skeleton } from "antd";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { toast } from "sonner";
 
 interface AddSubscriptionCardProps {
   onClose: () => void;
@@ -19,17 +22,25 @@ const benifitsOptions = [
   { label: 'Zumba', value: 'zumba' },
 ]
 
-const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open }) => {
+const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose }) => {
   const [form] = Form.useForm();
   const router = useRouter()
   const params = useParams()
   const [loading, setLoading] = useState(false);
   const [subscriptionData, setSubscriptionData] = useState<any>({});
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
-
-  console.log('params', params);
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
+  console.log(currentGymBranchId, "currentGymBranchId");
+  
 
   useEffect(() => {
+    console.log('currentGymBranchId', currentGymBranchId);
+  }, [selectedBranch])
+  
+
+  useEffect(() => {
+    if (params.subscriptionId === 'add') return;
+
     const fetchSubscriptionById = async () => {
       setLoading(true);
       try {
@@ -48,38 +59,41 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
   }, [])
 
   const handleFinish = async (values: any) => {
-    console.log(values, "values");
-    // return;
     if (params.subscriptionId != 'add') {
       const payload = {
         name: values.name || subscriptionData?.name,
-        actualPrice: Number(values.actualPrice) || Number(subscriptionData.actualPrice),
+        actualPrice: values.actualPrice || subscriptionData.actualPrice,
+        membershipDiscountedPrice: Number(values.membershipDiscountedPrice) || Number(subscriptionData.membershipDiscountedPrice),
         baseDuration: Number(values.baseDuration) || Number(subscriptionData.baseDuration),
-        benefits: [values.benefits || subscriptionData?.benefits[0]],
+        benefits: values.benefits || subscriptionData?.benefits,
       }
       try {
         const response = await putRequest(`/api/memberships/${params.subscriptionId}?gymBranchId=${currentGymBranchId}`, payload);
-
-        message.success("Branch data updated successfully")
+        toast.success("Subscription Plan updated successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch updated");
       } catch (error) {
+        toast.error("Subscription Plan updation failed")
         console.error("Branch creation failed:", error);
       }
     } else {
+      console.log('post request');
+
       const payload = {
         name: values.name,
-        actualPrice: Number(values.actualPrice),
+        actualPrice: values.actualPrice,
         baseDuration: Number(values.baseDuration),
-        benefits: [values.benefits],
-        gymBranchId: 'aa2ec403-de84-43eb-913a-9c63455f26ca'
+        membershipDiscountedPrice: Number(values.membershipDiscountedPrice),
+        benefits: values.benefits,
+        gymBranchId: currentGymBranchId
       }
       try {
-        const response = await postRequest(`"/api/memberships"`, payload);
-        message.success("New Branch creared successfully")
+        const response = await postRequest(`/api/memberships`, payload);
+        toast.success("New Subscription Plan created successfully")
         router.push("/management/settings/account-details/branch")
         console.log(response, "branch created");
       } catch (error) {
+        toast.error("Subscription Plan creation failed")
         console.error("Branch creation failed:", error);
       }
     }
@@ -93,7 +107,7 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
 
   return loading ? (
     <div>
-      Loading...
+      <Skeleton active />
     </div>
   ) : (
     <main className="w-full h-full">
@@ -125,11 +139,11 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
           </div>
 
           <div className="col-span-2">
-            <FormSelect
+            <FormMultiselect
               label="Benefits "
               name="benefits"
               options={benifitsOptions}
-              initialValue={subscriptionData?.benefits?.length > 0 && subscriptionData?.benefits[0]}
+              initialValue={subscriptionData && subscriptionData?.benefits?.length > 0 ? subscriptionData.benefits : []}
             />
           </div>
 
@@ -138,11 +152,16 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
             name="actualPrice"
             initialValue={subscriptionData.actualPrice}
           />
+          <FormInput
+            label="Membership Price"
+            name="membershipDiscountedPrice"
+            initialValue={subscriptionData.membershipDiscountedPrice}
+          />
 
           {/* <FormInput label="Discounted Price" name="discountedPrice" /> */}
 
           <FormInput
-            label="Classes allowed"
+            label="Duration (Month)"
             name="baseDuration"
             initialValue={subscriptionData.baseDuration}
           />
@@ -154,16 +173,16 @@ const AddSubscriptionCard: React.FC<AddSubscriptionCardProps> = ({ onClose, open
           <button
             type="button"
             onClick={() => handleCancel()}
-            className=" w-[147px] h-10 !bg-blue-light !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
+            className=" w-[147px] h-8 !bg-blue-light !text-black-primary rounded-lg px-4 py-2 cursor-pointer"
           >
             Cancel
           </button>
           {/* </Link> */}
           <button
             type="submit"
-            className="min-w-[147px] h-10 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
+            className="min-w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer"
           >
-            Add Subcription Plan
+            {params.subscriptionId === 'add' ? 'Add Subscription Plan' : 'Update Subscription Plan'}
           </button>
         </div>
       </Form>

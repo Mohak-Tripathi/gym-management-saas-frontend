@@ -18,6 +18,7 @@
   --color-silver: #EFF6F8;
 
   --color-yellow-primary: #FFDE8F;
+  --color-yellow-secondary: #FFEBBB;
   --color-yellow-pastel: #F4ECD5;
   --color-yellow-warm: #FFDD6E;
 
@@ -59,6 +60,7 @@
   --color-silver: #EFF6F8;
 
   --color-yellow-primary: #FFDE8F;
+  --color-yellow-secondary: #FFEBBB;
   --color-yellow-pastel: #F4ECD5;
   --color-yellow-warm: #FFDD6E;
 
@@ -134,4 +136,15 @@ body {
   background: none !important;
   border-radius: 12px !important;
   outline: none !important;
+}
+
+.branchSelect .ant-select-selector {
+  border: none !important;
+  border-color: transparent !important;
+  padding: 0 !important;
+}
+
+/* multiselect */
+.customFormMultiSelect .ant-select-selector {
+  padding: 4px !important;
 }

@@ -3,41 +3,79 @@ import SubscriptionCard from "@/components/SubscriptionCard";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { getRequest } from "@/lib/services/request";
+import { deleteRequest, getRequest } from "@/lib/services/request";
+import { usePathname } from "next/navigation";
+import { message, Modal, Skeleton } from "antd";
+import { useSelector } from "react-redux";
 
 const SubscriptionDetail = () => {
 
   const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const currentGymBranchId = "aa2ec403-de84-43eb-913a-9c63455f26ca"
+  const pathname = usePathname()
+  const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const currentGymBranchId = selectedBranch.id;
 
+  const fetchAllSubscriptionPlan = async () => {
+    setLoading(true);
+    try {
+      const data = await getRequest(`/api/memberships?gymBranchId=${currentGymBranchId}`);
+      console.log(data, "subscriptionPlan");
+      setSubscriptionDetailsData(data);
+    } catch (error) {
+      // Optionally handle error
+      setSubscriptionDetailsData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchAllSubscriptionPlan = async () => {
-      setLoading(true);
-      try {
-        const data = await getRequest(`/api/memberships?gymBranchId=${currentGymBranchId}`);
-        console.log(data, "subscriptionPlan");
-        setSubscriptionDetailsData(data); // Adjust if your API response is wrapped (e.g., data.items)
-      } catch (error) {
-        // Optionally handle error
-        setSubscriptionDetailsData([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchAllSubscriptionPlan();
-  }, []);
+  }, [selectedBranch, pathname]);
+
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteBranchId, setDeleteBranchId] = useState('')
+  const [deleteSubscriptionId, setDeleteSubscriptionId] = useState('')
+
+  const deleteIconClick = (branchId: any, subscriptionId: any) => {
+    setDeleteBranchId(branchId)
+    setDeleteSubscriptionId(subscriptionId)
+    setConfirmDeleteVisible(true)
+  }
+  const handleDeleteSubscriptionPlan = async () => {
+    try {
+      const response = await deleteRequest(`/api/memberships/${deleteSubscriptionId}?gymBranchId=${deleteBranchId}`);
+      message.success(`Branch ${response.message}`)
+      fetchAllSubscriptionPlan();
+      console.log(response, "branch updated");
+    } catch (error) {
+      console.error("Branch creation failed:", error);
+    }
+    setDeleteBranchId('')
+    setConfirmDeleteVisible(false)
+  }
+
+  const handleCancel = () => {
+    setConfirmDeleteVisible(false)
+  }
+
+  const backgroundColors = [
+    "bg-[#F7F7F5]", // 0 - Basic
+    "bg-[#F4F7FC]", // 1 - Intermediate
+    "bg-[#FFF5D5]"  // 2 - Advanced
+  ];
 
   return loading ? (
-    <div>Loading...</div>
+    <div>
+      <Skeleton active />
+    </div>
   ) : (
     <div className="w-full grid grid-cols-3 gap-6">
-      {subscriptionDetailsData.map((planDetail:any, index:number) => {
+      {subscriptionDetailsData.map((planDetail: any, index: number) => {
         return (
           <div key={index}>
-            <SubscriptionCard
+            {/* <SubscriptionCard
               planTitle={planDetail?.name}
               duration="Monthly"
               actualPrice={planDetail?.actualPrice}
@@ -47,6 +85,20 @@ const SubscriptionDetail = () => {
               textColor='text-[#86867D]'
               subscriptionId={planDetail?.id}
               branchId={planDetail?.gymBranchId}
+              deleteIconClick={deleteIconClick}
+            /> */}
+
+            <SubscriptionCard
+              planTitle={planDetail?.name}
+              duration={planDetail?.baseDuration === 1 ? "Monthly" : planDetail?.baseDuration === 3 ? "Quarterly" : planDetail?.baseDuration === 6 ? "Half Year" : planDetail?.baseDuration === 12 ? "Yearly" : ""}
+              actualPrice={planDetail?.actualPrice}
+              membershipDiscountedPrice={planDetail?.membershipDiscountedPrice}
+              classesCount={planDetail?.baseDuration}
+              backgroundColor={backgroundColors[index % backgroundColors.length]}
+              textColor="text-[#86867D]"
+              subscriptionId={planDetail?.id}
+              branchId={planDetail?.gymBranchId}
+              deleteIconClick={deleteIconClick}
             />
           </div>
         )
@@ -90,6 +142,19 @@ const SubscriptionDetail = () => {
           <p className="!font-semibold text-[14px] text-black-primary">Add New Plan</p>
         </div>
       </Link>
+
+      {/* Confirmation Modal */}
+      <Modal
+        title="Confirm Delete"
+        open={confirmDeleteVisible}
+        onOk={handleDeleteSubscriptionPlan}
+        onCancel={() => handleCancel()}
+        okText="Delete"
+        cancelText="Cancel"
+      >
+        <p>Are you sure you want to delete this subscription plan?</p>
+      </Modal>
+
     </div>
   );
 };
