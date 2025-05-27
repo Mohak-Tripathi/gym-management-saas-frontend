@@ -172,26 +172,26 @@ const ScheduleEquipment = () => {
           <div className="flex gap-2.5 items-center justify-between">
             <div className="h-[36px] w-[36px] bg-white border border-black-10 rounded-full flex items-center justify-center">
               <Image
-                src={`/images/iconly/light/buildings.svg`}
+                src={`/images/iconly/light/scheduleEquipments.svg`}
                 alt="Arrow"
                 width={20}
                 height={20}
               />
             </div>
             <div className="text-[20px] font-bold text-black-primary">
-              Equipments
+              Schedule Equipments
             </div>
           </div>
           <Link href="/management/settings/equipment-details/schedule-equipment/add">
-            <div className="h-[28px] rounded-[66px] border border-solid border-black-10 bg-white py-1.5 pl-3 pr-2 flex gap-2.5 items-center justify-center">
+            <div className="h-[28px] rounded-[66px] border border-solid border-black-10 bg-white py-1.5 pl-3 pr-2 flex gap-2 items-center justify-center">
               <Image
-                src={`/images/Add Circle.svg`}
+                src={`/images/iconly/light/equipmentGear.svg`}
                 alt="Arrow"
                 width={16}
                 height={16}
               />
               <div className="text-[12px] font-semibold text-black-primary leading-[100%]">
-                Add New Equipment
+                Schedule Equipment
               </div>
             </div>
           </Link>
