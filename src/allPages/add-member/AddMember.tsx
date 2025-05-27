@@ -24,6 +24,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
     const params = useParams()
     const [memberData, setMemberData] = useState<any>({});
     const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+    const token = useSelector((state: any) => state.user.loggedinUserData?.token);
     const currentGymBranchId = selectedBranch.id;
     const [loading, setLoading] = useState(false);
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
@@ -133,6 +134,24 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
         return age;
     };
 
+    const base64ToBlob = (base64Data: string, contentType = 'image/jpeg') => {
+        const byteCharacters = atob(base64Data.split(',')[1]);
+        const byteArrays = [];
+
+        for (let i = 0; i < byteCharacters.length; i += 512) {
+            const slice = byteCharacters.slice(i, i + 512);
+            const byteNumbers = new Array(slice.length);
+            for (let j = 0; j < slice.length; j++) {
+                byteNumbers[j] = slice.charCodeAt(j);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, { type: contentType });
+    };
+
+
 
     const handleFinish = async (values: any) => {
         if (params.editMemberId != 'add') {
@@ -179,39 +198,88 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
             }
         } else {
             const birthDate = values.birthDate
-            const payload = {
-                "userData": {
-                    "email": values.email,
-                    "fullName": values.fullName,
-                    "role": "TRAINEE",
-                    "phone": values.phone,
-                    birthDate
-                },
-                "traineeData": {
-                    "referenceMobileNo": values.referenceMobileNo,
-                    "gender": values.gender,
-                    "image": values.image,
-                    "age": birthDate ? calculateAge(birthDate) : undefined,
-                    "address": values.address,
-                    "personalizedGoal": values.personalizedGoal,
-                    "healthIssues": values.healthIssues || [],
-                    "gymBranchId": values.gymBranchId,
-                },
-                "traineeMembershipData": {
-                    "membershipId": values.membershipId,
-                    "discountedPrice": discountedPrice,
-                    "discountPercentage": Number(values.discountPercentage),
-                    "reasonOfDiscount": values.reasonOfDiscount,
-                    "extraMonths": Number(values.extraMonths),
-                    "startDate": values.startDate,
-                    "endDate": values.endDate,
-                    // gymId and gymBranchId will be added by the backend
-                }
+            // const payload = {
+            //     "userData": {
+            //         "email": values.email,
+            //         "fullName": values.fullName,
+            //         "role": "TRAINEE",
+            //         "phone": values.phone,
+            //         birthDate
+            //     },
+            //     "traineeData": {
+            //         "referenceMobileNo": values.referenceMobileNo,
+            //         "gender": values.gender,
+            //         "image": values.image,
+            //         "age": birthDate ? calculateAge(birthDate) : undefined,
+            //         "address": values.address,
+            //         "personalizedGoal": values.personalizedGoal,
+            //         "healthIssues": values.healthIssues || [],
+            //         "gymBranchId": values.gymBranchId,
+            //     },
+            //     "traineeMembershipData": {
+            //         "membershipId": values.membershipId,
+            //         "discountedPrice": discountedPrice,
+            //         "discountPercentage": Number(values.discountPercentage),
+            //         "reasonOfDiscount": values.reasonOfDiscount,
+            //         "extraMonths": Number(values.extraMonths),
+            //         "startDate": values.startDate,
+            //         "endDate": values.endDate,
+            //         // gymId and gymBranchId will be added by the backend
+            //     }
+            // }
+
+            const formData = new FormData();
+            // Append userData
+            formData.append("userData", JSON.stringify({
+                email: values.email,
+                fullName: values.fullName,
+                role: "TRAINEE",
+                phone: values.phone,
+                address: values.address,
+                birthDate,
+            }));
+            // Append traineeData
+            formData.append("traineeData", JSON.stringify({
+                referenceMobileNo: values.referenceMobileNo,
+                gender: values.gender,
+                height: values.height,
+                weight: values.weight,
+                bmi: values.bmi,
+                bodyFatPercentage: values.bodyFatPercentage,
+                age: birthDate ? calculateAge(birthDate) : undefined,
+                personalizedGoal: values.personalizedGoal,
+                healthIssues: values.healthIssues || [],
+                gymBranchId: values.gymBranchId,
+            }));
+
+            // Append traineeMembershipData
+            formData.append("traineeMembershipData", JSON.stringify({
+                membershipId: values.membershipId,
+                discountedPrice: discountedPrice,
+                discountPercentage: Number(values.discountPercentage),
+                reasonOfDiscount: values.reasonOfDiscount,
+                extraMonths: Number(values.extraMonths),
+                startDate: values.startDate,
+                endDate: values.endDate,
+            }));
+
+            // Convert and append image
+            if (capturedImage) {
+                const imageBlob = base64ToBlob(capturedImage);
+                formData.append("image", imageBlob, "photo.jpg");
             }
             try {
-                const response = await postRequest(`/api/trainees`, payload);
-                toast.success("New Member added successfully")
-                router.push("/management/members/members/")
+                // const response = await postRequest(`/api/trainees`, payload);
+                const apiurl = process.env.NEXT_PUBLIC_API_URL;
+                const response = await fetch(`${apiurl}/api/trainees`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
+                toast.success("New Member added successfully");
+                router.push("/management/members/members/");
                 console.log(response, "new member created");
             } catch (error) {
                 console.error("New Member creation failed:", error);
@@ -302,53 +370,35 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                         />
 
                         <FormInput
-                            label='Reference Mobile No.'
-                            name='referenceMobileNo'
-                            initialValue={memberData && memberData?.referenceMobileNo}
-                        />
-
-                        <FormSelect
-                            label='Gender'
-                            name='gender'
-                            options={GenderOptions}
-
-                            initialValue={memberData && memberData?.gender}
-                        />
-
-                        <FormDate
-                            label='Date of Birth'
-                            name='birthDate'
-                            initialValue={memberData && memberData?.user?.birthDate && dayjs(memberData?.user?.birthDate)}
+                            label='Height'
+                            name='height'
+                        // initialValue={memberData && memberData?.referenceMobileNo}
                         />
 
                         <FormInput
-                            label='Image'
-                            name='image'
-                            initialValue={memberData && memberData?.image}
+                            label='Weight'
+                            name='weight'
+                        // initialValue={memberData && memberData?.referenceMobileNo}
                         />
 
-                    </div>
-
-                    <FormInput
-                        label='Address'
-                        name='address'
-                        initialValue={memberData && memberData?.address}
-                    />
-
-                    <div className='w-full grid grid-cols-2 gap-4'>
-                        <FormMultiselect
-                            options={userGoals}
-                            label='Goal'
-                            name='personalizedGoal'
-                            initialValue={memberData && memberData?.personalizedGoal}
+                        <FormInput
+                            label='BMI'
+                            name='bmi'
+                        // initialValue={memberData && memberData?.referenceMobileNo}
                         />
 
-                        <FormMultiselect
-                            options={healthIssues}
-                            label='Health Issues'
-                            name='healthIssues'
-                            initialValue={memberData && memberData?.healthIssues}
+                        <FormInput
+                            label='Body Fat Percentage'
+                            name='bodyFatPercentage'
+                        // initialValue={memberData && memberData?.referenceMobileNo}
                         />
+                        <div className='col-span-2'>
+                            <FormInput
+                                label='Address'
+                                name='address'
+                                initialValue={memberData && memberData?.address}
+                            />
+                        </div>
 
                         <FormSelect
                             options={subscriptionDetailsData}
@@ -401,6 +451,51 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                             label='Subscription end date'
                             name='endDate'
                             initialValue={memberData && memberData?.traineeMemberships && memberData?.traineeMemberships.length > 0 && dayjs(memberData?.traineeMemberships[0]?.startDate)}
+                        />
+
+                    </div>
+
+
+
+                    <div className='w-full grid grid-cols-2 gap-4'>
+                        <FormInput
+                            label='Reference Mobile No.'
+                            name='referenceMobileNo'
+                            initialValue={memberData && memberData?.referenceMobileNo}
+                        />
+
+                        <FormSelect
+                            label='Gender'
+                            name='gender'
+                            options={GenderOptions}
+
+                            initialValue={memberData && memberData?.gender}
+                        />
+
+                        <FormDate
+                            label='Date of Birth'
+                            name='birthDate'
+                            initialValue={memberData && memberData?.user?.birthDate && dayjs(memberData?.user?.birthDate)}
+                        />
+
+                        {/* <FormInput
+                            label='Image'
+                            name='image'
+                            initialValue={memberData && memberData?.image}
+                        /> */}
+
+                        <FormMultiselect
+                            options={userGoals}
+                            label='Goal'
+                            name='personalizedGoal'
+                            initialValue={memberData && memberData?.personalizedGoal}
+                        />
+
+                        <FormMultiselect
+                            options={healthIssues}
+                            label='Health Issues'
+                            name='healthIssues'
+                            initialValue={memberData && memberData?.healthIssues}
                         />
 
                     </div>
