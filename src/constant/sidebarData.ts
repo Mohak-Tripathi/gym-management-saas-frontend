@@ -17,9 +17,9 @@ export const SidebarDetails = [
     {
         "imgSrc": "/images/iconly/light/notes.svg",
         'title': "Review",
-        'tabName': 'user-configuration',
+        'tabName': 'review',
         "description": "Ratings and feedbacks",
-        'link': '/management/settings/account-details/user-configuration'
+        'link': '/management/settings/account-details/reviews'
 
     },
     {

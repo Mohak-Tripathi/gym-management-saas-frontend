@@ -54,13 +54,13 @@ const MemberProfile = () => {
       }}
     >
       <div className='w-full flex justify-between items-center gap-4'>
-        <div className='flex flex-row items-center gap-1'>
+        <div className='flex flex-row items-center gap-3'>
           <Image
-            src={memberData?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+            src={memberData?.imageUrl ? memberData?.imageUrl : memberData?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             height={0}
             width={0}
             alt={`profile`}
-            className='w-20 h-20'
+            className='w-20 h-20 rounded-lg'
           />
           <div className='flex flex-col gap-2'>
             <h2 className={`text-[20px] text-black-primary font-semibold !m-0`}>{memberData?.user?.fullName}</h2>

@@ -11,6 +11,8 @@ import dayjs from 'dayjs';
 import { useSelector } from 'react-redux';
 import { toast } from "sonner";
 import { workTypeOption } from '@/constant/filterData';
+import { expertiseOptions, genderOption } from '@/constant/dropdownData';
+import WebcamCapture from '@/components/WebcamCapture';
 
 interface AddTrainerProps {
     onClose: () => void;
@@ -18,28 +20,18 @@ interface AddTrainerProps {
     selectedTrainerData?: any;
 }
 
-const expertiseOptions = [
-    { value: 'Yoga', label: 'Yoga' },
-    { value: 'Zumba', label: 'Zumba' },
-    { value: 'Pilates', label: 'Pilates' },
-    { value: 'CrossFit', label: 'CrossFit' },
-    { value: 'HIIT', label: 'HIIT' },
-]
-
-const genderOption = [
-    { label: 'Male', value: 'MALE' },
-    { label: 'Female', value: 'FEMALE' },
-]
-
 const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerData }) => {
     const [form] = Form.useForm();
     const router = useRouter()
     const params = useParams()
+    const token = useSelector((state: any) => state.user.loggedinUserData?.token);
 
     const [loading, setLoading] = useState(false);
     const [trainerData, setTrainerData] = useState<any>({});
     const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
     const currentGymBranchId = selectedBranch.id;
+    const [capturedImage, setCapturedImage] = useState<string | null>(null);
+
 
     const { branches } = useSelector((state: any) => state.branch);
 
@@ -67,36 +59,71 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
         fetchTrainerById();
     }, [])
 
+    const base64ToBlob = (base64Data: string, contentType = 'image/jpeg') => {
+        const byteCharacters = atob(base64Data.split(',')[1]);
+        const byteArrays = [];
+
+        for (let i = 0; i < byteCharacters.length; i += 512) {
+            const slice = byteCharacters.slice(i, i + 512);
+            const byteNumbers = new Array(slice.length);
+            for (let j = 0; j < slice.length; j++) {
+                byteNumbers[j] = slice.charCodeAt(j);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+
+        return new Blob(byteArrays, { type: contentType });
+    };
+
     const handleFinish = async (values: any) => {
         if (params.editTrainerId === 'add') {
-            const payload = {
-                userData: {
-                    fullName: values.fullName,
-                    email: values.email,
-                    role: 'TRAINER',
-                    phone: values.phone,
-                    birthDate: values.birthDate,
-                },
-                trainerData: {
-                    referenceMobileNo: values.referenceMobileNo,
-                    gender: values.gender || "MALE",
-                    specialization: values.specialization,
-                    workType: values.workType,
-                    joiningDate: values.joiningDate || new Date().toISOString(),
-                    experienceYears: Number(values.experienceYears),
-                    gymBranchId: values.gymBranchId,
-                },
-            };
+            const formData = new FormData();
+
+            // Append userData
+            formData.append("userData", JSON.stringify({
+                fullName: values.fullName,
+                email: values.email,
+                role: 'TRAINER',
+                phone: values.phone,
+                address: values.address,
+                birthDate: values.birthDate,
+            }));
+
+            // Append trainerData
+            formData.append("trainerData", JSON.stringify({
+                referenceMobileNo: values.referenceMobileNo,
+                gender: values.gender || "MALE",
+                specialization: values.specialization,
+                workType: values.workType,
+                joiningDate: values.joiningDate || new Date().toISOString(),
+                experienceYears: Number(values.experienceYears),
+                gymBranchId: values.gymBranchId,
+            }));
+
+            // Append image if available
+            if (capturedImage) {
+                const imageBlob = base64ToBlob(capturedImage);
+                formData.append("image", imageBlob, "trainer-photo.jpg");
+            }
 
             try {
-                const response = await postRequest("/api/trainers", payload);
-                message.success("New Branch creared successfully")
-                toast.success("Trainer created successfully")
-                router.push("/management/trainer/trainer")
-                console.log(response, "branch created");
+                const apiurl = process.env.NEXT_PUBLIC_API_URL;
+                const response = await fetch(`${apiurl}/api/trainers`, {
+                    method: "POST",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
+
+                toast.success("Trainer created successfully");
+                // Navigate to trainer listing
+                router.push("/management/trainer/trainer");
+                console.log(response, "Trainer created");
             } catch (error) {
-                console.error("Branch creation failed:", error);
-                toast.error("Failed to create trainer")
+                console.error("Trainer creation failed:", error);
+                toast.error("Failed to create trainer");
             }
 
         } else {
@@ -150,7 +177,24 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                     className='h-full flex flex-col justify-between gap-4'
                 >
                     {/* user data */}
-                    <div className='flex flex-col gap-4'>
+                    <div className='flex flex-col gap-4 h-[calc(100%-40px)]  overflow-y-scroll pr-2'>
+                        <div className="px-4 max-w-md mx-auto flex flex-col items-center">
+                            <h2 className="text-lg font-bold mb-3">Profile Image</h2>
+
+                            <WebcamCapture onCapture={setCapturedImage} />
+
+                            {capturedImage && (
+                                <div className="mt-2">
+                                    <p className="!mb-1 ">Captured Image:</p>
+                                    <img
+                                        src={capturedImage}
+                                        alt="Captured"
+                                        className="w-40 h-40 object-cover border rounded"
+                                    />
+                                </div>
+                            )}
+                        </div>
+
                         <FormInput
                             label='Trainer name'
                             name='fullName'
@@ -168,6 +212,14 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                                 name='phone'
                                 initialValue={trainerData && trainerData?.user?.phone}
                             />
+
+                            <div className='col-span-2'>
+                                <FormInput
+                                    label='Address'
+                                    name='address'
+                                    initialValue={trainerData && trainerData?.address}
+                                />
+                            </div>
 
                             <FormInput
                                 label='Reference Mobile No.'
@@ -235,13 +287,13 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                         <button
                             type='button'
                             onClick={() => handleCancel()}
-                            className=' w-[147px] h-8 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
                         >
                             Cancel
                         </button>
                         <button
                             type='submit'
-                            className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                         >
                             Add Trainer
                         </button>

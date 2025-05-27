@@ -29,6 +29,8 @@ const Trainer = () => {
     try {
       const data = await getRequest(`/api/trainers?gymBranchId=${currentGymBranchId}`);
       setTrainersData(data.data);
+      console.log('trainers', data.data);
+      
     } catch (error) {
       console.log('trainer data error', error);
       setTrainersData([]);
