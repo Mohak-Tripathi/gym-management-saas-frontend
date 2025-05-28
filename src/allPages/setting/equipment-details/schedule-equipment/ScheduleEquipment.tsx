@@ -58,6 +58,22 @@ const ScheduleEquipment = () => {
 
   const columns = [
     {
+      title: "",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
+      render: (_: any, record: any,) => {
+        return (
+          <Image
+            src={record?.imageUrl ? record?.imageUrl : `/images/iconly/light/equipment.svg`}
+            width={0}
+            height={0}
+            alt="equipment"
+            className="w-8 h-8 rounded-full object-cover"
+          />
+        )
+      }
+    },
+    {
       title: "Name",
       dataIndex: "name",
       key: "name",

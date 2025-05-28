@@ -80,7 +80,7 @@ const TrainerProfileSideBar = () => {
                   <div className={`w-full flex justify-between items-center ${params?.trainerId == trainer.id ? 'bg-black-primary' : ''}  rounded-2xl p-1`}>
                     <div className={`w-full flex gap-2 items-center`}>
                       <Image
-                        src={trainer?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+                        src={trainer?.imageUrl ? trainer?.imageUrl : trainer?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
                         height={0}
                         width={0}
                         alt={`profile`}

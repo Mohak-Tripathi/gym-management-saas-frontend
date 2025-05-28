@@ -36,6 +36,7 @@ const WebcamCapture = ({ onCapture }: { onCapture: (imgSrc: string) => void }) =
             ref={webcamRef}
             screenshotFormat="image/jpeg"
             videoConstraints={videoConstraints}
+            screenshotQuality={1}
             mirrored
             className="rounded shadow"
           />

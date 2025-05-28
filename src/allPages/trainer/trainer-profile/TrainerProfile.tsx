@@ -54,7 +54,7 @@ const TrainerProfile = () => {
     </main>
   ) : (
 
-    <main className={`h-[clac(100%-200px)] flex flex-col gap-4 flex-1 bg-white rounded-xl p-3 `}
+    <main className={`h-[clac(100%-200px)] flex flex-col gap-4 flex-1 bg-white rounded-xl p-3 `} 
       style={{
         boxShadow: '0px 4px 8px rgba(193, 224, 255, 0.25)'
       }}
@@ -62,7 +62,7 @@ const TrainerProfile = () => {
       <div className='w-full flex justify-between items-center gap-4'>
         <div className='flex flex-row items-center gap-1'>
           <Image
-            src={trainerData?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+            src={trainerData?.imageUrl ? trainerData?.imageUrl : trainerData?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             height={0}
             width={0}
             alt={`profile`}

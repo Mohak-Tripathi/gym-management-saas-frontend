@@ -93,7 +93,7 @@ const UserConfigId = () => {
       formData.append("role", values.role);
       formData.append("phone", values.phone);
       formData.append("gymBranchId", values.gymBranchId);
-      formData.append("birthDate", values.birthDate);
+      formData.append("birthDate", new Date(values.birthDate).toISOString());
       formData.append("address", values.address);
 
       // Append image if available
