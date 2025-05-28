@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Skeleton } from "antd";
+import { Skeleton, Upload } from "antd";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form } from "antd";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import FormDate from "@/components/formComponents/FormDate";
 import FormSelect from "@/components/formComponents/FormSelect";
 import dayjs from 'dayjs';
+import { UploadOutlined } from '@ant-design/icons';
 
 const EquipmentId = () => {
   const [form] = Form.useForm();
@@ -20,6 +21,7 @@ const EquipmentId = () => {
   const [loading, setLoading] = useState(false);
   const [equipmentData, setEquipmentData] = useState<any>({});
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const token = useSelector((state: any) => state.user.loggedinUserData?.token);
 
   const { branches } = useSelector((state: any) => state.branch);
 
@@ -81,20 +83,51 @@ const EquipmentId = () => {
         console.error("Equipment update failed:", error);
       }
     } else {
-      const payload = {
-        name: values.name,
-        serialNumber: values.serialNumber,
-        purchaseDate: values.purchaseDate,
-        gymBranchId: values.gymBranchId,
-        status: values.status,
+      // const payload = {
+      //   name: values.name,
+      //   serialNumber: values.serialNumber,
+      //   purchaseDate: values.purchaseDate,
+      //   gymBranchId: values.gymBranchId,
+      //   status: values.status,
+      // }
+      // try {
+      //   const response = await postRequest("/api/gym-equipments", payload);
+      //   toast.success("Equipment created successfully")
+      //   router.push("/management/settings/equipment-details/equipments")
+      //   console.log(response, "equipment created");
+      // } catch (error) {
+      //   toast.error("Equipment creation failed")
+      //   console.error("Equipment creation failed:", error);
+      // }
+      const formData = new FormData();
+
+      // Append form fields
+      formData.append("name", values.name);
+      formData.append("serialNumber", values.serialNumber);
+      formData.append("purchaseDate", values.purchaseDate);
+      formData.append("gymBranchId", values.gymBranchId);
+      formData.append("status", values.status);
+
+      // Append image file (if uploaded)
+      const file = values.equipmentImage?.[0]?.originFileObj;
+      if (file) {
+        formData.append("image", file);
       }
+
       try {
-        const response = await postRequest("/api/gym-equipments", payload);
-        toast.success("Equipment created successfully")
-        router.push("/management/settings/equipment-details/equipments")
+        const apiurl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiurl}/api/gym-equipments`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData, // no need to set Content-Type manually
+        });
+        toast.success("Equipment created successfully");
+        router.push("/management/settings/equipment-details/equipments");
         console.log(response, "equipment created");
       } catch (error) {
-        toast.error("Equipment creation failed")
+        toast.error("Equipment creation failed");
         console.error("Equipment creation failed:", error);
       }
     }
@@ -140,16 +173,27 @@ const EquipmentId = () => {
           </div>
 
           <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
-            {/* <div className="flex flex-col gap-2">
-              <h2 className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">
-                Branch
-              </h2>
-              <p className="text-[14px] font-normal text-black-60 leading-[100%] !m-0">
-                You can add multiple branches as your need and assigned the
-                person
-              </p>
-            </div> */}
             <div className="grid grid-cols-2 gap-6">
+              {/* ✅ Image Upload Input */}
+              <Form.Item
+                label="Equipment Image"
+                name="equipmentImage"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => Array.isArray(e) ? e : e?.fileList}
+                className="col-span-2"
+              >
+                <Upload
+                  listType="picture-card"
+                  beforeUpload={() => false} // prevent auto-upload
+                  maxCount={1}
+                >
+                  <div>
+                    <UploadOutlined />
+                    <div>Upload</div>
+                  </div>
+                </Upload>
+              </Form.Item>
+
               <FormInput
                 label="Equipment Name"
                 name="name"

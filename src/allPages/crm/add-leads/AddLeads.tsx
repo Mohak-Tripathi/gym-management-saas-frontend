@@ -249,13 +249,13 @@ const AddLeads: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerDat
                         <button
                             type='button'
                             onClick={() => handleCancel()}
-                            className=' w-[147px] h-8 !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] !bg-blue-secondary !text-black-primary rounded-lg px-4 py-2 cursor-pointer'
                         >
                             Cancel
                         </button>
                         <button
                             type='submit'
-                            className=' w-[147px] h-8 !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
+                            className=' w-[147px] !bg-black-primary !text-white rounded-lg px-4 py-2 cursor-pointer'
                         >
                             {params?.editLeadId === 'add' || params.editDealId === 'add' ? 'Add New Lead' : 'Update Lead'}
                         </button>
