@@ -43,7 +43,7 @@ const EquipmentId = () => {
 
   useEffect(() => {
 
-    if (params.equipmentId === "new") return; // Skip API call if creating new branch
+    if (params.equipmentId === "add") return; // Skip API call if creating new branch
 
     const fetchEquipmentById = async () => {
       setLoading(true);
@@ -104,7 +104,7 @@ const EquipmentId = () => {
       // Append form fields
       formData.append("name", values.name);
       formData.append("serialNumber", values.serialNumber);
-      formData.append("purchaseDate", values.purchaseDate);
+      formData.append("purchaseDate", new Date(values.purchaseDate).toISOString());
       formData.append("gymBranchId", values.gymBranchId);
       formData.append("status", values.status);
 

@@ -124,7 +124,7 @@ const Trainer = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+            src={record?.imageUrl ? record?.imageUrl : record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
             width={0}
             height={0}
             alt="Profile"
