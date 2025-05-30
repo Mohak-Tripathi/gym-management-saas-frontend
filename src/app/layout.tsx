@@ -12,9 +12,11 @@ const roboto = Roboto({
 
 export const metadata: Metadata = {
   title: "Liftup",
-  description: "Liftup is an all-in-one gym management software that helps fitness centers streamline operations, manage memberships, track client progress, and deliver personalized workout plans. With powerful features like class scheduling, member management, billing automation, and progress tracking, Liftup empowers gym owners and trainers to provide an exceptional fitness experience to their clients."
+  description: "Liftup is an all-in-one gym management software that helps fitness centers streamline operations, manage memberships, track client progress, and deliver personalized workout plans. With powerful features like class scheduling, member management, billing automation, and progress tracking, Liftup empowers gym owners and trainers to provide an exceptional fitness experience to their clients.",
+  icons: {
+    icon: "/liftup.ico", 
+  },
 };
-
 
 export default function RootLayout({
   children,

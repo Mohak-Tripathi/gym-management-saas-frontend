@@ -1,56 +1,81 @@
-'use client'; // needed only if using Next.js App Router
+'use client';
 
 import React, { useRef, useState } from 'react';
 import Webcam from 'react-webcam';
+import { Modal, Button } from 'antd';
+import Image from 'next/image';
 
 const videoConstraints = {
-  width: 300,
-  height: 200,
+  width: 1280,
+  height: 720,
   facingMode: 'user',
 };
 
 const WebcamCapture = ({ onCapture }: { onCapture: (imgSrc: string) => void }) => {
   const webcamRef = useRef<Webcam>(null);
-  const [showCamera, setShowCamera] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const capture = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
       onCapture(imageSrc);
-      setShowCamera(false);
+      closeModal();
     }
   };
 
   return (
-    <div>
-      {!showCamera && (
-        <button onClick={() => setShowCamera(true)} className="bg-black-primary !text-white px-4 py-1 rounded-lg">
-          Open Webcam
-        </button>
-      )}
+    <>
+      {/* <Button type="primary" onClick={openModal} className='!bg-black-primary'>
+        Open Webcam
+      </Button> */}
 
-      {showCamera && (
-        <div className="mt-4">
+      <div
+        onClick={openModal}
+        className='h-[32px] w-[120px] rounded-[66px] border-[1px] border-solid border-black-10 py-1.5 pl-3 pr-2 flex items-center justify-center gap-2.5 cursor-pointer'>
+        <Image
+          src={`/images/iconly/light/webcam.svg`}
+          height={0}
+          width={0}
+          alt='webcam'
+          className='h-[20px] w-[20px]'
+        />
+        <p className='font-roboto font-semibold text-[12px] leading-[100%] tracking-[0px] align-middl text-black-primary !m-0'>Web Cam</p>
+      </div>
+
+      <Modal
+        title="Take a Picture"
+        open={isModalOpen}
+        onCancel={closeModal}
+        footer={[
+          <Button key="cancel" onClick={closeModal}>
+            Cancel
+          </Button>,
+          <Button key="capture" type="primary" onClick={capture} className='!bg-black-primary'>
+            Capture
+          </Button>,
+        ]}
+        width={1280}
+        centered
+      >
+        <div className="flex justify-center">
           <Webcam
             audio={false}
             ref={webcamRef}
-            screenshotFormat="image/jpeg"
-            videoConstraints={videoConstraints}
+            screenshotFormat="image/png" // or "image/jpeg"
             screenshotQuality={1}
+            videoConstraints={videoConstraints}
             mirrored
             className="rounded shadow"
+            width={1280}
+            height={720}
           />
-          <div className="mt-2 flex gap-3">
-            <button onClick={() => setShowCamera(false)} className="!bg-blue-secondary !text-black-primary rounded-lg px-6 py-1.5">
-              Cancel
-            </button>
-            <button onClick={capture} className="!bg-black-primary !text-white rounded-lg px-6 py-1.5 cursor-pointer">
-              Capture
-            </button>
-          </div>
+
         </div>
-      )}
-    </div>
+      </Modal>
+    </>
   );
 };
 

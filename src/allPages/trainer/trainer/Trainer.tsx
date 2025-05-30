@@ -125,8 +125,8 @@ const Trainer = () => {
           {/* Profile Image */}
           <Image
             src={record?.imageUrl ? record?.imageUrl : record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
-            width={0}
-            height={0}
+            width={24}
+            height={24}
             alt="Profile"
             className="w-6 h-6 rounded-full object-cover"
           />

@@ -121,17 +121,46 @@ const UserConfigId = () => {
       }
     }
     else {
-      const payload = {
-        fullName: values.fullName || userData && userData?.fullName,
-        email: values.email || userData && userData?.email,
-        role: values.role || userData && userData?.role,
-        phone: values.phone || userData && userData?.phone,
-        gymBranchId: values.gymBranchId || userData && userData?.gymBranchId,
-        birthDate: values.birthDate || userData && userData?.birthDate,
-      };
+      // const payload = {
+      //   fullName: values.fullName || userData && userData?.fullName,
+      //   email: values.email || userData && userData?.email,
+      //   role: values.role || userData && userData?.role,
+      //   phone: values.phone || userData && userData?.phone,
+      //   gymBranchId: values.gymBranchId || userData && userData?.gymBranchId,
+      //   birthDate: values.birthDate || userData && userData?.birthDate,
+      // };
+
+      const formData = new FormData();
+
+      // Append fields directly
+      formData.append("fullName", values.fullName || userData && userData?.fullName);
+      formData.append("email", values.email || userData && userData?.email);
+      formData.append("role", values.role || userData && userData?.role);
+      formData.append("phone", values.phone || userData && userData?.phone);
+      formData.append("gymBranchId", values.gymBranchId);
+      formData.append("birthDate", values.birthDate || userData && userData?.birthDate);
+      formData.append("address", values.address || userData && userData?.address);
+
+      if (capturedImage) {
+        const imageBlob = base64ToBlob(capturedImage);
+        formData.append("image", imageBlob, "photo.jpg");
+      }
+
+      if (!capturedImage) {
+        formData.append("image", userData?.imageUrl);
+      }
+
 
       try {
-        const response = await putRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, payload);
+        // const response = await putRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, payload);
+        const apiurl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiurl}/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
         toast.success("User data updated successfully")
         // message.success("User data updated successfully")
         router.push("/management/settings/account-details/user-configuration")
@@ -201,6 +230,16 @@ const UserConfigId = () => {
 
                   <WebcamCapture onCapture={setCapturedImage} />
                 </div>
+
+                {!capturedImage && userData?.imageUrl && (
+                  <>
+                    <img
+                      src={userData?.imageUrl}
+                      alt="Captured"
+                      className=" mt-2 w-40 h-40 object-cover border rounded"
+                    />
+                  </>
+                )}
 
                 {capturedImage && (
                   <div className="mt-2">

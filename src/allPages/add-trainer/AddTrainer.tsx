@@ -127,32 +127,61 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
             }
 
         } else {
-            const payload = {
-                userData: {
-                    fullName: values.fullName || trainerData && trainerData?.user?.fullName,
-                    email: values.email || trainerData && trainerData?.user?.email,
-                    role: 'TRAINER',
-                    phone: values.phone || trainerData && trainerData?.user?.phone,
-                    birthDate: values.birthDate || trainerData && trainerData?.user?.birthDate,
-                },
-                trainerData: {
-                    referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
-                    specialization: values.specialization || trainerData && trainerData?.specialization,
-                    experienceYears: Number(values.experienceYears) || Number(trainerData && trainerData?.experienceYears),
-                    workType: values.workType || trainerData && trainerData?.workType,
-                    gender: values.gender || trainerData && trainerData?.gender || "MALE",
-                    joiningDate: values.joiningDate || trainerData?.joiningDate || new Date().toISOString(),
-                    gymBranchId: values.gymBranchId,
-                }
-            };
+            const formData = new FormData();
+            formData.append("userData", JSON.stringify({
+                fullName: values.fullName || trainerData && trainerData?.user?.fullName,
+                email: values.email || trainerData && trainerData?.user?.email,
+                role: 'TRAINER',
+                phone: values.phone || trainerData && trainerData?.user?.phone,
+                birthDate: values.birthDate || trainerData && trainerData?.user?.birthDate,
+            }))
+
+            formData.append("trainerData", JSON.stringify({
+                referenceMobileNo: values.referenceMobileNo || trainerData && trainerData?.referenceMobileNo,
+                specialization: values.specialization || trainerData && trainerData?.specialization,
+                experienceYears: Number(values.experienceYears) || Number(trainerData && trainerData?.experienceYears),
+                workType: values.workType || trainerData && trainerData?.workType,
+                gender: values.gender || trainerData && trainerData?.gender || "MALE",
+                joiningDate: values.joiningDate || trainerData?.joiningDate || new Date().toISOString(),
+                gymBranchId: values.gymBranchId,
+            }))
+
+            // Convert and append image (if present)
+            if (capturedImage) {
+                const imageBlob = base64ToBlob(capturedImage);
+                formData.append("image", imageBlob, "photo.jpg");
+            }
+
+            if (!capturedImage) {
+                formData.append("image", trainerData?.imageUrl);
+            }
+
+
+            // try {
+            //     const response = await putRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`, payload);
+            //     message.success("New Branch creared successfully")
+            //     router.push("/management/trainer/trainer")
+            //     console.log(response, "branch created");
+            // } catch (error) {
+            //     console.error("Branch creation failed:", error);
+            // }
 
             try {
-                const response = await putRequest(`/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`, payload);
-                message.success("New Branch creared successfully")
-                router.push("/management/trainer/trainer")
-                console.log(response, "branch created");
+                const apiurl = process.env.NEXT_PUBLIC_API_URL;
+                const response = await fetch(`${apiurl}/api/trainers/${params.editTrainerId}?gymBranchId=${currentGymBranchId}`, {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
+
+                toast.success("Trainer updated successfully");
+                router.push("/management/members/trainers/");
+                console.log(response, "trainer updated");
             } catch (error) {
-                console.error("Branch creation failed:", error);
+                console.error("Trainer update failed:", error);
+                toast.error("Failed to update trainer");
             }
         }
 
@@ -182,6 +211,17 @@ const AddTrainer: React.FC<AddTrainerProps> = ({ onClose, open, selectedTrainerD
                             <h2 className="text-lg font-bold mb-3">Profile Image</h2>
 
                             <WebcamCapture onCapture={setCapturedImage} />
+
+                            {!capturedImage && trainerData?.imageUrl && (
+                                <>
+                                    <img
+                                        src={trainerData?.imageUrl}
+                                        alt="Captured"
+                                        className=" mt-2 w-40 h-40 object-cover border rounded"
+                                    />
+                                </>
+                            )}
+
 
                             {capturedImage && (
                                 <div className="mt-2">

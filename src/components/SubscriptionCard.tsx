@@ -64,7 +64,7 @@ const SubscriptionCard = ({
 
       <div className="flex justify-between items-center">
         <p className="text-black-primary !font-semibold text-[14px] leading-[100%] !m-0">
-          {classesCount} classess per month
+          {classesCount} {classesCount == '1' ? 'month' : 'months'} 
         </p>
         <div className="flex gap-4 items-center">
           <Link
