@@ -41,6 +41,21 @@ const EquipmentId = () => {
   }
   ]
 
+  const [image, setImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
 
     if (params.equipmentId === "add") return; // Skip API call if creating new branch
@@ -51,6 +66,7 @@ const EquipmentId = () => {
         const data = await getRequest(`/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`);
         setEquipmentData(data);
         console.log('equipmentData', data);
+        setPreviewUrl(data?.imageUrl)
 
       } catch (error) {
         // Optionally handle error
@@ -67,15 +83,38 @@ const EquipmentId = () => {
   const handleFinish = async (values: any) => {
     // return;
     if (params.equipmentId != 'add') {
-      const payload = {
-        name: values.name || equipmentData.name,
-        serialNumber: values.serialNumber || equipmentData.serialNumber,
-        purchaseDate: values.purchaseDate || equipmentData.purchaseDate,
-        gymBranchId: values.gymBranchId || equipmentData.gymBranchId,
-        status: values.status || equipmentData.status,
+      // const payload = {
+      //   name: values.name || equipmentData.name,
+      //   serialNumber: values.serialNumber || equipmentData.serialNumber,
+      //   purchaseDate: values.purchaseDate || equipmentData.purchaseDate,
+      //   gymBranchId: values.gymBranchId || equipmentData.gymBranchId,
+      //   status: values.status || equipmentData.status,
+      // }
+
+      const formData = new FormData();
+
+      // Append form fields
+      formData.append("name", values.name || equipmentData.name);
+      formData.append("serialNumber", values.serialNumber || equipmentData.serialNumber);
+      formData.append("purchaseDate", values.purchaseDate || equipmentData.purchaseDate);
+      formData.append("gymBranchId", values.gymBranchId || equipmentData.gymBranchId );
+      formData.append("status", values.status || equipmentData.status);
+
+      // Append image file (if uploaded)
+      if (image) {
+        formData.append("image", image);
       }
+
       try {
-        const response = await putRequest(`/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`, payload);
+        // const response = await putRequest(`/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`, payload);
+        const apiurl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiurl}/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
         toast.success("Equipment data updated successfully")
         router.push("/management/settings/equipment-details/equipments")
       } catch (error) {
@@ -109,9 +148,8 @@ const EquipmentId = () => {
       formData.append("status", values.status);
 
       // Append image file (if uploaded)
-      const file = values.equipmentImage?.[0]?.originFileObj;
-      if (file) {
-        formData.append("image", file);
+      if (image) {
+        formData.append("image", image);
       }
 
       try {
@@ -175,11 +213,23 @@ const EquipmentId = () => {
           <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
             <div className="grid grid-cols-2 gap-6">
               {/* ✅ Image Upload Input */}
-              <Form.Item
+              {/* <Form.Item
                 label="Equipment Image"
                 name="equipmentImage"
                 valuePropName="fileList"
                 getValueFromEvent={(e) => Array.isArray(e) ? e : e?.fileList}
+                initialValue={
+                  equipmentData?.imageUrl
+                    ? [
+                      {
+                        uid: '-1',
+                        name: 'equipment.jpg', // or extract from URL
+                        status: 'done',
+                        url: equipmentData.imageUrl,
+                      },
+                    ]
+                    : []
+                }
                 className="col-span-2"
               >
                 <Upload
@@ -192,7 +242,28 @@ const EquipmentId = () => {
                     <div>Upload</div>
                   </div>
                 </Upload>
-              </Form.Item>
+              </Form.Item> */}
+
+              <div>
+                <label htmlFor="upload">Upload Image:</label><br />
+                <input
+                  type="file"
+                  id="upload"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+
+                {previewUrl && (
+                  <div style={{ marginTop: '10px' }}>
+                    <strong>Preview:</strong><br />
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      style={{ width: '200px', height: '100px', borderRadius: '8px', border: '1px solid #ccc', objectFit: 'contain' }}
+                    />
+                  </div>
+                )}
+              </div>
 
               <FormInput
                 label="Equipment Name"

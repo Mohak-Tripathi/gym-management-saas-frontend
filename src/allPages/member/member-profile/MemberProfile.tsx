@@ -57,8 +57,8 @@ const MemberProfile = () => {
         <div className='flex flex-row items-center gap-3'>
           <Image
             src={memberData?.imageUrl ? memberData?.imageUrl : memberData?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
-            height={0}
-            width={0}
+            height={80}
+            width={80}
             alt={`profile`}
             className='w-20 h-20 rounded-lg'
           />

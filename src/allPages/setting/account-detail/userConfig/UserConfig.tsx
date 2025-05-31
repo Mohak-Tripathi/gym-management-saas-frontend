@@ -88,8 +88,8 @@ const UserConfig = () => {
         return (
           <Image
             src={record?.imageUrl ? record?.imageUrl : record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
-            width={0}
-            height={0}
+            width={32}
+            height={32}
             alt="Profile"
             className="w-8 h-8 rounded-full object-cover"
           />

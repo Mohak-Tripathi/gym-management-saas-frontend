@@ -49,6 +49,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                 value: plan.id,
                 label: plan.name,
                 price: plan.actualPrice,
+                months: plan?.baseDuration
             }));
 
             setSubscriptionDetailsData(filteredData);
@@ -70,6 +71,8 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
         if (params.editMemberId === "add") return;
 
         const fetchMemberDataById = async () => {
+            console.log('memberDataHitted');
+
             setLoading(true);
             try {
                 const data = await getRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`);
@@ -86,7 +89,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
     }, [])
 
 
-    
+
 
     // Utility to calculate age from date of birth
     const calculateAge = (birthDate: string | Date): number => {
@@ -119,51 +122,117 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
         return new Blob(byteArrays, { type: contentType });
     };
 
-
-
     const handleFinish = async (values: any) => {
         if (params.editMemberId != 'add') {
-            const birthDate = values.birthDate || memberData?.user?.birthDate;
+            // const birthDate = values.birthDate || memberData?.user?.birthDate;
 
-            const payload = {
-                "userData": {
-                    "email": values.email || memberData?.user?.email,
-                    "fullName": values.fullName || memberData?.user?.fullName,
-                    "role": "TRAINEE",
-                    "phone": values.phone || memberData?.user?.phone,
-                    birthDate,
-                },
-                "traineeData": {
-                    "referenceMobileNo": values.referenceMobileNo || memberData?.referenceMobileNo,
-                    "gender": values.gender || memberData?.gender,
-                    "image": values.image || memberData?.image,
-                    "age": birthDate ? calculateAge(birthDate) : memberData?.age,
-                    "address": values.address || memberData?.address,
-                    "personalizedGoal": values.personalizedGoal || memberData?.personalizedGoal,
-                    "healthIssues": values.healthIssues || memberData?.healthIssues,
-                    "gymBranchId": values.gymBranchId || memberData?.gymBranchId,
-                },
-                "traineeMembershipData": {
-                    "membershipId": values.membershipId || memberData?.traineeMemberships[0]?.membershipId,
-                    "discountedPrice": discountedPrice,
-                    "discountPercentage": Number(values.discountPercentage) || memberData?.traineeMemberships[0]?.discountPercentage,
-                    "reasonOfDiscount": values.reasonOfDiscount || memberData?.traineeMemberships[0]?.reasonOfDiscount,
-                    "extraMonths": Number(values.extraMonths) || memberData?.traineeMemberships[0]?.extraMonths,
-                    "startDate": values.startDate || memberData?.traineeMemberships[0]?.startDate,
-                    "endDate": values.endDate || memberData?.traineeMemberships[0]?.endDate,
-                }
+            // const payload = {
+            //     "userData": {
+            //         "email": values.email || memberData?.user?.email,
+            //         "fullName": values.fullName || memberData?.user?.fullName,
+            //         "role": "TRAINEE",
+            //         "phone": values.phone || memberData?.user?.phone,
+            //         birthDate,
+            //     },
+            //     "traineeData": {
+            //         "referenceMobileNo": values.referenceMobileNo || memberData?.referenceMobileNo,
+            //         "gender": values.gender || memberData?.gender,
+            //         "image": values.image || memberData?.image,
+            //         "age": birthDate ? calculateAge(birthDate) : memberData?.age,
+            //         "address": values.address || memberData?.address,
+            //         "personalizedGoal": values.personalizedGoal || memberData?.personalizedGoal,
+            //         "healthIssues": values.healthIssues || memberData?.healthIssues,
+            //         "gymBranchId": values.gymBranchId || memberData?.gymBranchId,
+            //     },
+            //     "traineeMembershipData": {
+            //         "membershipId": values.membershipId || memberData?.traineeMemberships[0]?.membershipId,
+            //         "discountedPrice": discountedPrice,
+            //         "discountPercentage": Number(values.discountPercentage) || memberData?.traineeMemberships[0]?.discountPercentage,
+            //         "reasonOfDiscount": values.reasonOfDiscount || memberData?.traineeMemberships[0]?.reasonOfDiscount,
+            //         "extraMonths": Number(values.extraMonths) || memberData?.traineeMemberships[0]?.extraMonths,
+            //         "startDate": values.startDate || memberData?.traineeMemberships[0]?.startDate,
+            //         "endDate": values.endDate || memberData?.traineeMemberships[0]?.endDate,
+            //     }
+            // }
+
+            // try {
+            //     const response = await putRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`, payload);
+
+            //     toast.success("Member data update successfully")
+            //     router.push("/management/members/members/")
+            //     console.log(response, "members updated");
+            // } catch (error) {
+            //     console.error("Branch creation failed:", error);
+            //     toast.error("Failed to update member")
+            // }
+            const birthDate = values.birthDate || memberData?.user?.birthDate;
+            const formData = new FormData();
+
+            // Append userData
+            formData.append("userData", JSON.stringify({
+                email: values.email || memberData?.user?.email,
+                fullName: values.fullName || memberData?.user?.fullName,
+                role: "TRAINEE",
+                phone: values.phone || memberData?.user?.phone,
+                birthDate,
+            }));
+
+            // Append traineeData
+            formData.append("traineeData", JSON.stringify({
+                referenceMobileNo: values.referenceMobileNo || memberData?.referenceMobileNo,
+                gender: values.gender || memberData?.gender,
+                height: Number(values.height) || memberData?.height,
+                weight: Number(values.weight) || memberData?.weight,
+                bmi: Number(values.bmi) || memberData?.bmi,
+                bodyFatPercentage: Number(values.bodyFatPercentage) || memberData?.bodyFatPercentage,
+                age: birthDate ? calculateAge(birthDate) : memberData?.age,
+                address: values.address || memberData?.address,
+                personalizedGoal: values.personalizedGoal || memberData?.personalizedGoal,
+                healthIssues: values.healthIssues || memberData?.healthIssues,
+                gymBranchId: values.gymBranchId || memberData?.gymBranchId,
+            }));
+
+            // Append traineeMembershipData
+            formData.append("traineeMembershipData", JSON.stringify({
+                membershipId: values.membershipId || memberData?.traineeMemberships[0]?.membershipId,
+                discountedPrice: discountedPrice,
+                discountPercentage: Number(values.discountPercentage) || memberData?.traineeMemberships[0]?.discountPercentage,
+                reasonOfDiscount: values.reasonOfDiscount || memberData?.traineeMemberships[0]?.reasonOfDiscount,
+                extraMonths: Number(values.extraMonths) || memberData?.traineeMemberships[0]?.extraMonths,
+                startDate: values.startDate || memberData?.traineeMemberships[0]?.startDate,
+                endDate: values.endDate || memberData?.traineeMemberships[0]?.endDate,
+            }));
+
+            // Convert and append image (if present)
+            if (capturedImage) {
+                const imageBlob = base64ToBlob(capturedImage);
+                formData.append("image", imageBlob, "photo.jpg");
+            }
+
+            if(!capturedImage) {
+                formData.append("image", memberData?.imageUrl);
             }
 
             try {
-                const response = await putRequest(`/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`, payload);
+                const apiurl = process.env.NEXT_PUBLIC_API_URL;
+                const response = await fetch(`${apiurl}/api/trainees/${params.editMemberId}?gymBranchId=${currentGymBranchId}`, {
+                    method: "PUT",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: formData,
+                });
 
-                toast.success("Member data update successfully")
-                router.push("/management/members/members/")
-                console.log(response, "members updated");
+                if (!response.ok) throw new Error("Update failed");
+
+                toast.success("Member data updated successfully");
+                router.push("/management/members/members/");
+                console.log(await response.json(), "member updated");
             } catch (error) {
-                console.error("Branch creation failed:", error);
-                toast.error("Failed to update member")
+                console.error("Member update failed:", error);
+                toast.error("Failed to update member");
             }
+
         } else {
             const birthDate = values.birthDate
             const formData = new FormData();
@@ -183,7 +252,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                 height: Number(values.height),
                 weight: Number(values.weight),
                 bmi: Number(values.bmi),
-                bodyFatPercentage: Number(values.bodyFatPercentage), 
+                bodyFatPercentage: Number(values.bodyFatPercentage),
                 age: birthDate ? calculateAge(birthDate) : undefined,
                 personalizedGoal: values.personalizedGoal,
                 healthIssues: values.healthIssues || [],
@@ -217,7 +286,7 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                     body: formData,
                 });
                 toast.success("New Member added successfully");
-                // router.push("/management/members/members/");
+                router.push("/management/members/members/");
                 console.log(response, "new member created");
             } catch (error) {
                 console.error("New Member creation failed:", error);
@@ -277,6 +346,16 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
 
                         <WebcamCapture onCapture={setCapturedImage} />
 
+                        {!capturedImage && memberData?.imageUrl && (
+                            <>
+                                <img
+                                    src={memberData?.imageUrl}
+                                    alt="Captured"
+                                    className=" mt-2 w-40 h-40 object-cover border rounded"
+                                />
+                            </>
+                        )}
+
                         {capturedImage && (
                             <div className="mt-2">
                                 <p className="!mb-1 ">Captured Image:</p>
@@ -308,27 +387,27 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                         />
 
                         <FormInput
-                            label='Height'
+                            label='Height (cm)'
                             name='height'
-                        // initialValue={memberData && memberData?.referenceMobileNo}
+                            initialValue={memberData && memberData?.height}
                         />
 
                         <FormInput
-                            label='Weight'
+                            label='Weight (kg)'
                             name='weight'
-                        // initialValue={memberData && memberData?.referenceMobileNo}
+                            initialValue={memberData && memberData?.weight}
                         />
 
                         <FormInput
                             label='BMI'
                             name='bmi'
-                        // initialValue={memberData && memberData?.referenceMobileNo}
+                            initialValue={memberData && memberData?.bmi}
                         />
 
                         <FormInput
                             label='Body Fat Percentage'
                             name='bodyFatPercentage'
-                        // initialValue={memberData && memberData?.referenceMobileNo}
+                            initialValue={memberData && memberData?.bodyFatPercentage}
                         />
                         <div className='col-span-2'>
                             <FormInput
@@ -429,8 +508,8 @@ const AddMember: React.FC<AddMemberProps> = ({ onClose }) => {
                             initialValue={memberData && memberData?.personalizedGoal}
                         />
 
-                        <FormMultiselect
-                            options={healthIssues}
+                        <FormInput
+                            // options={healthIssues}
                             label='Health Issues'
                             name='healthIssues'
                             initialValue={memberData && memberData?.healthIssues}
