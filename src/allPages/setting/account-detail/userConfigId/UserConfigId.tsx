@@ -12,6 +12,7 @@ import { getRequest, postRequest, putRequest } from "@/lib/services/request";
 import { toast } from "sonner";
 import FormDate from "@/components/formComponents/FormDate";
 import dayjs from 'dayjs';
+import WebcamCapture from "@/components/WebcamCapture";
 
 const UserConfigId = () => {
   const { branches } = useSelector((state: any) => state.branch);
@@ -19,11 +20,13 @@ const UserConfigId = () => {
   const [form] = Form.useForm();
   const router = useRouter()
   const params = useParams()
+  const token = useSelector((state: any) => state.user.loggedinUserData?.token);
 
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState<any>({});
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
   const currentGymBranchId = selectedBranch.id;
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
   const branchOptions = branches?.map((branch: any) => ({
     value: branch.id,
@@ -63,40 +66,101 @@ const UserConfigId = () => {
     fetchUserById();
   }, [currentGymBranchId, params.userConfigId]);
 
+  const base64ToBlob = (base64Data: string, contentType = 'image/jpeg') => {
+    const byteCharacters = atob(base64Data.split(',')[1]);
+    const byteArrays = [];
+
+    for (let i = 0; i < byteCharacters.length; i += 512) {
+      const slice = byteCharacters.slice(i, i + 512);
+      const byteNumbers = new Array(slice.length);
+      for (let j = 0; j < slice.length; j++) {
+        byteNumbers[j] = slice.charCodeAt(j);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    return new Blob(byteArrays, { type: contentType });
+  };
+
   const handleFinish = async (values: any) => {
     if (params.userConfigId === 'add') {
-      const payload = {
-        fullName: values.fullName,
-        email: values.email,
-        // password: values.password,
-        role: values.role,
-        phone: values.phone,
-        gymBranchId: values.gymBranchId,
-        birthDate: values.birthDate,
-      };
+      const formData = new FormData();
+
+      // Append fields directly
+      formData.append("fullName", values.fullName);
+      formData.append("email", values.email);
+      formData.append("role", values.role);
+      formData.append("phone", values.phone);
+      formData.append("gymBranchId", values.gymBranchId);
+      formData.append("birthDate", new Date(values.birthDate).toISOString());
+      formData.append("address", values.address);
+
+      // Append image if available
+      if (capturedImage) {
+        const imageBlob = base64ToBlob(capturedImage);
+        formData.append("image", imageBlob, "user-photo.jpg");
+      }
 
       try {
-        const response = await postRequest("/api/auth", payload);
-        toast.success("user created successfully")
-        router.push("/management/settings/account-details/user-configuration")
-        console.log(response, "user created");
+        const apiurl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiurl}/api/auth`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        toast.success("User created successfully");
+        router.push("/management/settings/account-details/user-configuration");
+        console.log(response, "User created");
       } catch (error) {
-        toast.error("user creation failed")
-        console.error("user creation failed", error);
+        toast.error("User creation failed");
+        console.error("User creation failed:", error);
       }
     }
     else {
-      const payload = {
-        fullName: values.fullName || userData && userData?.fullName,
-        email: values.email || userData && userData?.email,
-        role: values.role || userData && userData?.role,
-        phone: values.phone || userData && userData?.phone,
-        gymBranchId: values.gymBranchId || userData && userData?.gymBranchId,
-        birthDate: values.birthDate || userData && userData?.birthDate,
-      };
+      // const payload = {
+      //   fullName: values.fullName || userData && userData?.fullName,
+      //   email: values.email || userData && userData?.email,
+      //   role: values.role || userData && userData?.role,
+      //   phone: values.phone || userData && userData?.phone,
+      //   gymBranchId: values.gymBranchId || userData && userData?.gymBranchId,
+      //   birthDate: values.birthDate || userData && userData?.birthDate,
+      // };
+
+      const formData = new FormData();
+
+      // Append fields directly
+      formData.append("fullName", values.fullName || userData && userData?.fullName);
+      formData.append("email", values.email || userData && userData?.email);
+      formData.append("role", values.role || userData && userData?.role);
+      formData.append("phone", values.phone || userData && userData?.phone);
+      formData.append("gymBranchId", values.gymBranchId);
+      formData.append("birthDate", values.birthDate || userData && userData?.birthDate);
+      formData.append("address", values.address || userData && userData?.address);
+
+      if (capturedImage) {
+        const imageBlob = base64ToBlob(capturedImage);
+        formData.append("image", imageBlob, "photo.jpg");
+      }
+
+      if (!capturedImage) {
+        formData.append("image", userData?.imageUrl);
+      }
+
 
       try {
-        const response = await putRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, payload);
+        // const response = await putRequest(`/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, payload);
+        const apiurl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiurl}/api/auth/${params.userConfigId}?gymBranchId=${currentGymBranchId}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
         toast.success("User data updated successfully")
         // message.success("User data updated successfully")
         router.push("/management/settings/account-details/user-configuration")
@@ -159,17 +223,56 @@ const UserConfigId = () => {
               </p>
             </div>
             <div className="grid grid-cols-2 gap-6">
-              <FormInput
-                label="User Name"
-                name="fullName"
-                initialValue={userData && userData?.fullName}
-              />
 
-              <FormInput
-                label="Email"
-                name="email"
-                initialValue={userData && userData?.email}
-              />
+              <div className="px-4 max-w-md mx-auto flex gap-4 items-center">
+                <div>
+                  <h2 className="text-lg font-bold mb-3">Profile Image</h2>
+
+                  <WebcamCapture onCapture={setCapturedImage} />
+                </div>
+
+                {!capturedImage && userData?.imageUrl && (
+                  <>
+                    <img
+                      src={userData?.imageUrl}
+                      alt="Captured"
+                      className=" mt-2 w-40 h-40 object-cover border rounded"
+                    />
+                  </>
+                )}
+
+                {capturedImage && (
+                  <div className="mt-2">
+                    <p className="!mb-1 ">Captured Image:</p>
+                    <img
+                      src={capturedImage}
+                      alt="Captured"
+                      className="w-40 h-40 object-cover border rounded"
+                    />
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-6">
+                <FormInput
+                  label="User Name"
+                  name="fullName"
+                  initialValue={userData && userData?.fullName}
+                />
+
+                <FormInput
+                  label="Email"
+                  name="email"
+                  initialValue={userData && userData?.email}
+                />
+
+                <FormInput
+                  label="Phone"
+                  name="phone"
+                  initialValue={userData && userData?.phone}
+                />
+
+              </div>
 
               {/* {params.userConfigId === 'add' && (
                 <FormInput
@@ -179,6 +282,12 @@ const UserConfigId = () => {
                 />
               )} */}
 
+              <FormInput
+                label='Address'
+                name='address'
+                initialValue={userData && userData?.address}
+              />
+
               <FormSelect
                 label="Role"
                 name="role"
@@ -186,11 +295,7 @@ const UserConfigId = () => {
                 initialValue={userData && userData?.role}
               />
 
-              <FormInput
-                label="Phone"
-                name="phone"
-                initialValue={userData && userData?.phone}
-              />
+
 
               <FormDate
                 label='Date of Birth'

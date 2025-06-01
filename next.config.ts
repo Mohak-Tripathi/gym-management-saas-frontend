@@ -1,13 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
     ignoreDuringBuilds: true,
+  },
+  images: {
+    domains: ['muscletech.s3.ap-south-1.amazonaws.com'],
   },
 };
 
 export default nextConfig;
-

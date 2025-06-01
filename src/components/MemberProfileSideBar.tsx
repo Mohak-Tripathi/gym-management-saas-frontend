@@ -83,9 +83,9 @@ const MemberProfileSideBar = () => {
               <div className={`w-full flex justify-between items-center ${params?.memberId == member.id ? 'bg-black-primary' : ''}  rounded-2xl p-1`}>
                 <div className={`w-full flex gap-2 items-center`}>
                   <Image
-                    src={member?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
-                    height={0}
-                    width={0}
+                    src={member?.imageUrl ? member?.imageUrl :member?.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+                    height={24}
+                    width={24}
                     alt={`profile`}
                     className='w-[24px] h-[24px] bg-white rounded-full'
                   />

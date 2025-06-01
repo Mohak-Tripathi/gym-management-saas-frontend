@@ -29,6 +29,8 @@ const Trainer = () => {
     try {
       const data = await getRequest(`/api/trainers?gymBranchId=${currentGymBranchId}`);
       setTrainersData(data.data);
+      console.log('trainers', data.data);
+      
     } catch (error) {
       console.log('trainer data error', error);
       setTrainersData([]);
@@ -122,9 +124,9 @@ const Trainer = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
-            width={0}
-            height={0}
+            src={record?.imageUrl ? record?.imageUrl : record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+            width={24}
+            height={24}
             alt="Profile"
             className="w-6 h-6 rounded-full object-cover"
           />

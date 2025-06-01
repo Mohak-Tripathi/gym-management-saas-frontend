@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Skeleton } from "antd";
+import { Skeleton, Upload } from "antd";
 import FormInput from "@/components/formComponents/FormInput";
 import { Form } from "antd";
 import Image from "next/image";
@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import FormDate from "@/components/formComponents/FormDate";
 import FormSelect from "@/components/formComponents/FormSelect";
 import dayjs from 'dayjs';
+import { UploadOutlined } from '@ant-design/icons';
 
 const EquipmentId = () => {
   const [form] = Form.useForm();
@@ -20,6 +21,7 @@ const EquipmentId = () => {
   const [loading, setLoading] = useState(false);
   const [equipmentData, setEquipmentData] = useState<any>({});
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
+  const token = useSelector((state: any) => state.user.loggedinUserData?.token);
 
   const { branches } = useSelector((state: any) => state.branch);
 
@@ -39,9 +41,24 @@ const EquipmentId = () => {
   }
   ]
 
+  const [image, setImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImage(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   useEffect(() => {
 
-    if (params.equipmentId === "new") return; // Skip API call if creating new branch
+    if (params.equipmentId === "add") return; // Skip API call if creating new branch
 
     const fetchEquipmentById = async () => {
       setLoading(true);
@@ -49,6 +66,7 @@ const EquipmentId = () => {
         const data = await getRequest(`/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`);
         setEquipmentData(data);
         console.log('equipmentData', data);
+        setPreviewUrl(data?.imageUrl)
 
       } catch (error) {
         // Optionally handle error
@@ -65,15 +83,38 @@ const EquipmentId = () => {
   const handleFinish = async (values: any) => {
     // return;
     if (params.equipmentId != 'add') {
-      const payload = {
-        name: values.name || equipmentData.name,
-        serialNumber: values.serialNumber || equipmentData.serialNumber,
-        purchaseDate: values.purchaseDate || equipmentData.purchaseDate,
-        gymBranchId: values.gymBranchId || equipmentData.gymBranchId,
-        status: values.status || equipmentData.status,
+      // const payload = {
+      //   name: values.name || equipmentData.name,
+      //   serialNumber: values.serialNumber || equipmentData.serialNumber,
+      //   purchaseDate: values.purchaseDate || equipmentData.purchaseDate,
+      //   gymBranchId: values.gymBranchId || equipmentData.gymBranchId,
+      //   status: values.status || equipmentData.status,
+      // }
+
+      const formData = new FormData();
+
+      // Append form fields
+      formData.append("name", values.name || equipmentData.name);
+      formData.append("serialNumber", values.serialNumber || equipmentData.serialNumber);
+      formData.append("purchaseDate", values.purchaseDate || equipmentData.purchaseDate);
+      formData.append("gymBranchId", values.gymBranchId || equipmentData.gymBranchId );
+      formData.append("status", values.status || equipmentData.status);
+
+      // Append image file (if uploaded)
+      if (image) {
+        formData.append("image", image);
       }
+
       try {
-        const response = await putRequest(`/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`, payload);
+        // const response = await putRequest(`/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`, payload);
+        const apiurl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiurl}/api/gym-equipments/${params.equipmentId}?gymBranchId=${selectedBranch.id}`, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
         toast.success("Equipment data updated successfully")
         router.push("/management/settings/equipment-details/equipments")
       } catch (error) {
@@ -81,20 +122,50 @@ const EquipmentId = () => {
         console.error("Equipment update failed:", error);
       }
     } else {
-      const payload = {
-        name: values.name,
-        serialNumber: values.serialNumber,
-        purchaseDate: values.purchaseDate,
-        gymBranchId: values.gymBranchId,
-        status: values.status,
+      // const payload = {
+      //   name: values.name,
+      //   serialNumber: values.serialNumber,
+      //   purchaseDate: values.purchaseDate,
+      //   gymBranchId: values.gymBranchId,
+      //   status: values.status,
+      // }
+      // try {
+      //   const response = await postRequest("/api/gym-equipments", payload);
+      //   toast.success("Equipment created successfully")
+      //   router.push("/management/settings/equipment-details/equipments")
+      //   console.log(response, "equipment created");
+      // } catch (error) {
+      //   toast.error("Equipment creation failed")
+      //   console.error("Equipment creation failed:", error);
+      // }
+      const formData = new FormData();
+
+      // Append form fields
+      formData.append("name", values.name);
+      formData.append("serialNumber", values.serialNumber);
+      formData.append("purchaseDate", new Date(values.purchaseDate).toISOString());
+      formData.append("gymBranchId", values.gymBranchId);
+      formData.append("status", values.status);
+
+      // Append image file (if uploaded)
+      if (image) {
+        formData.append("image", image);
       }
+
       try {
-        const response = await postRequest("/api/gym-equipments", payload);
-        toast.success("Equipment created successfully")
-        router.push("/management/settings/equipment-details/equipments")
+        const apiurl = process.env.NEXT_PUBLIC_API_URL;
+        const response = await fetch(`${apiurl}/api/gym-equipments`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData, // no need to set Content-Type manually
+        });
+        toast.success("Equipment created successfully");
+        router.push("/management/settings/equipment-details/equipments");
         console.log(response, "equipment created");
       } catch (error) {
-        toast.error("Equipment creation failed")
+        toast.error("Equipment creation failed");
         console.error("Equipment creation failed:", error);
       }
     }
@@ -140,16 +211,60 @@ const EquipmentId = () => {
           </div>
 
           <div className="w-full p-3 rounded-xl border border-[#D9D9D999] gap-6 flex flex-col">
-            {/* <div className="flex flex-col gap-2">
-              <h2 className="text-[14px] text-black-primary font-semibold leading-[100%] !m-0">
-                Branch
-              </h2>
-              <p className="text-[14px] font-normal text-black-60 leading-[100%] !m-0">
-                You can add multiple branches as your need and assigned the
-                person
-              </p>
-            </div> */}
             <div className="grid grid-cols-2 gap-6">
+              {/* ✅ Image Upload Input */}
+              {/* <Form.Item
+                label="Equipment Image"
+                name="equipmentImage"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => Array.isArray(e) ? e : e?.fileList}
+                initialValue={
+                  equipmentData?.imageUrl
+                    ? [
+                      {
+                        uid: '-1',
+                        name: 'equipment.jpg', // or extract from URL
+                        status: 'done',
+                        url: equipmentData.imageUrl,
+                      },
+                    ]
+                    : []
+                }
+                className="col-span-2"
+              >
+                <Upload
+                  listType="picture-card"
+                  beforeUpload={() => false} // prevent auto-upload
+                  maxCount={1}
+                >
+                  <div>
+                    <UploadOutlined />
+                    <div>Upload</div>
+                  </div>
+                </Upload>
+              </Form.Item> */}
+
+              <div>
+                <label htmlFor="upload">Upload Image:</label><br />
+                <input
+                  type="file"
+                  id="upload"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
+
+                {previewUrl && (
+                  <div style={{ marginTop: '10px' }}>
+                    <strong>Preview:</strong><br />
+                    <img
+                      src={previewUrl}
+                      alt="Preview"
+                      style={{ width: '200px', height: '100px', borderRadius: '8px', border: '1px solid #ccc', objectFit: 'contain' }}
+                    />
+                  </div>
+                )}
+              </div>
+
               <FormInput
                 label="Equipment Name"
                 name="name"

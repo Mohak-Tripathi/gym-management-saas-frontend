@@ -12,17 +12,6 @@ import { toast } from 'sonner';
 import { paymentOption, statusOption } from '@/constant/filterData';
 import { useSelector } from 'react-redux';
 
-const selectOptions = [
-  {
-    value: '1',
-    label: 'Not Identified',
-  },
-  {
-    value: '2',
-    label: 'Closed',
-  },
-]
-
 const Memebers = () => {
   const router = useRouter();
   const pathname = usePathname()
@@ -168,9 +157,9 @@ const Memebers = () => {
         <div className='flex items-center gap-3'>
           {/* Profile Image */}
           <Image
-            src={record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
-            width={0}
-            height={0}
+            src={record?.imageUrl ? record?.imageUrl : record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+            width={24}
+            height={24}
             alt="Profile"
             className="w-6 h-6 rounded-full object-cover"
           />
@@ -353,7 +342,8 @@ const Memebers = () => {
   ];
 
   const handleAddMemberClick = () => {
-    router.push('/management/members/members/add');
+    // router.push('/management/members/members/add');
+    router.push('/management/members/member-details');
   }
 
   return (

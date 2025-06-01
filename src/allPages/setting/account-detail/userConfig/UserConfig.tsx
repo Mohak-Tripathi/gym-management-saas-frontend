@@ -35,6 +35,9 @@ const UserConfig = () => {
         return user.role !== "TRAINER" && user.role !== "TRAINEE"
 
       })
+
+      console.log('newUserData', newUserData);
+
       setUsersData(newUserData);
     } catch (error) {
       console.log('user data error', error);
@@ -77,6 +80,23 @@ const UserConfig = () => {
   }
 
   const columns = [
+    {
+      title: "",
+      dataIndex: "imageUrl",
+      key: "imageUrl",
+      render: (_: any, record: any,) => {
+        return (
+          <Image
+            src={record?.imageUrl ? record?.imageUrl : record.gender === 'FEMALE' ? `/images/iconly/light/femaleUser.svg` : `/images/iconly/light/user.svg`}
+            width={32}
+            height={32}
+            alt="Profile"
+            className="w-8 h-8 rounded-full object-cover"
+          />
+        )
+      }
+    },
+
     {
       title: "Name",
       dataIndex: "fullName",
