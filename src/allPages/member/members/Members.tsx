@@ -297,8 +297,7 @@ const Memebers = () => {
       render: (_: any, record: any, index: number) => {
         return (
           <div className="flex justify-end gap-3 items-center">
-
-            <Link href={`/management/members/members/${record.id}`} className="cursor-pointer p-1 action-buttons">
+            <Link href={`/management/members/member-details/${record.id}`} className="cursor-pointer p-1 action-buttons">
               <Image
                 src="/images/iconly/light/Edit.svg"
                 alt="Edit"
@@ -343,7 +342,7 @@ const Memebers = () => {
 
   const handleAddMemberClick = () => {
     // router.push('/management/members/members/add');
-    router.push('/management/members/member-details');
+    router.push('/management/members/member-details/add');
   }
 
   return (

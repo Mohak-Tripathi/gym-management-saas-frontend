@@ -113,7 +113,7 @@ const MemberDetails = () => {
             // bodyFatPercentage: Number(values.bodyFatPercentage),
             age: birthDate ? calculateAge(birthDate) : undefined,
             personalizedGoal: values.personalizedGoal,
-            healthIssues: values.healthIssues || [],
+            healthIssues: values.healthIssues && [values.healthIssues] || [],
             gymBranchId: values.gymBranchId,
         }));
 
@@ -142,8 +142,9 @@ const MemberDetails = () => {
                 },
                 body: formData,
             });
+
             toast.success("New Member added successfully");
-            router.push("/management/members/member-payment-details");
+            // router.push("/management/members/member-payment-details");
             console.log(response, "new member created");
         } catch (error) {
             console.error("New Member creation failed:", error);
@@ -151,6 +152,10 @@ const MemberDetails = () => {
         }
 
     };
+
+    const handleCancel = () => {
+        router.push("/management/members/members/");
+    }
 
     return loading ? (
         <main className='flex flex-1 flex-col justify-between gap-6 w-full bg-white !p-6 rounded-xl'>
@@ -273,12 +278,17 @@ const MemberDetails = () => {
                                 label='Emergency Mobile No.'
                                 name='referenceMobileNo'
                             />
-                            <div className='col-span-2'>
-                                <FormInput
-                                    label='Address'
-                                    name='address'
-                                />
-                            </div>
+
+                            <FormSelect
+                                label='Gender'
+                                name='gender'
+                                options={genderOption}
+                            />
+                            <FormDate
+                                label='Date Of Birth'
+                                name='birthDate'
+                            />
+
                             <FormSelect
                                 label='Subscription Name'
                                 name='membershipId'
@@ -295,18 +305,16 @@ const MemberDetails = () => {
                     <div className='flex-1 flex flex-col gap-6 mt-10'>
                         <p className='font-roboto font-bold text-[14px] leading-[100%] tracking-[0px] align-middle text-black-primary !m-0'>Optional Field</p>
                         <div className='grid grid-cols-3 gap-4'>
+                            <div className='col-span-2'>
+                                <FormInput
+                                    label='Address'
+                                    name='address'
+                                />
+                            </div>
+
                             <FormInput
                                 label='Email'
                                 name='email'
-                            />
-                            <FormSelect
-                                label='Gender'
-                                name='gender'
-                                options={genderOption}
-                            />
-                            <FormDate
-                                label='Date Of Birth'
-                                name='birthDate'
                             />
 
                             <FormInput
@@ -333,14 +341,32 @@ const MemberDetails = () => {
                                 label='Blood Group'
                                 name='bloodGroup'
                             />
+                            <FormInput
+                                label='Aadhar Number'
+                                name='aadharNumber'
+                            />
+                            <FormInput
+                                label='Aadhar Number'
+                                name='aadharNumber'
+                            />
+                            <FormInput
+                                label='Aadhar Number'
+                                name='aadharNumber'
+                            />
+                            <FormInput
+                                label='Aadhar Number'
+                                name='aadharNumber'
+                            />
 
-                            <div className='col-span-2'>
+                            {/* <div className='col-span-2'>
                                 <FormSelect
                                     label='Branch Name'
                                     name='gymBranchId'
                                     options={branchOptions}
                                 />
-                            </div>
+                            </div> */}
+
+                            
                             <FormSelect
                                 label='Client Representative'
                                 name='clientRepresentative'
@@ -366,7 +392,7 @@ const MemberDetails = () => {
                 <div className='flex justify-start gap-6 '>
                     <button
                         type='button'
-                        // onClick={() => handleCancel()}
+                        onClick={() => handleCancel()}
                         className=' w-[147px] !bg-blue-secondary !text-black-primary rounded-xl px-4 py-2 cursor-pointer'
                     >
                         Cancel
