@@ -36,3 +36,19 @@ export const genderOption = [
     { label: 'Male', value: 'MALE' },
     { label: 'Female', value: 'FEMALE' },
 ]
+
+export const bloodGroupData = [
+  { label: 'A +ve', value: 'A +ve' },
+  { label: 'A -ve', value: 'A -ve' },
+  { label: 'B +ve', value: 'B +ve' },
+  { label: 'B -ve', value: 'B -ve' },
+  { label: 'AB +ve', value: 'AB +ve' },
+  { label: 'AB -ve', value: 'AB -ve' },
+  { label: 'O +ve', value: 'O +ve' },
+  { label: 'O -ve', value: 'O -ve' },
+];
+
+export const modeOfPaymentOption = [
+    { label: 'Online', value: 'Online' },
+    { label: 'Cash', value: 'Cash' },
+]

@@ -1,7 +1,7 @@
 'use client'
 import FormSelect from '@/components/filterComponents/FilterSelect'
 import { usePathname, useRouter } from 'next/navigation';
-import { Modal, Popover, Skeleton, Table } from 'antd'
+import { Divider, Modal, Popover, Skeleton, Table } from 'antd'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import FilterSearchInput from '@/components/filterComponents/FilterSearchInput';
@@ -16,9 +16,9 @@ const Memebers = () => {
   const router = useRouter();
   const pathname = usePathname()
   const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
-  
-  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false); 
-  const [deleteMemberId, setDeleteMemberId] = useState('') 
+
+  const [confirmDeleteVisible, setConfirmDeleteVisible] = useState(false);
+  const [deleteMemberId, setDeleteMemberId] = useState('')
   const [deleteBranchId, setDeleteBranchId] = useState('')
   const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
 
@@ -104,42 +104,76 @@ const Memebers = () => {
   const threeDotPopover = (traineeId: string, branchId: string) => {
     return (
       <>
-        <div className="flex flex-col gap-3 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
-          {/* <Link href={`/settings/groups/${recordId}`} passHref> */}
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
-            <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
-              <div>Invoice</div>
-              <Image
-                src="/images/invoice.svg"
-                alt="Invoice"
-                width={20}
-                height={20}
-              />
-            </div>
-          </div>
-          {/* </Link> */}
+        <div className="flex flex-col gap-2 text-sm leading-5 whitespace-nowrap bg-white rounded-xl text-teal-950 box-border md:w-[150px] action-buttons">
 
-          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
-            <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
-              <div>Email</div>
-              <Image
-                src="/images/E-mail.svg"
-                alt="Email"
-                width={20}
-                height={20}
-              />
+          <Link href={`/management/members/member-details/${traineeId}`} className=''>
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+              <div className="flex items-center gap-2 text-[14px] leading-[100%]">
+                <Image
+                  src="/images/iconly/light/Edit.svg"
+                  alt="Edit"
+                  width={16}
+                  height={16}
+                />
+                <div className='text-black-primary text-[12px] font-semibold'>Edit Member</div>
+              </div>
             </div>
-          </div>
+          </Link>
+
+          <Divider className='!m-0' />
+          <Link href={`/management/members/member-payment-details/${traineeId}`} className=''>
+            <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+              <div className="flex items-center gap-2 text-[14px] leading-[100%]">
+                <Image
+                  src="/images/iconly/light/money.svg"
+                  alt="Email"
+                  width={16}
+                  height={16}
+                />
+                <div className='text-black-primary text-[12px] font-semibold'>Balance Payment</div>
+              </div>
+            </div>
+          </Link>
+
+          <Divider className='!m-0' />
 
           <div onClick={() => deleteIconClick(traineeId, branchId)} className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
-            <div className="flex items-center justify-between gap-2 text-[14px] leading-[20px]">
-              <div>Delete</div>
+            <div className="flex items-center gap-2 text-[14px] leading-[100%]">
+              <Image
+                src="/images/iconly/light/invoice.svg"
+                alt="Delete"
+                width={16}
+                height={16}
+              />
+              <div className='text-black-primary text-[12px] font-semibold'>Invoice Download</div>
+            </div>
+          </div>
+
+          <Divider className='!m-0' />
+
+          <div className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+            <div className="flex items-center gap-2 text-[14px] leading-[100%]">
+              <Image
+                src="/images/iconly/light/email.svg"
+                alt="Email"
+                width={16}
+                height={16}
+              />
+              <div className='text-black-primary text-[12px] font-semibold'>Send E-mail</div>
+            </div>
+          </div>
+
+          <Divider className='!m-0' />
+
+          <div onClick={() => deleteIconClick(traineeId, branchId)} className="flex flex-col justify-center px-2 py-1.5 w-full bg-white rounded-lg hover:bg-blue-light cursor-pointer box-border">
+            <div className="flex items-center gap-2 text-[14px] leading-[100%]">
               <Image
                 src="/images/iconly/light/delete.svg"
                 alt="Delete"
-                width={20}
-                height={20}
+                width={16}
+                height={16}
               />
+              <div className='text-black-primary text-[12px] font-semibold'>Delete</div>
             </div>
           </div>
         </div>
@@ -176,11 +210,7 @@ const Memebers = () => {
         </div>
       )
     },
-    {
-      title: 'Gender',
-      dataIndex: 'gender',
-      key: 'gender',
-    },
+
     {
       title: 'Mobile Number',
       dataIndex: 'mobileNumber',
@@ -190,32 +220,10 @@ const Memebers = () => {
       )
     },
 
-    // {
-    //   title: 'Email',
-    //   dataIndex: 'email',
-    //   key: 'email',
-    //   render: (_: any, record: any) => (
-    //     <div>{record.user.email}</div>
-    //   )
-    // },
-    // {
-    //   title: 'Subscription Type',
-    //   dataIndex: 'subscriptionType',
-    //   key: 'subscriptionType',
-    //   render: (subscriptionType: any) => {
-    //     return (
-    //       <p className={`rounded-xl !m-0 !p-1.5 !text-[12px] !font-[500] !text-black-primary flex justify-center items-center ${subscriptionType === 'Basic' ? 'bg-gray-basic' : subscriptionType === 'Silver' ? 'bg-silver' : 'bg-yellow-primary'}`}>
-    //         {subscriptionType}
-    //       </p>
-    //     );
-    //   },
-    // },
     {
       title: 'Joined Date',
       dataIndex: 'startDate',
       key: 'startDate',
-      // render: (date: string) => dayjs(date).format('DD-MM-YYYY'),
-
       render: (_: any, record: any) => {
         const rawDate = record?.traineeMemberships?.[0]?.startDate;
         return rawDate ? dayjs(rawDate).format('DD-MM-YYYY') : '-';
@@ -285,11 +293,6 @@ const Memebers = () => {
     //     );
     //   },
     // },
-    // {
-    //   title: 'Address',
-    //   dataIndex: 'address',
-    //   key: 'address',
-    // },
     {
       title: '',
       dataIndex: '',
@@ -297,15 +300,7 @@ const Memebers = () => {
       render: (_: any, record: any, index: number) => {
         return (
           <div className="flex justify-end gap-3 items-center">
-            <Link href={`/management/members/member-details/${record.id}`} className="cursor-pointer p-1 action-buttons">
-              <Image
-                src="/images/iconly/light/Edit.svg"
-                alt="Edit"
-                width={0}
-                height={0}
-                className="h-[20px] w-[20px]"
-              />
-            </Link>
+
 
             <Popover
               placement="bottomRight"
@@ -454,7 +449,7 @@ const Memebers = () => {
         okText="Delete"
         cancelText="Cancel"
       >
-        <p>Are you sure you want to delete this trainer?</p>
+        <p>Are you sure you want to delete this member?</p>
       </Modal>
     </main >
   );
