@@ -28,10 +28,6 @@ const WebcamCapture = ({ onCapture }: { onCapture: (imgSrc: string) => void }) =
 
   return (
     <>
-      {/* <Button type="primary" onClick={openModal} className='!bg-black-primary'>
-        Open Webcam
-      </Button> */}
-
       <div
         onClick={openModal}
         className='h-[32px] w-[120px] rounded-[66px] border-[1px] border-solid border-black-10 py-1.5 pl-3 pr-2 flex items-center justify-center gap-2.5 cursor-pointer'>
@@ -64,7 +60,7 @@ const WebcamCapture = ({ onCapture }: { onCapture: (imgSrc: string) => void }) =
           <Webcam
             audio={false}
             ref={webcamRef}
-            screenshotFormat="image/png" // or "image/jpeg"
+            screenshotFormat="image/png"
             screenshotQuality={1}
             videoConstraints={videoConstraints}
             mirrored

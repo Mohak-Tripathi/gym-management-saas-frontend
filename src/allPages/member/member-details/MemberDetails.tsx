@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Form, Input, Skeleton } from 'antd'
 import Image from 'next/image';
 import FormInput from '@/components/formComponents/FormInput';
@@ -9,14 +9,14 @@ import { useParams, useRouter } from 'next/navigation';
 import WebcamCapture from '@/components/WebcamCapture';
 import { getRequest } from '@/lib/services/request';
 import { useSelector } from 'react-redux';
-import { genderOption, userGoals } from '@/constant/dropdownData';
+import { bloodGroupData, genderOption, userGoals } from '@/constant/dropdownData';
 import FormMultiselect from '@/components/formComponents/FormMultiselect';
 import { toast } from 'sonner';
 
 const MemberDetails = () => {
     const [form] = Form.useForm();
-    const router = useRouter()
-    const params = useParams()
+    const router = useRouter();
+    const params = useParams();
     const [memberData, setMemberData] = useState<any>({});
     const { selectedBranch } = useSelector((state: any) => state.selectedBranch);
     const token = useSelector((state: any) => state.user.loggedinUserData?.token);
@@ -24,7 +24,7 @@ const MemberDetails = () => {
     const [loading, setLoading] = useState(false);
     const [subscriptionDetailsData, setSubscriptionDetailsData] = useState<any[]>([]);
     const [selectedPrice, setSelectedPrice] = useState<number | null>(null);
-    const [discountedPrice, setDiscounbtedPrice] = useState(0)
+    const [discountedPrice, setDiscounbtedPrice] = useState(0);
     const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
     const { branches } = useSelector((state: any) => state.branch);
@@ -91,6 +91,21 @@ const MemberDetails = () => {
         return new Blob(byteArrays, { type: contentType });
     };
 
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64 = reader.result as string;
+                setCapturedImage(base64); // This will update and also use the same logic you're using for formData
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+
     const handleFinish = async (values: any) => {
         const birthDate = values.birthDate
         const formData = new FormData();
@@ -102,30 +117,36 @@ const MemberDetails = () => {
             phone: values.phone,
             address: values.address,
             birthDate,
+            aadharNumber: values.aadharNumber,
+            bloodGroup: values.bloodGroup,
+            clientRepresentative: values.clientRepresentative
         }));
         // Append traineeData
         formData.append("traineeData", JSON.stringify({
             referenceMobileNo: values.referenceMobileNo,
             gender: values.gender,
-            // height: Number(values.height),
-            // weight: Number(values.weight),
-            // bmi: Number(values.bmi),
-            // bodyFatPercentage: Number(values.bodyFatPercentage),
-            age: birthDate ? calculateAge(birthDate) : undefined,
             personalizedGoal: values.personalizedGoal,
-            healthIssues: values.healthIssues && [values.healthIssues] || [],
-            gymBranchId: values.gymBranchId,
+            healthIssues: values.healthIssues,
+            height: Number(values.height),
+            weight: Number(values.weight),
+            bmi: Number(values.bmi),
+            bodyFatPercentage: Number(values.bodyFatPercentage),
+            // age: birthDate ? calculateAge(birthDate) : undefined,
+
+            // TODO
+            // trinerId: 
+            gymBranchId: currentGymBranchId,
         }));
 
         // Append traineeMembershipData
         formData.append("traineeMembershipData", JSON.stringify({
             membershipId: values.membershipId,
-            // discountedPrice: discountedPrice,
-            // discountPercentage: Number(values.discountPercentage),
-            // reasonOfDiscount: values.reasonOfDiscount,
             extraMonths: Number(values.extraMonths),
             startDate: values.startDate,
             endDate: values.endDate,
+            // discountedPrice: discountedPrice,
+            // discountPercentage: Number(values.discountPercentage),
+            // reasonOfDiscount: values.reasonOfDiscount,
         }));
 
         // Convert and append image
@@ -143,9 +164,14 @@ const MemberDetails = () => {
                 body: formData,
             });
 
+            if (!response.ok) {
+                toast.error("Failed to add new member");
+                return;
+            }
             toast.success("New Member added successfully");
-            // router.push("/management/members/member-payment-details");
+            router.push("/management/members/member-payment-details/add");
             console.log(response, "new member created");
+
         } catch (error) {
             console.error("New Member creation failed:", error);
             toast.error("Failed to add new member")
@@ -191,19 +217,21 @@ const MemberDetails = () => {
                     </p>
                 </div>
 
-                <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
-                    <div className='flex items-center gap-3 '>
-                        <p className='font-roboto font-bold text-[14px] leading-[100%] tracking-[0px] align-middle text-black-primary !m-0'>Step 1 - Member Details</p>
-                        <Image
-                            src={`/images/iconly/light/stepper.svg`}
-                            alt="back"
-                            width={0}
-                            height={0}
-                            className='w-16 h-2'
-                        />
-                        <p className='font-roboto font-bold text-[14px] leading-[100%] tracking-[0px] align-middle text-black-primary !m-0'>Step 2 - Payment Details</p>
+                {params?.memberDetailsId == 'add' && (
+                    <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'>
+                        <div className='flex items-center gap-3 '>
+                            <p className='font-roboto font-bold text-[14px] leading-[100%] tracking-[0px] align-middle text-black-primary !m-0'>Step 1 - Member Details</p>
+                            <Image
+                                src={`/images/iconly/light/stepper.svg`}
+                                alt="back"
+                                width={0}
+                                height={0}
+                                className='w-16 h-2'
+                            />
+                            <p className='font-roboto font-bold text-[14px] leading-[100%] tracking-[0px] align-middle text-black-primary !m-0'>Step 2 - Payment Details</p>
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
 
             <Form
@@ -235,7 +263,7 @@ const MemberDetails = () => {
 
                                     <WebcamCapture onCapture={setCapturedImage} />
 
-                                    <div className='h-[32px] w-[120px] rounded-[66px] border-[1px] border-solid border-black-10 py-1.5 pl-3 pr-2 flex items-center justify-center gap-2.5 cursor-pointer'>
+                                    {/* <div className='h-[32px] w-[120px] rounded-[66px] border-[1px] border-solid border-black-10 py-1.5 pl-3 pr-2 flex items-center justify-center gap-2.5 cursor-pointer'>
                                         <Image
                                             src={`/images/iconly/light/upload.svg`}
                                             height={0}
@@ -244,7 +272,31 @@ const MemberDetails = () => {
                                             className='h-[20px] w-[20px]'
                                         />
                                         <p className='font-roboto font-semibold text-[12px] leading-[100%] tracking-[0px] align-middl text-black-primary !m-0'>Upload</p>
+                                    </div> */}
+
+                                    <div
+                                        onClick={() => fileInputRef.current?.click()}
+                                        className='h-[32px] w-[120px] rounded-[66px] border-[1px] border-solid border-black-10 py-1.5 pl-3 pr-2 flex items-center justify-center gap-2.5 cursor-pointer'
+                                    >
+                                        <Image
+                                            src={`/images/iconly/light/upload.svg`}
+                                            height={0}
+                                            width={0}
+                                            alt='upload'
+                                            className='h-[20px] w-[20px]'
+                                        />
+                                        <p className='font-roboto font-semibold text-[12px] leading-[100%] tracking-[0px] align-middl text-black-primary !m-0'>
+                                            Upload
+                                        </p>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            ref={fileInputRef}
+                                            onChange={handleFileChange}
+                                            style={{ display: 'none' }}
+                                        />
                                     </div>
+
 
                                     <div className='h-[32px] w-[120px] rounded-[66px] border-[1px] border-solid border-black-10 py-1.5 pl-3 pr-2 flex items-center justify-center gap-2.5 cursor-pointer'>
                                         <Image
@@ -275,7 +327,7 @@ const MemberDetails = () => {
                                 name='phone'
                             />
                             <FormInput
-                                label='Emergency Mobile No.'
+                                label='Emergency Mobile No. (Optional)'
                                 name='referenceMobileNo'
                             />
 
@@ -295,7 +347,7 @@ const MemberDetails = () => {
                                 options={subscriptionDetailsData}
                             />
                             <FormInput
-                                label='Add On Duration Term'
+                                label='Add On Duration Term (Optional)'
                                 name='extraMonths'
                             />
                         </div>
@@ -305,12 +357,6 @@ const MemberDetails = () => {
                     <div className='flex-1 flex flex-col gap-6 mt-10'>
                         <p className='font-roboto font-bold text-[14px] leading-[100%] tracking-[0px] align-middle text-black-primary !m-0'>Optional Field</p>
                         <div className='grid grid-cols-3 gap-4'>
-                            <div className='col-span-2'>
-                                <FormInput
-                                    label='Address'
-                                    name='address'
-                                />
-                            </div>
 
                             <FormInput
                                 label='Email'
@@ -321,6 +367,25 @@ const MemberDetails = () => {
                                 label='Aadhar Number'
                                 name='aadharNumber'
                             />
+
+                            <FormInput
+                                label='Body Fat %'
+                                name='bodyFat'
+                            />
+
+                            <FormInput
+                                label='BMI'
+                                name='bmi'
+                            />
+                            <FormInput
+                                label='Height'
+                                name='height'
+                            />
+                            <FormInput
+                                label='Weight'
+                                name='weight'
+                            />
+
                             <FormSelect
                                 label='Trainer Assign to Member'
                                 name='assignTrainer'
@@ -331,45 +396,22 @@ const MemberDetails = () => {
                                 options={userGoals}
                             />
 
+                            <FormSelect
+                                label='Blood Group'
+                                name='bloodGroup'
+                                options={bloodGroupData}
+                            />
+
                             <div className='col-span-2'>
                                 <FormInput
                                     label='Health Issues'
                                     name='healthIssues'
                                 />
                             </div>
-                            <FormSelect
-                                label='Blood Group'
-                                name='bloodGroup'
-                            />
-                            <FormInput
-                                label='Aadhar Number'
-                                name='aadharNumber'
-                            />
-                            <FormInput
-                                label='Aadhar Number'
-                                name='aadharNumber'
-                            />
-                            <FormInput
-                                label='Aadhar Number'
-                                name='aadharNumber'
-                            />
-                            <FormInput
-                                label='Aadhar Number'
-                                name='aadharNumber'
-                            />
 
-                            {/* <div className='col-span-2'>
-                                <FormSelect
-                                    label='Branch Name'
-                                    name='gymBranchId'
-                                    options={branchOptions}
-                                />
-                            </div> */}
-
-                            
-                            <FormSelect
-                                label='Client Representative'
-                                name='clientRepresentative'
+                            <FormInput
+                                label='Address'
+                                name='address'
                             />
 
                             <FormDate
@@ -380,10 +422,10 @@ const MemberDetails = () => {
                                 label='End Date'
                                 name='endDate'
                             />
-                            {/* <FormSelect
-                                label='Trainer Assign to Member'
-                                name='assignTrainer'
-                            /> */}
+                            <FormSelect
+                                label='Client Representative'
+                                name='clientRepresentative'
+                            />
                         </div>
                     </div>
                 </div>
